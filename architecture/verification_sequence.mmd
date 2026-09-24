@@ -1,0 +1,24 @@
+sequenceDiagram
+  actor User
+  participant App as Android App
+  participant API as Verification API
+  participant OCR as OCR/ANPR
+  participant CP as Compliance Provider
+  participant Rules as Rules Engine
+  participant DB as PostgreSQL/Audit
+
+  User->>App: Capture vehicle image
+  App->>API: Create verification + idempotency key
+  API->>OCR: Extract plate
+  OCR-->>API: Candidate + confidence
+  alt Low confidence / ambiguous
+    API-->>App: Request confirmation
+    User->>App: Confirm/correct plate
+    App->>API: Confirm registration
+  end
+  API->>CP: Authorized compliance lookup
+  CP-->>API: Compliance record / not found / error
+  API->>Rules: Evaluate status
+  Rules-->>API: Decision + rule version
+  API->>DB: Persist verification + audit event
+  API-->>App: Result + evidence + action

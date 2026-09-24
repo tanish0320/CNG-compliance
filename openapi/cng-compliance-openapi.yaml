@@ -1,0 +1,152 @@
+openapi: 3.1.0
+info:
+  title: CNG Compliance API
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        "200":
+          description: Service is alive
+  /api/v1/verifications:
+    post:
+      operationId: createVerification
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerificationRequest"
+      responses:
+        "200":
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationResult"
+  /api/v1/verifications/confirm-manual-review:
+    post:
+      operationId: confirmManualReview
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ManualReviewConfirmationRequest"
+      responses:
+        "200":
+          description: Verification result after human confirmation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerificationResult"
+  /api/v1/ocr/extract:
+    post:
+      operationId: extractOcr
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OCR extraction response with optional automated verification result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OcrExtractResponse"
+        "400":
+          description: Invalid image file format, size, or header
+        "422":
+          description: OCR processing failed
+components:
+  schemas:
+    VerificationRequest:
+      type: object
+      required: [vehicle_registration]
+      properties:
+        vehicle_registration:
+          type: string
+        ocr_confidence:
+          type: [number, "null"]
+          minimum: 0
+          maximum: 1
+    ManualReviewConfirmationRequest:
+      type: object
+      required: [confirmed_registration]
+      properties:
+        confirmed_registration:
+          type: string
+        original_raw_text:
+          type: [string, "null"]
+        original_confidence:
+          type: [number, "null"]
+        actor:
+          type: string
+          default: operator
+    VerificationResult:
+      type: object
+      required: [id, vehicle_registration, status, rule_version, manual_review_required]
+      properties:
+        id:
+          type: string
+          format: uuid
+        vehicle_registration:
+          type: string
+        status:
+          type: string
+          enum: [VALID, EXPIRING_SOON, EXPIRED, INVALID, NOT_FOUND, MANUAL_REVIEW, PROVIDER_UNAVAILABLE]
+        compliance_id:
+          type: [string, "null"]
+        expires_at:
+          type: [string, "null"]
+          format: date-time
+        source_reference:
+          type: [string, "null"]
+        rule_version:
+          type: string
+        manual_review_required:
+          type: boolean
+    OcrExtractResponse:
+      type: object
+      required: [raw_text, normalized_registration, confidence, engine_name, manual_review_required]
+      properties:
+        raw_text:
+          type: string
+        normalized_registration:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        engine_name:
+          type: string
+        manual_review_required:
+          type: boolean
+        verification_result:
+          $ref: "#/components/schemas/VerificationResult"

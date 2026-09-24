@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cng_prod_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: cng_compliance
+      POSTGRES_USER: cng_admin
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cng_admin -d cng_compliance"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: cng_prod_redis
+    restart: always
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.backend
+    container_name: cng_prod_backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: production
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+asyncpg://cng_admin:secret_pass@postgres:5432/cng_compliance
+      ENABLE_DEV_AUTH: "false"
+      OIDC_ISSUER: "https://auth.cng-compliance.enterprise.internal/auth/realms/cng"
+      OIDC_AUDIENCE: "cng-compliance-api"
+    ports:
+      - "8000:8000"
+
+  supervisor_web:
+    image: nginx:alpine
+    container_name: cng_prod_supervisor_web
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../supervisor:/usr/share/nginx/html/supervisor:ro
+
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: cng_prod_prometheus
+    restart: always
+    volumes:
+      - ./prometheus_alerts.yml:/etc/prometheus/prometheus_alerts.yml:ro
+    ports:
+      - "9090:9090"
+
+secrets:
+  db_password:
+    file: ../config/secrets/db_password.txt
+
+volumes:
+  postgres_data:
+  redis_data:

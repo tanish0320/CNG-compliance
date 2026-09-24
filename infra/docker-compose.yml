@@ -1,0 +1,11 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      LOG_LEVEL: INFO
+      COMPLIANCE_PROVIDER: mock

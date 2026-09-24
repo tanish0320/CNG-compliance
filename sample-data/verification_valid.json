@@ -1,0 +1,10 @@
+{
+  "id": "6e5a6257-9e17-4e74-95e9-5e99aa2195f8",
+  "vehicle_registration": "DL01AB1234",
+  "status": "VALID",
+  "compliance_id": "CNG-DL01AB1234",
+  "expires_at": "2027-06-23T10:30:00Z",
+  "source_reference": "synthetic://provider/record/1234",
+  "rule_version": "v1",
+  "manual_review_required": false
+}

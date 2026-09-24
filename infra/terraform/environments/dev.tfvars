@@ -1,0 +1,8 @@
+environment             = "development"
+primary_region          = "ap-south-1"
+secondary_region        = "ap-southeast-1"
+primary_vpc_cidr        = "10.10.0.0/16"
+secondary_vpc_cidr      = "10.20.0.0/16"
+db_name                 = "cng_compliance_dev"
+db_username             = "cng_dev_user"
+db_password_secret_arn  = "arn:aws:secretsmanager:ap-south-1:123456789012:secret:cng/dev/db-password"

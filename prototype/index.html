@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CNGsure — Synthetic Prototype</title>
+<style>
+:root{font-family:Inter,system-ui,sans-serif;color:#16352d;background:#f5fbf8}
+*{box-sizing:border-box} body{margin:0;display:grid;place-items:center;min-height:100vh}
+.phone{width:min(390px,94vw);min-height:760px;background:#fbfffd;border:1px solid #dcebe5;border-radius:36px;box-shadow:0 30px 80px #173c2d22;overflow:hidden}
+.header{padding:28px 24px 16px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-weight:800;font-size:22px}.pill{padding:8px 12px;background:#e9f7f1;border-radius:999px;font-size:12px}
+.hero{margin:0 20px;padding:24px;border-radius:28px;background:linear-gradient(145deg,#e8f7f2,#f6fbff);position:relative;overflow:hidden}
+.orb{width:150px;height:150px;border-radius:50%;margin:4px auto 16px;background:radial-gradient(circle at 30% 25%,#fff,#9fe0c7 40%,#4d9d7e 70%,#2c7058);box-shadow:inset -20px -20px 40px #173d2c33,0 24px 50px #2d8b6722}
+h1{font-size:27px;line-height:1.1;margin:0 0 8px}.muted{color:#5e746c;font-size:14px;line-height:1.5}
+.scan{margin:18px 20px 0;padding:18px;background:white;border:1px solid #e0ece7;border-radius:24px}
+.plate{display:flex;align-items:center;justify-content:center;height:86px;border:2px dashed #9dc9b8;border-radius:18px;font-size:25px;font-weight:800;letter-spacing:2px;background:#f7fcfa}
+.btn{display:block;width:calc(100% - 40px);margin:18px 20px;padding:16px;border:0;border-radius:18px;background:#173d30;color:white;font-weight:800;font-size:16px}
+.result{margin:0 20px 24px;padding:16px;border-radius:20px;background:#eef9f2;border:1px solid #cce8d5}
+.row{display:flex;justify-content:space-between;gap:12px;margin:7px 0;font-size:13px}.ok{font-weight:800;color:#24714f}
+</style>
+</head>
+<body>
+<main class="phone">
+  <div class="header"><div class="brand">CNGsure</div><div class="pill">Field Mode</div></div>
+  <section class="hero">
+    <div class="orb" aria-hidden="true"></div>
+    <h1>Verify CNG compliance in seconds.</h1>
+    <div class="muted">Capture a registration plate, confirm OCR, and retrieve compliance status from an authorized source.</div>
+  </section>
+  <section class="scan">
+    <div class="muted">Detected registration</div>
+    <div class="plate">DL 01 AB 1234</div>
+  </section>
+  <button class="btn" onclick="document.getElementById('result').hidden=false">Verify Compliance</button>
+  <section id="result" class="result" hidden>
+    <div class="row"><strong>Status</strong><span class="ok">VALID</span></div>
+    <div class="row"><span>Compliance ID</span><span>CNG-DL01AB1234</span></div>
+    <div class="row"><span>Expires</span><span>23 Jun 2027</span></div>
+    <div class="row"><span>Source</span><span>Authorized provider</span></div>
+    <div class="muted">Synthetic prototype data only.</div>
+  </section>
+</main>
+</body>
+</html>

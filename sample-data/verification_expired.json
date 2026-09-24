@@ -1,0 +1,10 @@
+{
+  "id": "cc784bad-e4b6-4292-b7df-c45cfde9d0dd",
+  "vehicle_registration": "DL03SFF6420",
+  "status": "EXPIRED",
+  "compliance_id": "CNG-DL03SFF6420",
+  "expires_at": "2026-08-01T00:00:00Z",
+  "source_reference": "synthetic://provider/record/6420",
+  "rule_version": "v1",
+  "manual_review_required": false
+}

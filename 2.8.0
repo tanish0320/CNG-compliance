@@ -1,0 +1,15 @@
+Collecting pyjwt[crypto]
+  Downloading pyjwt-2.14.0-py3-none-any.whl.metadata (3.4 kB)
+Collecting cryptography>=3.4.0 (from pyjwt[crypto])
+  Using cached cryptography-50.0.1-cp311-abi3-win_amd64.whl.metadata (4.3 kB)
+Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto])
+  Using cached cffi-2.1.1-cp314-cp314-win_amd64.whl.metadata (2.6 kB)
+Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto])
+  Using cached pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+Downloading pyjwt-2.14.0-py3-none-any.whl (32 kB)
+Using cached cryptography-50.0.1-cp311-abi3-win_amd64.whl (3.8 MB)
+Using cached cffi-2.1.1-cp314-cp314-win_amd64.whl (187 kB)
+Using cached pycparser-3.0-py3-none-any.whl (48 kB)
+Installing collected packages: pyjwt, pycparser, cffi, cryptography
+
+Successfully installed cffi-2.1.1 cryptography-50.0.1 pycparser-3.0 pyjwt-2.14.0

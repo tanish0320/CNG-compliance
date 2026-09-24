@@ -1,0 +1,67 @@
+# Package Manifest
+
+Generated: 2026-09-21
+
+| File | SHA-256 |
+|---|---|
+| `.gitignore` | `77aa95ab444f3a1a3dfc87a551189e2c3d61f0361b575bea11bbf5a61e83c3bc` |
+| `CHANGELOG.md` | `be4c5fcbee4065ddf66ed20c2abdca09316de317136a7280da79e72322c01dde` |
+| `PROJECT_CONTEXT.md` | `caeb15862c6ddd78e66d516a6c7e0bbf806e331d009bade19ac3f01234d4f532` |
+| `README.md` | `d47b0bc0378a6034583dbd3aaace9b9cada457e4bc65c28e0bb61971829b0789` |
+| `architecture/data_flow.mmd` | `d183ab9715fbf08c5eafac4579932d17093199116acf453d5d0a38437b2d7d95` |
+| `architecture/system_architecture.mmd` | `bcc2e0b23607e35a1f503060f0eb3f37ae989526fb9c6a6f302041005c2c2b46` |
+| `architecture/verification_sequence.mmd` | `699f76f67be600b1e055043abfbc9f5c9ea3af8266e1f1a78256ef487508b6a7` |
+| `backend/.env.example` | `cf1a609ef6c522682c169eb337cbf0dc11c5ca1d2f74531b773c7f3ae108ba1e` |
+| `backend/README.md` | `1677d193f190cdbb09d4b032c062c3de64f1af9d2ad335a2dc3ff1c2d9c960c9` |
+| `backend/pyproject.toml` | `15a71241ecd27495fd2b78b5fcea17bfe0b3f3300fc638175dc03dc81415650d` |
+| `backend/src/app/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/adapters/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/adapters/mock_compliance_provider.py` | `0eccbc92c865da4fbcf5a267c2e8a06dd595b45faad8a3af01322146ea50b104` |
+| `backend/src/app/api/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/api/routes/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/api/routes/health.py` | `592319811af28afe1342a302dbe0da2daab93fb9043bd038cb956535c61ba937` |
+| `backend/src/app/api/routes/verification.py` | `0599e43e6a9293ccaa67c01e7a156edaeaccc6842c0e00b43e0d5c8dc2c0cce2` |
+| `backend/src/app/core/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/core/config.py` | `55a4c14e0c65b036cd7a6b3fb5e69bd4f6809652f591f3f6e1a95b90bd9b20e9` |
+| `backend/src/app/core/logging.py` | `5d8707c03dbf2a3a6cbc36d36844a7d1e5f00b650874d7e0a2344fe93d3d2dee` |
+| `backend/src/app/domain/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/domain/models.py` | `ba6428f57ddca7d1d40c89aa2c38801296066b61fe258d24a6fca2729e2ccdf7` |
+| `backend/src/app/main.py` | `aa57c9aae3348c6225455b02ffd725578aa7e8f208e27b99ff8f4683833ef39b` |
+| `backend/src/app/ports/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/ports/compliance_provider.py` | `63123ef58371c0d78f65b3ab9f33ad10f9917929bd75d1729ea8b03c75358b03` |
+| `backend/src/app/ports/ocr_provider.py` | `870d7f08afc16db196335c7feaa332304b0a097e2c4b8a707a9e15f3310f4b6e` |
+| `backend/src/app/services/__init__.py` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `backend/src/app/services/verification_service.py` | `1794a04b35c61e3e9a6105114d32168f9099a74fb0b85e1aaaa520030e2e3efb` |
+| `backend/tests/test_health.py` | `2d894f2dafcdb7bcf08a17cea9c48a7afc5168db31b76e8be29bfd790ecc3cba` |
+| `backend/tests/test_verification.py` | `0b556c430a87ebde4e52a0bd473da51d5214bfae11aae1d314aa2265f845e608` |
+| `config/rules.sample.json` | `36a508646791c0cfaba5b79e162bb799a0ddea2c38aafe76bb5ab64deda071e3` |
+| `docs/01_product_scope.md` | `926be8e0135eac9cf6e4a5430900d3a88dc678f949859644f4ab27a0bf2aa7f7` |
+| `docs/02_user_roles_and_use_cases.md` | `62ab19e54e093284177e08e6d3db1b5215092c7f789dcd105e8dd80cb25ca1fe` |
+| `docs/03_end_to_end_flow.md` | `0c5b73f0739d63cee4b4e4c6103612210c670379df1cf2f9bd3311bc9bab457e` |
+| `docs/04_architecture.md` | `b77c718d0f30ebd11b6af7060f6e22136e0fd935e6a4b0197f96ebabd27548e6` |
+| `docs/05_data_and_integration_strategy.md` | `00bd49b3dbb14fb98418f1026f7b61e197a72eba47a50423210a21cbe8ef0b20` |
+| `docs/06_security_privacy_compliance.md` | `205e4db4378e9dee63d6142ca8cc0512d23b6e81238b0dd14a14b27ff5293ca8` |
+| `docs/07_scalability_and_reliability.md` | `a7214b5437b7b746f631015f21e57b7425a95633783eb14a90e293702f3b9fdf` |
+| `docs/08_observability.md` | `f7cffc666ccb209fcea393f219d8317770fad8d96d9b99ea74e251f0796358a7` |
+| `docs/09_testing_strategy.md` | `7268713fcfc86fdebcb3caf53d3e3c6873581980fb285e8e271d29741b20bbb7` |
+| `docs/10_deployment_release.md` | `e18bd64aadf2a2cb40f6322a428e3b59a399ff9f8f0e1190858d18c0639650e4` |
+| `docs/11_mvp_roadmap.md` | `797f63a1f3d3f6a1c40f3ae7cf237379039884bbf6668375471525b6a3ece2fe` |
+| `docs/12_open_source_tools.md` | `8426f804d80ccdf58a3b0edd1669e2ab809b96f3ac6f7cb7f0da43ca83032590` |
+| `docs/13_api_contract.md` | `6448b8f3f3e5dfcc45b99615ffff74b44ef63f5b3ea3c05110206f887c5ca08f` |
+| `docs/14_data_model.md` | `9243a8c341f4be85be68d8e3bf41875317ed47ba2e02c84d268e4767349a5821` |
+| `docs/15_ui_ux_spec.md` | `3c2a6f752f709baf1ec2452cc052011bb608fdf93018699c489aa825748cfda4` |
+| `governance/ADR-001-provider-abstraction.md` | `46cc7c6959daaefa5e9ba00ed1830de4699d513aa918def85b11db87b160bf36` |
+| `governance/ADR-002-human-confirmation.md` | `d31b5cea3d7ada6aad0e483570e727e369796772406e8fc3bd73116b574d1633` |
+| `governance/data_retention.md` | `c8c95ade1f495966164c41fa55a84a28c18a560445ceb4751e888be4796a900c` |
+| `governance/risk_register.md` | `b1f011f26a38710ab69718663ad4956de23c235443f1a30bf3ba70708e48ce68` |
+| `infra/Dockerfile.backend` | `cc247a390ef4c22d6fd581ef75a749a138cc3d3ec427ebad79bf5ba37d2e28ea` |
+| `infra/docker-compose.yml` | `6e0ab18db3e468fb19d2e9d6934c8d6110fe42bfdd5a6604f0efd1062d2fe5f0` |
+| `mobile/README.md` | `5516a37cdb6631a43634529c8cef0d636e39ecffc56c116b9b3d86a9345e2587` |
+| `mobile/package.json` | `0cdae5ce6e52fe86b719e503c2ccd7092e1a48f0aa2a3cbfb34cf1327b48231f` |
+| `mobile/src/domain/ComplianceStatus.ts` | `8434d9b1707fd78833dd38c5e1ef964fb73c01c218ae6dfc791088e9c427ea29` |
+| `mobile/src/services/VerificationApi.ts` | `45b1631edf33c3769a26dc4e8ff5414cc12bb3453bcf8f20450c82cf4f9cf9a9` |
+| `openapi/cng-compliance-openapi.yaml` | `943e86721dad4a4a7707ecc00e667d423b71056da1bb0befc5415bfab8a0d28f` |
+| `prototype/index.html` | `baeba8b04934b68461e98bee3fb00dd7b5967e26f6f476b6ea54ac2141d6a3a9` |
+| `sample-data/verification_expired.json` | `fe5055c148173865bd1b39bd977138270e3e93810ee95af512b9823ae6fa7c4e` |
+| `sample-data/verification_valid.json` | `d94be97b31166ab382cd8c7d5878ac236450f2bb8a01fec2a8a992b94edb3f41` |
+| `scripts/validate_package.py` | `dfa8742e9bef0916c82f7a70c94fdd43e1d4eecd812d6fff57ded6f0f0a17eeb` |

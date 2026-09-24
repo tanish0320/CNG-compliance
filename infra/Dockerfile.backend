@@ -1,0 +1,23 @@
+FROM python:3.13-slim
+
+# Create non-root system user and group for container security baseline
+RUN groupadd -g 10001 appgroup && \
+    useradd -u 10001 -g appgroup -s /bin/bash -m appuser
+
+WORKDIR /app
+
+COPY backend /app
+RUN pip install --no-cache-dir .
+
+# Change ownership of application directory to non-root user
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+ENV PYTHONPATH=/app/src
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

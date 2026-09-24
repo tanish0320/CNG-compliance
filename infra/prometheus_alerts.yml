@@ -1,0 +1,38 @@
+groups:
+  - name: cng_compliance_alerts
+    rules:
+      - alert: HighHTTP5xxRate
+        expr: sum(rate(cng_http_requests_total{status_code=~"5.."}[5m])) / sum(rate(cng_http_requests_total[5m])) > 0.01
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High HTTP 5xx error rate detected (> 1%)"
+          description: "HTTP 5xx error rate has exceeded 1% over the last 5 minutes."
+
+      - alert: HighAPIp99Latency
+        expr: histogram_quantile(0.99, sum(rate(cng_http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API p99 latency exceeded 500ms"
+          description: "99th percentile API latency is higher than 500ms for 5 consecutive minutes."
+
+      - alert: ComplianceProviderFailures
+        expr: rate(cng_provider_failures_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "External CNG Compliance Provider failures detected"
+          description: "Compliance provider lookup failures are triggering manual review fallbacks."
+
+      - alert: HighManualReviewQueue
+        expr: cng_manual_reviews_total > 50
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Manual review queue backlog spike"
+          description: "Pending supervisor manual review queue count has exceeded 50 items."

@@ -1,0 +1,14 @@
+flowchart TD
+  I[Vehicle Image] --> P[Preprocessing]
+  P --> D[Plate Detection]
+  D --> O[OCR]
+  O --> N[Registration Normalization]
+  N --> H{Confidence / Format OK?}
+  H -- No --> C[Human Confirmation]
+  C --> L[Authorized Compliance Lookup]
+  H -- Yes --> L
+  L --> M[Provider Mapping]
+  M --> R[Deterministic Rules]
+  R --> S[Compliance Status]
+  S --> A[Audit Event]
+  S --> UI[Mobile Result / Alert]

@@ -1,0 +1,12 @@
+{
+  "version": "v1",
+  "ocr": {
+    "minimum_auto_accept_confidence": 0.9,
+    "require_human_confirmation_below": 0.9
+  },
+  "compliance": {
+    "expiring_soon_days": 30,
+    "not_found_requires_manual_review": true,
+    "provider_unavailable_action": "RETRY_OR_MANUAL_REVIEW"
+  }
+}

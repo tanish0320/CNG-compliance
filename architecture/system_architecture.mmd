@@ -1,0 +1,17 @@
+flowchart LR
+  U[Pump Operator / Traffic Police] --> M[Android Mobile App]
+  M --> G[API Gateway / WAF]
+  G --> A[Auth + RBAC]
+  G --> V[Verification API]
+  V --> O[OCR / ANPR Service]
+  V --> R[Rules Engine]
+  V --> C[Compliance Provider Adapter]
+  C --> X[Authorized CNG Compliance Source]
+  V --> P[(PostgreSQL)]
+  V --> Q[(Redis / Queue)]
+  V --> B[(Evidence Object Storage)]
+  V --> E[Audit/Event Service]
+  E --> P
+  V --> T[OpenTelemetry]
+  T --> OBS[Metrics / Logs / Traces]
+  A --> IDP[OIDC Identity Provider]
