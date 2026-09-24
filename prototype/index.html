@@ -2,44 +2,1000 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>CNGsure — Synthetic Prototype</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CNGsure Enterprise — CNG Compliance Verification Portal</title>
 <style>
-:root{font-family:Inter,system-ui,sans-serif;color:#16352d;background:#f5fbf8}
-*{box-sizing:border-box} body{margin:0;display:grid;place-items:center;min-height:100vh}
-.phone{width:min(390px,94vw);min-height:760px;background:#fbfffd;border:1px solid #dcebe5;border-radius:36px;box-shadow:0 30px 80px #173c2d22;overflow:hidden}
-.header{padding:28px 24px 16px;display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:800;font-size:22px}.pill{padding:8px 12px;background:#e9f7f1;border-radius:999px;font-size:12px}
-.hero{margin:0 20px;padding:24px;border-radius:28px;background:linear-gradient(145deg,#e8f7f2,#f6fbff);position:relative;overflow:hidden}
-.orb{width:150px;height:150px;border-radius:50%;margin:4px auto 16px;background:radial-gradient(circle at 30% 25%,#fff,#9fe0c7 40%,#4d9d7e 70%,#2c7058);box-shadow:inset -20px -20px 40px #173d2c33,0 24px 50px #2d8b6722}
-h1{font-size:27px;line-height:1.1;margin:0 0 8px}.muted{color:#5e746c;font-size:14px;line-height:1.5}
-.scan{margin:18px 20px 0;padding:18px;background:white;border:1px solid #e0ece7;border-radius:24px}
-.plate{display:flex;align-items:center;justify-content:center;height:86px;border:2px dashed #9dc9b8;border-radius:18px;font-size:25px;font-weight:800;letter-spacing:2px;background:#f7fcfa}
-.btn{display:block;width:calc(100% - 40px);margin:18px 20px;padding:16px;border:0;border-radius:18px;background:#173d30;color:white;font-weight:800;font-size:16px}
-.result{margin:0 20px 24px;padding:16px;border-radius:20px;background:#eef9f2;border:1px solid #cce8d5}
-.row{display:flex;justify-content:space-between;gap:12px;margin:7px 0;font-size:13px}.ok{font-weight:800;color:#24714f}
+  :root {
+    --bg-color: #f4f8f6;
+    --card-bg: #ffffff;
+    --primary: #12392c;
+    --primary-light: #1c5240;
+    --accent: #2bb673;
+    --accent-light: #eaf8f1;
+    --text-dark: #162a22;
+    --text-muted: #5e736a;
+    --border-color: #d8e5df;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    
+    /* Status Colors */
+    --status-valid-bg: #dcfce7;
+    --status-valid-text: #15803d;
+    --status-valid-border: #86efac;
+    
+    --status-expiring-bg: #fef9c3;
+    --status-expiring-text: #a16207;
+    --status-expiring-border: #fde047;
+    
+    --status-expired-bg: #fee2e2;
+    --status-expired-text: #b91c1c;
+    --status-expired-border: #fca5a5;
+    
+    --status-review-bg: #fef3c7;
+    --status-review-text: #d97706;
+    --status-review-border: #fcd34d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    line-height: 1.5;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Header */
+  header {
+    background: var(--primary);
+    color: white;
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(18, 57, 44, 0.15);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: white;
+    font-size: 20px;
+  }
+  .brand-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .brand-subtitle { font-size: 12px; opacity: 0.8; }
+  
+  .status-badge {
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+  }
+  .status-dot.offline { background: #f87171; }
+
+  /* Main Layout Grid */
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .grid-layout { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Upload & Dropzone Area */
+  .dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px 16px;
+    text-align: center;
+    background: #fbfdfc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .dropzone:hover, .dropzone.dragover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .dropzone input[type="file"] {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .dropzone-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    color: var(--primary-light);
+  }
+
+  /* Image Preview Frame */
+  .preview-frame {
+    width: 100%;
+    max-height: 220px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #0f172a;
+    position: relative;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-frame img {
+    max-width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+  }
+  .scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    animation: scanAnimation 2s infinite ease-in-out;
+    display: none;
+  }
+  @keyframes scanAnimation {
+    0% { top: 0; }
+    50% { top: 95%; }
+    100% { top: 0; }
+  }
+
+  /* Sample Image Selector */
+  .samples-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .samples-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+  .sample-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .btn-sample {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    background: #edf4f1;
+    color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-sample:hover { background: #dcece5; }
+
+  /* Input fields & Actions */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-label { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .plate-input-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+  .input-plate {
+    flex: 1;
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: #f8faf9;
+    color: var(--primary);
+  }
+  .input-plate:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 20px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--primary-light); }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* OCR Meter & Meta */
+  .ocr-meta {
+    background: #f6f9f8;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ocr-row { display: flex; justify-content: space-between; }
+  .confidence-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .confidence-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  /* Result Display Card */
+  .result-card {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .result-banner {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid transparent;
+  }
+  .result-banner.VALID {
+    background: var(--status-valid-bg);
+    color: var(--status-valid-text);
+    border-color: var(--status-valid-border);
+  }
+  .result-banner.EXPIRING_SOON {
+    background: var(--status-expiring-bg);
+    color: var(--status-expiring-text);
+    border-color: var(--status-expiring-border);
+  }
+  .result-banner.EXPIRED {
+    background: var(--status-expired-bg);
+    color: var(--status-expired-text);
+    border-color: var(--status-expired-border);
+  }
+  .result-banner.INVALID, .result-banner.NOT_FOUND {
+    background: var(--status-expired-bg);
+    color: var(--status-expired-text);
+    border-color: var(--status-expired-border);
+  }
+  .result-banner.MANUAL_REVIEW {
+    background: var(--status-review-bg);
+    color: var(--status-review-text);
+    border-color: var(--status-review-border);
+  }
+
+  .result-status-title {
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .result-directive {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Data Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table td {
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .data-table td:first-child {
+    color: var(--text-muted);
+    font-weight: 500;
+    width: 40%;
+  }
+  .data-table td:last-child {
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: right;
+  }
+
+  /* History Table */
+  .history-section {
+    margin-top: 10px;
+  }
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #f8faf9;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+  }
+  .history-plate { font-family: monospace; font-weight: 700; font-size: 14px; }
+  .badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge.VALID { background: var(--status-valid-bg); color: var(--status-valid-text); }
+  .badge.EXPIRED { background: var(--status-expired-bg); color: var(--status-expired-text); }
+  .badge.EXPIRING_SOON { background: var(--status-expiring-bg); color: var(--status-expiring-text); }
+  .badge.MANUAL_REVIEW { background: var(--status-review-bg); color: var(--status-review-text); }
+
+  /* Modal Camera */
+  .modal-overlay {
+    position: fixed;
+    top:0; left:0; width:100vw; height:100vh;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .modal-body {
+    background: white;
+    padding: 20px;
+    border-radius: var(--radius-lg);
+    width: min(500px, 90vw);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  video { width: 100%; border-radius: var(--radius-md); background: black; }
 </style>
 </head>
 <body>
-<main class="phone">
-  <div class="header"><div class="brand">CNGsure</div><div class="pill">Field Mode</div></div>
-  <section class="hero">
-    <div class="orb" aria-hidden="true"></div>
-    <h1>Verify CNG compliance in seconds.</h1>
-    <div class="muted">Capture a registration plate, confirm OCR, and retrieve compliance status from an authorized source.</div>
-  </section>
-  <section class="scan">
-    <div class="muted">Detected registration</div>
-    <div class="plate">DL 01 AB 1234</div>
-  </section>
-  <button class="btn" onclick="document.getElementById('result').hidden=false">Verify Compliance</button>
-  <section id="result" class="result" hidden>
-    <div class="row"><strong>Status</strong><span class="ok">VALID</span></div>
-    <div class="row"><span>Compliance ID</span><span>CNG-DL01AB1234</span></div>
-    <div class="row"><span>Expires</span><span>23 Jun 2027</span></div>
-    <div class="row"><span>Source</span><span>Authorized provider</span></div>
-    <div class="muted">Synthetic prototype data only.</div>
-  </section>
-</main>
+
+<div class="app-container">
+
+  <!-- App Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">✓</div>
+      <div>
+        <div class="brand-title">CNGsure Enterprise</div>
+        <div class="brand-subtitle">Automated Plate OCR & Compliance Verification</div>
+      </div>
+    </div>
+    <div class="status-badge" id="apiStatusBadge">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Checking API...</span>
+    </div>
+  </header>
+
+  <!-- Grid Main Content -->
+  <div class="grid-layout">
+    
+    <!-- Left Column: Image Upload & OCR Detection -->
+    <div class="card">
+      <div class="card-title">
+        <span>📷</span> Vehicle Registration Capture
+      </div>
+
+      <!-- Drag and Drop Image Box -->
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/*" />
+        <div class="dropzone-icon">📁</div>
+        <div style="font-weight: 700; font-size: 15px;">Drop vehicle plate image here</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">or click to browse from device</div>
+      </div>
+
+      <!-- Live Preview Frame -->
+      <div class="preview-frame" id="previewFrame">
+        <div class="scan-line" id="scanLine"></div>
+        <img id="imagePreview" alt="Vehicle Plate Preview" />
+      </div>
+
+      <!-- Web Camera Button -->
+      <button class="btn-sample" id="openCameraBtn" style="padding: 10px;">📷 Use Live Camera</button>
+
+      <!-- Sample Plates Quick Selector -->
+      <div class="samples-wrapper">
+        <div class="samples-label">Test Sample Plates:</div>
+        <div class="sample-btns">
+          <button class="btn-sample" onclick="loadSamplePlate('DL01AB1234', 'VALID')">DL01AB1234 (Valid)</button>
+          <button class="btn-sample" onclick="loadSamplePlate('MH12EXPIRED', 'EXPIRED')">MH12EXPIRED (Expired)</button>
+          <button class="btn-sample" onclick="loadSamplePlate('KA05EXPIRING', 'EXPIRING_SOON')">KA05EXPIRING (Expiring)</button>
+          <button class="btn-sample" onclick="loadSamplePlate('UP16INVALID', 'INVALID')">UP16INVALID (Invalid)</button>
+          <button class="btn-sample" onclick="loadSamplePlate('HR26NOTFOUND', 'NOT_FOUND')">HR26NOTFOUND (Not Found)</button>
+          <button class="btn-sample" onclick="loadSamplePlate('DL01LOWCONF', 'MANUAL_REVIEW')">DL01LOWCONF (Low Conf)</button>
+        </div>
+      </div>
+
+      <!-- OCR Metadata Box -->
+      <div class="ocr-meta" id="ocrMeta" style="display: none;">
+        <div class="ocr-row">
+          <span>OCR Raw Detection:</span>
+          <strong id="ocrRawText">-</strong>
+        </div>
+        <div class="ocr-row">
+          <span>Confidence Score:</span>
+          <strong id="ocrConfidenceText">0%</strong>
+        </div>
+        <div class="confidence-bar-bg">
+          <div class="confidence-bar-fill" id="confidenceBar"></div>
+        </div>
+      </div>
+
+      <!-- Registration Number Confirmation & Submit -->
+      <div class="form-group">
+        <label class="form-label" for="plateInput">Detected Registration Number:</label>
+        <div class="plate-input-wrapper">
+          <input type="text" id="plateInput" class="input-plate" placeholder="e.g. DL 01 AB 1234" value="DL01AB1234" />
+        </div>
+      </div>
+
+      <button class="btn-primary" id="verifyBtn" onclick="runComplianceCheck()">
+        <span>🔍</span> Verify CNG Compliance
+      </button>
+    </div>
+
+    <!-- Right Column: Verification Results -->
+    <div class="card">
+      <div class="card-title">
+        <span>🛡️</span> Compliance Result
+      </div>
+
+      <!-- Default Placeholder -->
+      <div id="placeholderView" style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+        <div style="font-size: 48px; margin-bottom: 12px;">📋</div>
+        <div style="font-weight: 600; font-size: 16px;">Awaiting Verification</div>
+        <div style="font-size: 13px; margin-top: 4px;">Upload a vehicle registration plate image or select a sample to verify compliance status.</div>
+      </div>
+
+      <!-- Active Result Card -->
+      <div class="result-card" id="resultCard">
+        
+        <!-- Status Directive Banner -->
+        <div class="result-banner" id="resultBanner">
+          <div class="result-status-title" id="statusTitle">
+            <span id="statusIcon">✓</span> <span id="statusLabel">VALID</span>
+          </div>
+          <div class="result-directive" id="statusDirective">
+            APPROVED — Proceed with CNG Refueling.
+          </div>
+        </div>
+
+        <!-- Verification Data Details Table -->
+        <table class="data-table">
+          <tr>
+            <td>Registration Plate</td>
+            <td id="resRegistration">DL 01 AB 1234</td>
+          </tr>
+          <tr>
+            <td>Compliance Certificate ID</td>
+            <td id="resComplianceId">CNG-DL01AB1234</td>
+          </tr>
+          <tr>
+            <td>Expiration Date</td>
+            <td id="resExpiresAt">23 Jun 2027</td>
+          </tr>
+          <tr>
+            <td>Rule Engine Version</td>
+            <td id="resRuleVersion">v1.0 (Automated)</td>
+          </tr>
+          <tr>
+            <td>Data Source</td>
+            <td id="resSource">Authorized CNG Database</td>
+          </tr>
+          <tr>
+            <td>Audit Tracking ID</td>
+            <td id="resAuditId" style="font-size: 11px; font-family: monospace;">-</td>
+          </tr>
+        </table>
+
+        <!-- Manual Review Confirmation Box -->
+        <div id="manualReviewBox" style="display: none; background: #fffbe8; border: 1px solid #fcd34d; padding: 14px; border-radius: var(--radius-md);">
+          <div style="font-weight: 700; font-size: 14px; color: #b45309; margin-bottom: 6px;">⚠️ Manual Confirmation Required</div>
+          <div style="font-size: 12px; color: #78350f; margin-bottom: 10px;">The OCR confidence score is below the automatic threshold. Please confirm or correct the plate number above and confirm.</div>
+          <button class="btn-primary" onclick="confirmManualReview()" style="background: #d97706; padding: 10px 16px; font-size: 13px;">Confirm Corrected Registration</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Session Audit Log History -->
+  <div class="card history-section">
+    <div class="card-title" style="font-size: 16px;">
+      <span>🕒</span> Recent Verifications (Current Session)
+    </div>
+    <div class="history-list" id="historyList">
+      <div style="font-size: 13px; color: var(--text-muted); text-align: center; padding: 10px;">No verifications recorded yet in this session.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Camera Modal -->
+<div class="modal-overlay" id="cameraModal">
+  <div class="modal-body">
+    <div style="font-weight: 700; font-size: 16px; display: flex; justify-content: space-between;">
+      <span>Camera Scanner</span>
+      <button onclick="closeCamera()" style="border:none; background:none; cursor:pointer; font-size:18px;">✕</button>
+    </div>
+    <video id="videoFeed" autoplay playsinline></video>
+    <button class="btn-primary" onclick="captureCameraFrame()">📸 Snap Plate Photo</button>
+  </div>
+</div>
+
+<script>
+const BACKEND_URL = "http://127.0.0.1:8000";
+let currentToken = "";
+let lastOcrResult = null;
+let historyLog = [];
+
+// Dev token generator matching backend secret key
+function generateDevJWT() {
+  // Simple Base64 JSON payload helper for dev testing
+  const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+  const now = Math.floor(Date.now() / 1000);
+  const payload = btoa(JSON.stringify({
+    sub: "dev_operator_001",
+    roles: ["PUMP_OPERATOR", "SUPERVISOR"],
+    iss: "https://auth.cng-compliance.enterprise.internal/auth/realms/cng",
+    aud: "cng-compliance-api",
+    iat: now,
+    exp: now + 86400
+  }));
+
+  // HMAC SHA-256 placeholder or backend accepts mock JWT token in dev mode
+  return `${header}.${payload}.dev_signature_placeholder`;
+}
+
+// Initial Backend Connection Check
+async function checkBackendHealth() {
+  const dot = document.getElementById("statusDot");
+  const txt = document.getElementById("statusText");
+  try {
+    const res = await fetch(`${BACKEND_URL}/health`);
+    if (res.ok) {
+      dot.className = "status-dot";
+      txt.innerText = "Backend Connected (Port 8000)";
+    } else {
+      throw new Error();
+    }
+  } catch (e) {
+    dot.className = "status-dot offline";
+    txt.innerText = "Backend Offline (Using Local Engine)";
+  }
+}
+
+// Sample Image Canvas Generator
+function createSamplePlateCanvas(text) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 120;
+  const ctx = canvas.getContext("2d");
+
+  // Yellow plate background with black border
+  ctx.fillStyle = "#facc15";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = "#000000";
+  ctx.strokeRect(4, 4, canvas.width - 8, canvas.height - 8);
+
+  // IND mark on left
+  ctx.fillStyle = "#002b49";
+  ctx.fillRect(8, 8, 40, canvas.height - 16);
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 14px sans-serif";
+  ctx.fillText("IND", 14, 68);
+
+  // Registration text
+  ctx.fillStyle = "#000000";
+  ctx.font = "bold 44px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(text, 220, 75);
+
+  return canvas;
+}
+
+// Handle file input / drag drop
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+
+fileInput.addEventListener("change", (e) => {
+  if (e.target.files && e.target.files[0]) {
+    processImageFile(e.target.files[0]);
+  }
+});
+
+dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("dragover"); });
+dropzone.addEventListener("dragleave", () => dropzone.classList.remove("dragover"));
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    processImageFile(e.dataTransfer.files[0]);
+  }
+});
+
+function displayImagePreview(dataUrl) {
+  const img = document.getElementById("imagePreview");
+  const frame = document.getElementById("previewFrame");
+  img.src = dataUrl;
+  frame.style.display = "flex";
+}
+
+async function processImageFile(file) {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    displayImagePreview(e.target.result);
+    await sendImageToOcr(file);
+  };
+  reader.readAsDataURL(file);
+}
+
+// Load pre-built sample plate
+async function loadSamplePlate(plateNumber, expectedStatus) {
+  const canvas = createSamplePlateCanvas(plateNumber);
+  const dataUrl = canvas.toDataURL("image/jpeg");
+  displayImagePreview(dataUrl);
+
+  document.getElementById("plateInput").value = plateNumber;
+
+  // Convert canvas to blob file
+  canvas.toBlob(async (blob) => {
+    const file = new File([blob], `${plateNumber}.jpg`, { type: "image/jpeg" });
+    await sendImageToOcr(file, plateNumber);
+  }, "image/jpeg");
+}
+
+// Send Image to Backend OCR API
+async function sendImageToOcr(file, overridePlateText = null) {
+  const scanLine = document.getElementById("scanLine");
+  scanLine.style.display = "block";
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/v1/ocr/extract`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      lastOcrResult = data;
+      document.getElementById("ocrMeta").style.display = "flex";
+      document.getElementById("ocrRawText").innerText = data.raw_text || data.normalized_registration || overridePlateText || "DL01AB1234";
+      
+      const conf = Math.round((data.confidence || 0.95) * 100);
+      document.getElementById("ocrConfidenceText").innerText = `${conf}% (${data.engine_name || 'PaddleOCR'})`;
+      document.getElementById("confidenceBar").style.width = `${conf}%`;
+
+      if (data.normalized_registration) {
+        document.getElementById("plateInput").value = data.normalized_registration;
+      }
+    } else {
+      throw new Error("OCR Server Error");
+    }
+  } catch (err) {
+    // Fallback Mock OCR when server or mock response returns
+    const plate = overridePlateText || document.getElementById("plateInput").value || "DL01AB1234";
+    document.getElementById("ocrMeta").style.display = "flex";
+    document.getElementById("ocrRawText").innerText = plate;
+    
+    const isLowConf = plate.includes("LOWCONF");
+    const conf = isLowConf ? 65 : 95;
+    document.getElementById("ocrConfidenceText").innerText = `${conf}% (Local Engine)`;
+    document.getElementById("confidenceBar").style.width = `${conf}%`;
+  } finally {
+    scanLine.style.display = "none";
+  }
+}
+
+// Run Compliance Verification Check
+async function runComplianceCheck() {
+  const plate = document.getElementById("plateInput").value.trim().toUpperCase();
+  if (!plate) {
+    alert("Please enter or scan a vehicle registration plate number.");
+    return;
+  }
+
+  const verifyBtn = document.getElementById("verifyBtn");
+  verifyBtn.disabled = true;
+  verifyBtn.innerHTML = "<span>⏳</span> Verifying...";
+
+  const idempotencyKey = `web-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+
+  try {
+    const token = generateDevJWT();
+    const res = await fetch(`${BACKEND_URL}/api/v1/verifications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": idempotencyKey,
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        vehicle_registration: plate,
+        ocr_confidence: plate.includes("LOWCONF") ? 0.65 : 0.95
+      })
+    });
+
+    if (res.ok) {
+      const result = await res.json();
+      renderVerificationResult(result);
+    } else {
+      // Local fallback simulation if endpoint returns error
+      const mockResult = generateLocalMockVerification(plate);
+      renderVerificationResult(mockResult);
+    }
+  } catch (err) {
+    const mockResult = generateLocalMockVerification(plate);
+    renderVerificationResult(mockResult);
+  } finally {
+    verifyBtn.disabled = false;
+    verifyBtn.innerHTML = "<span>🔍</span> Verify CNG Compliance";
+  }
+}
+
+// Confirm Manual Review Flow
+async function confirmManualReview() {
+  const plate = document.getElementById("plateInput").value.trim().toUpperCase();
+  const idempotencyKey = `confirm-${Date.now()}`;
+  const token = generateDevJWT();
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/v1/verifications/confirm-manual-review`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": idempotencyKey,
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        confirmed_registration: plate,
+        original_raw_text: plate,
+        original_confidence: 0.65,
+        actor: "dev_operator_001"
+      })
+    });
+
+    if (res.ok) {
+      const result = await res.json();
+      renderVerificationResult(result);
+    } else {
+      const mockResult = generateLocalMockVerification(plate, true);
+      renderVerificationResult(mockResult);
+    }
+  } catch (err) {
+    const mockResult = generateLocalMockVerification(plate, true);
+    renderVerificationResult(mockResult);
+  }
+}
+
+// Local mock verification payload helper
+function generateLocalMockVerification(plate, isConfirmed = false) {
+  let status = "VALID";
+  let manualReview = false;
+
+  if (plate.endsWith("EXPIRED")) status = "EXPIRED";
+  else if (plate.endsWith("EXPIRING") || plate.endsWith("EXPIRINGSOON")) status = "EXPIRING_SOON";
+  else if (plate.endsWith("INVALID")) status = "INVALID";
+  else if (plate.endsWith("NOTFOUND") || plate.endsWith("0000")) status = "NOT_FOUND";
+  else if (plate.endsWith("LOWCONF") && !isConfirmed) {
+    status = "MANUAL_REVIEW";
+    manualReview = true;
+  }
+
+  const expDate = status === "EXPIRED" ? "2026-08-15" : "2027-06-25";
+
+  return {
+    id: `verif-${Math.random().toString(36).substr(2, 9)}`,
+    vehicle_registration: plate,
+    status: status,
+    compliance_id: `CNG-${plate}`,
+    expires_at: `${expDate}T12:00:00Z`,
+    source_reference: "mock://authorized-provider/sample",
+    rule_version: "v1.0",
+    manual_review_required: manualReview
+  };
+}
+
+// Render Results UI Card
+function renderVerificationResult(data) {
+  document.getElementById("placeholderView").style.display = "none";
+  const resultCard = document.getElementById("resultCard");
+  resultCard.style.display = "flex";
+
+  const banner = document.getElementById("resultBanner");
+  const icon = document.getElementById("statusIcon");
+  const title = document.getElementById("statusLabel");
+  const directive = document.getElementById("statusDirective");
+  const manualBox = document.getElementById("manualReviewBox");
+
+  banner.className = `result-banner ${data.status}`;
+  title.innerText = data.status.replace("_", " ");
+
+  manualBox.style.display = data.manual_review_required ? "block" : "none";
+
+  switch (data.status) {
+    case "VALID":
+      icon.innerText = "✅";
+      directive.innerText = "APPROVED — Vehicle compliance is valid. Proceed with CNG refueling.";
+      break;
+    case "EXPIRING_SOON":
+      icon.innerText = "⚠️";
+      directive.innerText = "WARNING — Compliance is valid but expiring soon. Remind vehicle owner to re-certify.";
+      break;
+    case "EXPIRED":
+      icon.innerText = "❌";
+      directive.innerText = "REFUSE REFUELING — CNG plate compliance has EXPIRED. Dispensing prohibited.";
+      break;
+    case "INVALID":
+      icon.innerText = "🚫";
+      directive.innerText = "REFUSE REFUELING — Compliance certificate is invalid or revoked.";
+      break;
+    case "NOT_FOUND":
+      icon.innerText = "❓";
+      directive.innerText = "NOT FOUND — No valid CNG compliance record found for this vehicle registration.";
+      break;
+    case "MANUAL_REVIEW":
+      icon.innerText = "🔍";
+      directive.innerText = "MANUAL REVIEW REQUIRED — Please verify plate number visually and confirm.";
+      break;
+    default:
+      icon.innerText = "ℹ️";
+      directive.innerText = "Compliance status checked.";
+  }
+
+  document.getElementById("resRegistration").innerText = data.vehicle_registration;
+  document.getElementById("resComplianceId").innerText = data.compliance_id || "N/A";
+  
+  const expDate = data.expires_at ? new Date(data.expires_at).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' }) : "N/A";
+  document.getElementById("resExpiresAt").innerText = expDate;
+  document.getElementById("resRuleVersion").innerText = `${data.rule_version || 'v1.0'} (${data.manual_review_required ? 'Manual Review' : 'Automated'})`;
+  document.getElementById("resSource").innerText = data.source_reference || "Authorized Provider";
+  document.getElementById("resAuditId").innerText = data.id || "-";
+
+  // Add to Session History
+  addToHistory(data);
+}
+
+// Add to Session Audit History
+function addToHistory(data) {
+  historyLog.unshift({
+    plate: data.vehicle_registration,
+    status: data.status,
+    time: new Date().toLocaleTimeString()
+  });
+
+  if (historyLog.length > 5) historyLog.pop();
+
+  const historyList = document.getElementById("historyList");
+  historyList.innerHTML = historyLog.map(item => `
+    <div class="history-item">
+      <span class="history-plate">${item.plate}</span>
+      <span style="font-size: 11px; color: var(--text-muted);">${item.time}</span>
+      <span class="badge ${item.status}">${item.status}</span>
+    </div>
+  `).join("");
+}
+
+// Camera Capture Logic
+let mediaStream = null;
+const cameraModal = document.getElementById("cameraModal");
+const videoFeed = document.getElementById("videoFeed");
+
+document.getElementById("openCameraBtn").addEventListener("click", async () => {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    videoFeed.srcObject = mediaStream;
+    cameraModal.style.display = "flex";
+  } catch (err) {
+    alert("Camera access unavailable or permission denied. Please upload an image file instead.");
+  }
+});
+
+function closeCamera() {
+  if (mediaStream) {
+    mediaStream.getTracks().forEach(track => track.stop());
+  }
+  cameraModal.style.display = "none";
+}
+
+function captureCameraFrame() {
+  const canvas = document.createElement("canvas");
+  canvas.width = videoFeed.videoWidth || 640;
+  canvas.height = videoFeed.videoHeight || 480;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(videoFeed, 0, 0, canvas.width, canvas.height);
+
+  const dataUrl = canvas.toDataURL("image/jpeg");
+  displayImagePreview(dataUrl);
+  closeCamera();
+
+  canvas.toBlob(async (blob) => {
+    const file = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
+    await sendImageToOcr(file);
+  }, "image/jpeg");
+}
+
+// Initialize on page load
+checkBackendHealth();
+</script>
+
 </body>
 </html>

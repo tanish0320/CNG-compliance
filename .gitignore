@@ -3,10 +3,15 @@
 __pycache__/
 .pytest_cache/
 node_modules/
-android/.gradle/
-android/app/build/
+**/node_modules/
+**/build/
+**/.gradle/
+**/.cxx/
+.idea/
 *.keystore
 *.jks
 .DS_Store
 .mypy_cache/
 .ruff_cache/
+*.jpg
+

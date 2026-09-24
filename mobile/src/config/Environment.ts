@@ -11,7 +11,7 @@ export interface EnvironmentConfig {
 const ENVIRONMENTS: Record<EnvironmentMode, EnvironmentConfig> = {
   development: {
     mode: "development",
-    apiBaseUrl: "http://localhost:8000",
+    apiBaseUrl: "http://127.0.0.1:8000",
     enableDevAuth: true,
     enableVerboseLogging: true,
     sslPinningEnabled: false,
@@ -32,5 +32,8 @@ const ENVIRONMENTS: Record<EnvironmentMode, EnvironmentConfig> = {
   },
 };
 
-// Default environment profile (Override via process.env.APP_ENV at build time)
-export const CurrentEnvironment: EnvironmentConfig = ENVIRONMENTS.production;
+// Default environment profile (Development in __DEV__, Production otherwise)
+declare const __DEV__: boolean;
+const isDev = typeof __DEV__ !== "undefined" ? __DEV__ : true;
+export const CurrentEnvironment: EnvironmentConfig =
+  ENVIRONMENTS[isDev ? "development" : "production"];

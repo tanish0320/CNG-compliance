@@ -16,6 +16,9 @@ import { VerificationHistoryScreen } from "../screens/VerificationHistoryScreen"
 import { VerificationApi } from "../services/VerificationApi";
 import { Colors } from "../theme/Theme";
 
+import { CurrentEnvironment } from "../config/Environment";
+import { SecureStorageService } from "../services/SecureStorageService";
+
 type ScreenState =
   | "LOGIN"
   | "HOME"
@@ -31,7 +34,7 @@ interface AppNavigatorProps {
 }
 
 export const AppNavigator: React.FC<AppNavigatorProps> = ({
-  apiClient = new VerificationApi("http://localhost:8000"),
+  apiClient = new VerificationApi(CurrentEnvironment.apiBaseUrl),
 }) => {
   const [currentScreen, setCurrentScreen] = useState<ScreenState>("LOGIN");
   const [session, setSession] = useState<UserSession | null>(null);
@@ -44,7 +47,10 @@ export const AppNavigator: React.FC<AppNavigatorProps> = ({
   const [isConnected, setIsConnected] = useState(true);
 
   // Screen 1: Login Handler
-  const handleLoginSuccess = (userSession: UserSession) => {
+  const handleLoginSuccess = async (userSession: UserSession) => {
+    if (userSession.token) {
+      await SecureStorageService.setAccessToken(userSession.token);
+    }
     setSession(userSession);
     setCurrentScreen("HOME");
   };

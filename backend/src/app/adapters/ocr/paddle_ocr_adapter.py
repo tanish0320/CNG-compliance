@@ -33,13 +33,15 @@ class PaddleOcrAdapter(OcrProvider):
         self._lang = lang
         self._mock_mode = mock_mode
         self._ocr_engine: Any = None
+        self._engine_type: str | None = None
 
     def _get_ocr_engine(self) -> Any:
-        """Lazy load PaddleOCR engine instance if available."""
+        """Lazy load real OCR engine instance (PaddleOCR or EasyOCR) if available."""
         if self._mock_mode:
             return None
 
         if self._ocr_engine is None:
+            # 1. Attempt loading PaddleOCR
             try:
                 from paddleocr import PaddleOCR  # type: ignore[import-not-found]
                 self._ocr_engine = PaddleOCR(
@@ -47,8 +49,21 @@ class PaddleOcrAdapter(OcrProvider):
                     lang=self._lang,
                     show_log=False,
                 )
+                self._engine_type = "PaddleOCR"
+                logger.info("ocr_engine_loaded", engine="PaddleOCR")
+                return self._ocr_engine
             except Exception as exc:  # noqa: BLE001
-                logger.warning("paddleocr_not_installed_falling_back_to_mock", error=str(exc))
+                logger.info("paddleocr_not_available_trying_easyocr", error=str(exc))
+
+            # 2. Attempt loading EasyOCR
+            try:
+                import easyocr
+                self._ocr_engine = easyocr.Reader([self._lang], gpu=False)
+                self._engine_type = "EasyOCR"
+                logger.info("ocr_engine_loaded", engine="EasyOCR")
+                return self._ocr_engine
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("easyocr_not_available_falling_back_to_mock", error=str(exc))
                 self._mock_mode = True
                 return None
 
@@ -58,12 +73,10 @@ class PaddleOcrAdapter(OcrProvider):
         """
         Extract vehicle registration from image bytes off the FastAPI main event loop.
         """
-        # Run CPU-bound preprocessing and OCR inference in thread pool to prevent event loop blocking
         return await asyncio.to_thread(self._sync_extract, image_bytes)
 
     def _sync_extract(self, image_bytes: bytes) -> OcrResult:
-        """Synchronous OCR processing implementation."""
-        # 1. Validate and preprocess image
+        """Synchronous OCR processing implementation using real ML engine or synthetic fallback."""
         processed_bytes = self._preprocessor.validate_and_preprocess(image_bytes)
 
         engine = self._get_ocr_engine()
@@ -71,67 +84,68 @@ class PaddleOcrAdapter(OcrProvider):
             try:
                 import numpy as np
 
-                img = Image.open(io.BytesIO(processed_bytes))
+                img = Image.open(io.BytesIO(processed_bytes)).convert("RGB")
                 img_np = np.array(img)
-
-                ocr_res = engine.ocr(img_np, cls=self._use_angle_cls)
-                if not ocr_res or not ocr_res[0]:
-                    raise OcrProcessingError("No text detected in plate image")
 
                 raw_lines: list[str] = []
                 confidences: list[float] = []
-                boxes: list[list[float]] = []
+                boxes: list[Any] = []
 
-                for line in ocr_res[0]:
-                    box, (text_val, conf_val) = line
-                    raw_lines.append(text_val)
-                    confidences.append(float(conf_val))
-                    boxes.append(box)
+                if self._engine_type == "PaddleOCR":
+                    ocr_res = engine.ocr(img_np, cls=self._use_angle_cls)
+                    if ocr_res and ocr_res[0]:
+                        for line in ocr_res[0]:
+                            box, (text_val, conf_val) = line
+                            raw_lines.append(text_val)
+                            confidences.append(float(conf_val))
+                            boxes.append(box)
+                elif self._engine_type == "EasyOCR":
+                    ocr_res = engine.readtext(img_np)
+                    if ocr_res:
+                        for box, text_val, conf_val in ocr_res:
+                            raw_lines.append(str(text_val))
+                            confidences.append(float(conf_val))
+                            boxes.append(box)
 
-                raw_text = " ".join(raw_lines)
+                raw_text = " ".join(raw_lines).strip()
                 avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
 
-                normalized = self._extract_plate_candidate(raw_text)
+                candidate = self._extract_plate_candidate(raw_text)
+                is_valid_plate = bool(PLATE_REGEX.search(candidate))
+
+                normalized = candidate if is_valid_plate else ""
+                final_confidence = round(avg_confidence, 4) if is_valid_plate else 0.0
 
                 return OcrResult(
                     raw_text=raw_text,
                     normalized_registration=normalized,
-                    confidence=round(avg_confidence, 4),
-                    engine_name="PaddleOCR",
+                    confidence=final_confidence,
+                    engine_name=self._engine_type or "RealOCR",
                     bounding_box=boxes if boxes else None,
-                    metadata={"line_count": len(raw_lines)},
+                    metadata={"line_count": len(raw_lines), "raw_confidence": round(avg_confidence, 4)},
                 )
-            except OcrProcessingError:
-                raise
             except Exception as exc:
-                raise OcrProcessingError(f"PaddleOCR execution failed: {exc}") from exc
+                logger.error("real_ocr_execution_failed", error=str(exc))
+                raise OcrProcessingError(f"Real OCR execution failed: {exc}") from exc
 
         # Fallback / Mock Engine Mode for Development & Testing
         return self._synthetic_ocr_extract(image_bytes, processed_bytes)
 
     def _synthetic_ocr_extract(self, raw_bytes: bytes, processed_bytes: bytes) -> OcrResult:
         """Synthetic OCR extraction for tests and offline development."""
-        content_str = str(raw_bytes) + str(processed_bytes)
+        meta_text = ""
 
         # Inspect embedded test_text PNG metadata if present
         try:
             img = Image.open(io.BytesIO(raw_bytes))
-            meta_text = img.info.get("test_text", "")
-            if meta_text:
-                content_str += f" {meta_text}"
+            meta_text = str(img.info.get("test_text", ""))
         except Exception:  # noqa: S110, BLE001
             pass
 
-        if "LOW_CONF" in content_str:
-            return OcrResult(
-                raw_text="DL 01 AB 1234",
-                normalized_registration="DL01AB1234",
-                confidence=0.65,
-                engine_name="PaddleOCR-Synthetic",
-                metadata={"synthetic": True},
-            )
+        if "FAIL" in meta_text or "FAIL" in str(raw_bytes):
+            raise OcrProcessingError("OCR inference failed")
 
-        if "AMBIGUOUS" in content_str or "EMPTY" in content_str:
+        if "AMBIGUOUS" in meta_text or "EMPTY" in meta_text:
             return OcrResult(
                 raw_text="",
                 normalized_registration="",
@@ -140,22 +154,49 @@ class PaddleOcrAdapter(OcrProvider):
                 metadata={"synthetic": True},
             )
 
-        if "FAIL" in content_str:
-            raise OcrProcessingError("OCR inference failed")
+        # Extract plate candidate from metadata or text string
+        candidate = self._extract_plate_candidate(meta_text)
+        is_valid_plate = bool(PLATE_REGEX.search(candidate))
 
+        if is_valid_plate:
+            confidence = 0.65 if ("LOW_CONF" in meta_text) else 0.95
+            formatted_text = f"{candidate[:2]} {candidate[2:4]} {candidate[4:6]} {candidate[6:]}".strip()
+            return OcrResult(
+                raw_text=formatted_text,
+                normalized_registration=candidate,
+                confidence=confidence,
+                engine_name="PaddleOCR-Synthetic",
+                metadata={"synthetic": True},
+            )
+
+        # No valid plate detected in non-vehicle image
         return OcrResult(
-            raw_text="DL 01 AB 1234",
-            normalized_registration="DL01AB1234",
-            confidence=0.95,
+            raw_text="",
+            normalized_registration="",
+            confidence=0.0,
             engine_name="PaddleOCR-Synthetic",
-            metadata={"synthetic": True},
+            metadata={"synthetic": True, "no_plate_detected": True},
         )
 
     @staticmethod
     def _extract_plate_candidate(text: str) -> str:
         """Extract and normalize registration candidate from raw OCR text string."""
-        clean = "".join(text.upper().split()).replace("-", "")
+        clean = "".join(text.upper().split()).replace("-", "").replace(".", "")
         match = PLATE_REGEX.search(clean)
         if match:
             return match.group(0)
+
+        if len(clean) >= 6:
+            state = clean[:2]
+            rest = clean[2:]
+            confusables = {"O": "0", "I": "1", "L": "1", "Z": "2", "S": "5", "G": "6"}
+            rest_norm = "".join(
+                confusables.get(c, c) if (i < 2 or i >= len(rest) - 4) else c
+                for i, c in enumerate(rest)
+            )
+            candidate = state + rest_norm
+            match_norm = PLATE_REGEX.search(candidate)
+            if match_norm:
+                return match_norm.group(0)
+
         return clean

@@ -13,13 +13,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
   const [role, setRole] = useState<UserSession["role"]>("PUMP_OPERATOR");
 
   const handleLogin = () => {
+    // Valid signed JWT matching backend development secret key & OIDC issuer/audience
+    const validJwtToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJPUC03ODIxIiwicm9sZXMiOlsiUFVNUF9PUEVSQVRPUiJdLCJzdGF0aW9uX2lkIjoiQ05HLVNUQVRJT04tMTAyIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmNuZy1jb21wbGlhbmNlLmVudGVycHJpc2UuaW50ZXJuYWwvYXV0aC9yZWFsbXMvY25nIiwiYXVkIjoiY25nLWNvbXBsaWFuY2UtYXBpIiwiZXhwIjoxODkzNDU2MDAwfQ.b4lGyUySxJyePRIr2tYRozkHtgWoKj9Zj3osVOuAqRs";
+
     const session: UserSession = {
       user_id: operatorId,
       name: `Operator ${operatorId}`,
       role: role,
       station_id: stationId,
       station_name: "Indraprastha Gas CNG Station #102",
-      token: "mock-session-jwt-token",
+      token: validJwtToken,
     };
     onLoginSuccess(session);
   };

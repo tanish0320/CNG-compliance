@@ -1,3 +1,4 @@
+import { CurrentEnvironment } from "../config/Environment";
 import type {
   ManualReviewConfirmationRequest,
   OcrExtractResponse,
@@ -6,7 +7,7 @@ import type {
 import { SecureStorageService } from "./SecureStorageService";
 
 export class VerificationApi {
-  public constructor(private readonly baseUrl: string = "http://localhost:8000") {}
+  public constructor(private readonly baseUrl: string = CurrentEnvironment.apiBaseUrl) {}
 
   public async checkHealth(): Promise<{ status: string }> {
     const response = await fetch(`${this.baseUrl}/health`);
@@ -57,9 +58,13 @@ export class VerificationApi {
     const formData = new FormData();
     formData.append("file", imageBlob as any, fileName);
 
-    const headers: Record<string, string> = {};
-    if (idempotencyKey) {
-      headers["Idempotency-Key"] = idempotencyKey;
+    const key = idempotencyKey || this.generateUUID();
+    const token = await SecureStorageService.getAccessToken();
+    const headers: Record<string, string> = {
+      "Idempotency-Key": key,
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const response = await fetch(`${this.baseUrl}/api/v1/ocr/extract`, {
@@ -82,14 +87,20 @@ export class VerificationApi {
     idempotencyKey?: string
   ): Promise<VerificationResult> {
     const key = idempotencyKey || this.generateUUID();
+    const token = await SecureStorageService.getAccessToken();
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      "Idempotency-Key": key,
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const response = await fetch(
       `${this.baseUrl}/api/v1/verifications/confirm-manual-review`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Idempotency-Key": key,
-        },
+        headers,
         body: JSON.stringify(payload),
       }
     );

@@ -157,3 +157,20 @@ def test_api_manual_review_confirmation() -> None:
         assert data["status"] == "VALID"
         assert data["vehicle_registration"] == "DL01AB1234"
         assert data["manual_review_required"] is False
+
+
+def test_api_ocr_extract_no_plate_detected() -> None:
+    img_bytes = generate_test_image_bytes("PEPSI_CAN_NO_PLATE")
+    with TestClient(app) as test_client:
+        response = test_client.post(
+            "/api/v1/ocr/extract",
+            files={"file": ("pepsi.png", img_bytes, "image/png")},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        assert data["normalized_registration"] == ""
+        assert data["confidence"] == 0.0
+        assert data["manual_review_required"] is True
+        assert data["verification_result"]["vehicle_registration"] == "NO_PLATE_DETECTED"
+        assert data["verification_result"]["status"] == "MANUAL_REVIEW"
+

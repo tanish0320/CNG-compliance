@@ -1,5 +1,13 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Camera,
+  type CameraRef,
+  useCameraDevice,
+  useCameraPermission,
+  usePhotoOutput,
+} from "react-native-vision-camera";
+import { launchImageLibrary } from "react-native-image-picker";
 import { CameraOverlay } from "../components/CameraOverlay";
 import { Colors } from "../theme/Theme";
 
@@ -9,22 +17,26 @@ interface CameraScreenProps {
 }
 
 export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBack }) => {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(true);
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const device = useCameraDevice("back");
+  const photoOutput = usePhotoOutput();
+  const cameraRef = useRef<CameraRef>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [testPlate, setTestPlate] = useState("DL01AB1234");
 
-  if (hasPermission === false) {
+  console.log("[CameraScreen] Permission state:", hasPermission);
+  console.log("[CameraScreen] Selected camera device:", device ? `${device.id} (${device.name})` : "NONE");
+
+  if (!hasPermission) {
     return (
       <View style={styles.permissionContainer}>
         <Text style={styles.permissionIcon}>📷</Text>
         <Text style={styles.permissionTitle}>CAMERA PERMISSION REQUIRED</Text>
         <Text style={styles.permissionSubtitle}>
-          Camera access is required to scan vehicle registration plates at the station. Please enable
-          camera permissions in system settings.
+          Camera access is required to scan vehicle registration plates live at the station.
         </Text>
         <TouchableOpacity
           style={styles.retryPermissionButton}
-          onPress={() => setHasPermission(true)}
+          onPress={requestPermission}
         >
           <Text style={styles.retryPermissionText}>ENABLE CAMERA PERMISSION</Text>
         </TouchableOpacity>
@@ -35,20 +47,80 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBa
     );
   }
 
-  const handleCapture = () => {
+  if (!device) {
+    return (
+      <View style={styles.permissionContainer}>
+        <Text style={styles.permissionIcon}>⚠️</Text>
+        <Text style={styles.permissionTitle}>NO CAMERA DEVICE AVAILABLE</Text>
+        <Text style={styles.permissionSubtitle}>
+          No rear camera device detected on this hardware.
+        </Text>
+        <TouchableOpacity style={styles.backLink} onPress={onBack}>
+          <Text style={styles.backLinkText}>GO BACK</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const handleCapture = async () => {
     setIsProcessing(true);
+    try {
+      console.log("[CameraScreen] Embedded frame capture started via capturePhotoToFile...");
+      const photoFile = await photoOutput.capturePhotoToFile(
+        { flashMode: "off", enableShutterSound: false },
+        {}
+      );
+      console.log("[CameraScreen] Embedded frame captured successfully to file:", photoFile.filePath);
+      const uri = photoFile.filePath.startsWith("file://")
+        ? photoFile.filePath
+        : `file://${photoFile.filePath}`;
+      onCaptureImage({
+        uri,
+        type: "image/jpeg",
+        name: "captured_frame.jpg",
+      });
+    } catch (err) {
+      console.error("[CameraScreen] Embedded capture failed, falling back to gallery pick:", err);
+      handlePickFromGallery();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
-    // Create synthetic PNG image blob containing test plate text for OCR extraction backend
-    const syntheticCanvas = `SYNTHETIC_PLATE_IMAGE_BYTES:${testPlate}`;
-    const blob = new Blob([syntheticCanvas], { type: "image/png" });
-
-    onCaptureImage(blob);
+  const handlePickFromGallery = async () => {
+    setIsProcessing(true);
+    launchImageLibrary(
+      { mediaType: "photo", quality: 0.8 },
+      (response) => {
+        setIsProcessing(false);
+        if (response.didCancel || response.errorCode || !response.assets || response.assets.length === 0) {
+          return;
+        }
+        const asset = response.assets[0];
+        if (asset.uri) {
+          onCaptureImage({
+            uri: asset.uri,
+            type: asset.type || "image/jpeg",
+            name: asset.fileName || "plate.jpg",
+          });
+        }
+      }
+    );
   };
 
   return (
     <View style={styles.container}>
-      {/* Simulated Camera Viewfinder Container */}
       <View style={styles.cameraView}>
+        {/* Real Live Embedded Camera Feed */}
+        <Camera
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          device={device}
+          outputs={[photoOutput]}
+          isActive={true}
+        />
+
+        {/* Top Header Controls */}
         <View style={styles.topBar}>
           <TouchableOpacity style={styles.backButton} onPress={onBack}>
             <Text style={styles.backButtonText}>← BACK</Text>
@@ -56,43 +128,22 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBa
           <Text style={styles.topTitle}>PLATE SCANNER</Text>
         </View>
 
-        {/* Framing Overlay & Guidance */}
+        {/* Plate Scanner Framing Overlay & Capture Button */}
         <CameraOverlay
           onCapture={handleCapture}
           isProcessing={isProcessing}
           guidanceText="ALIGN REGISTRATION PLATE\nKeep plate centered inside frame"
         />
 
-        {/* Field Test Target Selector */}
-        <View style={styles.testSelectorContainer}>
-          <Text style={styles.testSelectorLabel}>SIMULATED PLATE TARGET:</Text>
-          <View style={styles.testSelectorRow}>
-            {[
-              "DL01AB1234",
-              "DL01AB1234 LOW_CONF",
-              "DL01EXPIRED",
-              "DL01INVALID",
-              "FAIL",
-            ].map((target) => (
-              <TouchableOpacity
-                key={target}
-                style={[
-                  styles.testChip,
-                  testPlate === target && styles.testChipActive,
-                ]}
-                onPress={() => setTestPlate(target)}
-              >
-                <Text
-                  style={[
-                    styles.testChipText,
-                    testPlate === target && styles.testChipTextActive,
-                  ]}
-                >
-                  {target.replace("DL01AB1234 ", "")}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        {/* Secondary Gallery Picker Option */}
+        <View style={styles.actionContainer}>
+          <TouchableOpacity
+            style={styles.galleryButton}
+            onPress={handlePickFromGallery}
+            disabled={isProcessing}
+          >
+            <Text style={styles.galleryButtonText}>🖼 SELECT FROM GALLERY</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -182,43 +233,25 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 14,
   },
-  testSelectorContainer: {
+  actionContainer: {
     position: "absolute",
-    top: 100,
-    left: 16,
-    right: 16,
+    bottom: 120,
+    left: 20,
+    right: 20,
+    alignItems: "center",
     zIndex: 10,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    padding: 10,
-    borderRadius: 12,
   },
-  testSelectorLabel: {
-    color: Colors.textMuted,
-    fontSize: 10,
-    fontWeight: "800",
-    marginBottom: 6,
-    letterSpacing: 0.5,
+  galleryButton: {
+    backgroundColor: "rgba(0, 0, 0, 0.65)",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
   },
-  testSelectorRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 6,
-  },
-  testChip: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: 6,
-  },
-  testChipActive: {
-    backgroundColor: Colors.primary,
-  },
-  testChipText: {
+  galleryButtonText: {
     color: "#FFFFFF",
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: "700",
-  },
-  testChipTextActive: {
-    fontWeight: "900",
   },
 });
