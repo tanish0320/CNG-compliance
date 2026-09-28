@@ -63,9 +63,10 @@ class PaddleOcrAdapter(OcrProvider):
                 logger.info("ocr_engine_loaded", engine="EasyOCR")
                 return self._ocr_engine
             except Exception as exc:  # noqa: BLE001
-                logger.warning("easyocr_not_available_falling_back_to_mock", error=str(exc))
-                self._mock_mode = True
-                return None
+                logger.error("no_real_ocr_engine_available", error=str(exc))
+                raise OcrProcessingError(
+                    "No real OCR engine available (EasyOCR/PaddleOCR uninstalled). Manual review required."
+                ) from exc
 
         return self._ocr_engine
 

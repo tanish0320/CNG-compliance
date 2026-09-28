@@ -1,14 +1,16 @@
+console.log("[STARTUP] App.tsx module loaded");
 import React from "react";
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { AppNavigator } from "./src/navigation/AppNavigator";
 import { Colors } from "./src/theme/Theme";
 
 export default function App(): React.JSX.Element {
+  console.log("[STARTUP] App component rendering AppNavigator inside View flex:1");
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
       <AppNavigator />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -18,3 +20,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
 });
+
+
+

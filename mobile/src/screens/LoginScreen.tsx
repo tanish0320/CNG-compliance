@@ -1,3 +1,4 @@
+console.log("[STARTUP] LoginScreen.tsx module loaded");
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import type { UserSession } from "../domain/ComplianceStatus";
@@ -8,6 +9,8 @@ interface LoginScreenProps {
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
+  console.log("[STARTUP] LoginScreen rendering");
+
   const [operatorId, setOperatorId] = useState("OP-7821");
   const [stationId, setStationId] = useState("CNG-STATION-102");
   const [role, setRole] = useState<UserSession["role"]>("PUMP_OPERATOR");

@@ -6,6 +6,7 @@ import {
   useCameraDevice,
   useCameraPermission,
   usePhotoOutput,
+  usePreviewOutput,
 } from "react-native-vision-camera";
 import { launchImageLibrary } from "react-native-image-picker";
 import { CameraOverlay } from "../components/CameraOverlay";
@@ -17,14 +18,19 @@ interface CameraScreenProps {
 }
 
 export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBack }) => {
+  console.log("[CameraScreen] RENDER START");
   const { hasPermission, requestPermission } = useCameraPermission();
   const device = useCameraDevice("back");
+  const previewOutput = usePreviewOutput();
   const photoOutput = usePhotoOutput();
   const cameraRef = useRef<CameraRef>(null);
+
+  const [previewState, setPreviewState] = useState<string>("INITIALIZING");
+  const [cameraError, setCameraError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  console.log("[CameraScreen] Permission state:", hasPermission);
-  console.log("[CameraScreen] Selected camera device:", device ? `${device.id} (${device.name})` : "NONE");
+  console.log("[CameraScreen] permission:", hasPermission);
+  console.log("[CameraScreen] device:", device ? `${device.id} (${device.name})` : "NONE");
 
   if (!hasPermission) {
     return (
@@ -65,7 +71,7 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBa
   const handleCapture = async () => {
     setIsProcessing(true);
     try {
-      console.log("[CameraScreen] Embedded frame capture started via capturePhotoToFile...");
+      console.log("[CameraScreen] Embedded frame capture started via photoOutput.capturePhotoToFile...");
       const photoFile = await photoOutput.capturePhotoToFile(
         { flashMode: "off", enableShutterSound: false },
         {}
@@ -79,8 +85,18 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBa
         type: "image/jpeg",
         name: "captured_frame.jpg",
       });
-    } catch (err) {
-      console.error("[CameraScreen] Embedded capture failed, falling back to gallery pick:", err);
+    } catch (err: any) {
+      console.error("[CameraScreen] Embedded capture failed, attempting fallback takePhoto:", err);
+      try {
+        if (cameraRef.current) {
+          const photo = await cameraRef.current.takePhoto({ flash: "off", enableShutterSound: false });
+          const uri = photo.path.startsWith("file://") ? photo.path : `file://${photo.path}`;
+          onCaptureImage({ uri, type: "image/jpeg", name: "captured_frame.jpg" });
+          return;
+        }
+      } catch (fallbackErr) {
+        console.error("[CameraScreen] Fallback takePhoto also failed:", fallbackErr);
+      }
       handlePickFromGallery();
     } finally {
       setIsProcessing(false);
@@ -108,44 +124,59 @@ export const CameraScreen: React.FC<CameraScreenProps> = ({ onCaptureImage, onBa
     );
   };
 
+  console.log("[CameraScreen] CAMERA COMPONENT MOUNT");
   return (
     <View style={styles.container}>
-      <View style={styles.cameraView}>
-        {/* Real Live Embedded Camera Feed */}
-        <Camera
-          ref={cameraRef}
-          style={StyleSheet.absoluteFill}
-          device={device}
-          outputs={[photoOutput]}
-          isActive={true}
-        />
+      {/* Real Live Embedded Camera Feed */}
+      <Camera
+        ref={cameraRef}
+        style={StyleSheet.absoluteFill}
+        device={device}
+        outputs={[previewOutput, photoOutput]}
+        isActive={true}
+        resizeMode="cover"
+        implementationMode="compatible"
+        onPreviewStarted={() => {
+          console.log("[CameraScreen] PREVIEW STARTED");
+          setPreviewState("STARTED");
+        }}
+        onPreviewStopped={() => {
+          console.log("[CameraScreen] PREVIEW STOPPED");
+          setPreviewState("STOPPED");
+        }}
+        onError={(err: any) => {
+          console.error("[CameraScreen] CAMERA ERROR:", err);
+          setCameraError(err?.message || String(err));
+        }}
+      />
 
-        {/* Top Header Controls */}
-        <View style={styles.topBar}>
-          <TouchableOpacity style={styles.backButton} onPress={onBack}>
-            <Text style={styles.backButtonText}>← BACK</Text>
-          </TouchableOpacity>
-          <Text style={styles.topTitle}>PLATE SCANNER</Text>
-        </View>
-
-        {/* Plate Scanner Framing Overlay & Capture Button */}
-        <CameraOverlay
-          onCapture={handleCapture}
-          isProcessing={isProcessing}
-          guidanceText="ALIGN REGISTRATION PLATE\nKeep plate centered inside frame"
-        />
-
-        {/* Secondary Gallery Picker Option */}
-        <View style={styles.actionContainer}>
-          <TouchableOpacity
-            style={styles.galleryButton}
-            onPress={handlePickFromGallery}
-            disabled={isProcessing}
-          >
-            <Text style={styles.galleryButtonText}>🖼 SELECT FROM GALLERY</Text>
-          </TouchableOpacity>
-        </View>
+      {/* On-Screen Diagnostic Overlay Panel */}
+      <View style={styles.debugPanel}>
+        <Text style={styles.debugTitle}>📷 CAMERA DEBUG PANEL</Text>
+        <Text style={styles.debugText}>Permission: {String(hasPermission)}</Text>
+        <Text style={styles.debugText}>Device: {device.id} ({device.name})</Text>
+        <Text style={styles.debugText}>Active: true</Text>
+        <Text style={styles.debugText}>Mounted: true</Text>
+        <Text style={[styles.debugText, previewState === "STARTED" ? styles.debugSuccess : styles.debugWarn]}>
+          Preview State: {previewState}
+        </Text>
+        {cameraError ? <Text style={styles.debugError}>Error: {cameraError}</Text> : null}
       </View>
+
+      {/* Top Header Controls */}
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+          <Text style={styles.backButtonText}>← BACK</Text>
+        </TouchableOpacity>
+        <Text style={styles.topTitle}>PLATE SCANNER</Text>
+      </View>
+
+      {/* Framing Overlay & Capture Controls */}
+      <CameraOverlay
+        onCapture={handleCapture}
+        isProcessing={isProcessing}
+        guidanceText="ALIGN REGISTRATION PLATE\nKeep plate centered inside frame"
+      />
     </View>
   );
 };
@@ -253,5 +284,43 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 12,
     fontWeight: "700",
+  },
+  debugPanel: {
+    position: "absolute",
+    top: 96,
+    left: 16,
+    right: 16,
+    backgroundColor: "rgba(0, 0, 0, 0.85)",
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    zIndex: 99,
+  },
+  debugTitle: {
+    color: Colors.primary,
+    fontWeight: "900",
+    fontSize: 13,
+    marginBottom: 4,
+  },
+  debugText: {
+    color: "#FFFFFF",
+    fontSize: 11,
+    fontWeight: "600",
+    marginTop: 2,
+  },
+  debugSuccess: {
+    color: "#4ADE80",
+    fontWeight: "800",
+  },
+  debugWarn: {
+    color: "#FACC15",
+    fontWeight: "800",
+  },
+  debugError: {
+    color: "#EF4444",
+    fontSize: 11,
+    fontWeight: "800",
+    marginTop: 4,
   },
 });

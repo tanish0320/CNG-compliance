@@ -1,3 +1,4 @@
+console.log("[STARTUP] AppNavigator.tsx module loaded");
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import type {
@@ -36,6 +37,8 @@ interface AppNavigatorProps {
 export const AppNavigator: React.FC<AppNavigatorProps> = ({
   apiClient = new VerificationApi(CurrentEnvironment.apiBaseUrl),
 }) => {
+  console.log("[STARTUP] AppNavigator component rendering");
+
   const [currentScreen, setCurrentScreen] = useState<ScreenState>("LOGIN");
   const [session, setSession] = useState<UserSession | null>(null);
   const [recentVerifications, setRecentVerifications] = useState<VerificationResult[]>([]);

@@ -52,14 +52,21 @@ export class VerificationApi {
 
   public async extractOcr(
     imageBlob: Blob | { uri: string; type: string; name: string },
-    fileName: string = "plate.png",
+    fileName: string = "plate.jpg",
     idempotencyKey?: string
   ): Promise<OcrExtractResponse> {
+    const targetUrl = `${this.baseUrl}/api/v1/ocr/extract`;
+    const key = idempotencyKey || this.generateUUID();
+    const token = await SecureStorageService.getAccessToken();
+
+    console.log("[OCR_DIAGNOSTICS] Starting OCR request...");
+    console.log("[OCR_DIAGNOSTICS] Exact URL:", targetUrl);
+    console.log("[OCR_DIAGNOSTICS] HTTP Method: POST");
+    console.log("[OCR_DIAGNOSTICS] Image Payload:", JSON.stringify(imageBlob));
+
     const formData = new FormData();
     formData.append("file", imageBlob as any, fileName);
 
-    const key = idempotencyKey || this.generateUUID();
-    const token = await SecureStorageService.getAccessToken();
     const headers: Record<string, string> = {
       "Idempotency-Key": key,
     };
@@ -67,19 +74,34 @@ export class VerificationApi {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${this.baseUrl}/api/v1/ocr/extract`, {
-      method: "POST",
-      headers,
-      body: formData,
-    });
+    const startTime = Date.now();
+    try {
+      const response = await fetch(targetUrl, {
+        method: "POST",
+        headers,
+        body: formData,
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const message = errorData.detail || `OCR extraction failed with HTTP ${response.status}`;
-      throw new Error(message);
+      const durationMs = Date.now() - startTime;
+      console.log(`[OCR_DIAGNOSTICS] Response status: ${response.status} (${durationMs}ms)`);
+
+      const responseText = await response.text();
+      console.log("[OCR_DIAGNOSTICS] Response Body:", responseText);
+
+      if (!response.ok) {
+        let message = `OCR extraction failed with HTTP ${response.status}`;
+        try {
+          const parsed = JSON.parse(responseText);
+          if (parsed.detail) message = parsed.detail;
+        } catch (_) {}
+        throw new Error(message);
+      }
+
+      return JSON.parse(responseText) as OcrExtractResponse;
+    } catch (err: any) {
+      console.error("[OCR_DIAGNOSTICS] OCR Request Exception:", err?.message || err);
+      throw err;
     }
-
-    return (await response.json()) as OcrExtractResponse;
   }
 
   public async confirmManualReview(

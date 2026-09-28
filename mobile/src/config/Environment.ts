@@ -32,8 +32,6 @@ const ENVIRONMENTS: Record<EnvironmentMode, EnvironmentConfig> = {
   },
 };
 
-// Default environment profile (Development in __DEV__, Production otherwise)
-declare const __DEV__: boolean;
-const isDev = typeof __DEV__ !== "undefined" ? __DEV__ : true;
-export const CurrentEnvironment: EnvironmentConfig =
-  ENVIRONMENTS[isDev ? "development" : "production"];
+// Environment profile selection (defaulting to development for local ADB reverse server)
+export const CurrentEnvironment: EnvironmentConfig = ENVIRONMENTS["development"];
+
