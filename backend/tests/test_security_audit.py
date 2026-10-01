@@ -2,7 +2,15 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from test_auth import create_test_token
 
+import asyncio
+
+from app.core.database import init_db
 from app.main import app
+
+
+def setup_function() -> None:
+    """Ensure database schema tables are created before each test."""
+    asyncio.run(init_db())
 
 
 @pytest.mark.asyncio

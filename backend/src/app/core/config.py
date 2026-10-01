@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     compliance_api_base_url: str = ""
     compliance_api_key: str = ""
     ocr_confidence_threshold: float = 0.85
+    plate_detection_enabled: bool = True
+    plate_detection_confidence_threshold: float = 0.25
     database_url: str = "sqlite+aiosqlite:///:memory:"
     db_pool_size: int = 20
     db_max_overflow: int = 10

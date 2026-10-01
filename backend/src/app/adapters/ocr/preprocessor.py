@@ -76,3 +76,57 @@ class ImagePreprocessor:
             raise
         except Exception as exc:
             raise InvalidImageError(f"Failed to process image: {exc}") from exc
+
+    def create_ocr_variants(self, image_bytes: bytes) -> list[tuple[str, bytes]]:
+        """
+        Generate deterministic image preprocessing variants for crop OCR candidate evaluation:
+        1. Default autocontrast + sharpening (PIL)
+        2. CLAHE contrast equalization (OpenCV)
+        3. Adaptive threshold binarization (OpenCV)
+        """
+        variants: list[tuple[str, bytes]] = []
+
+        # Variant 1: Default Autocontrast & Sharpening
+        v1_bytes = self.validate_and_preprocess(image_bytes)
+        variants.append(("autocontrast_sharpened", v1_bytes))
+
+        try:
+            import cv2
+            import numpy as np
+
+            img_pil = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+            img_np = np.array(img_pil)
+
+            gray = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
+
+            # Upscale crop 2.5x to target height ~350px maintaining aspect ratio
+            target_h = 350
+            h, w = gray.shape[:2]
+            if h > 0 and h != target_h:
+                scale = target_h / float(h)
+                target_w = max(10, int(w * scale))
+                gray_resized = cv2.resize(gray, (target_w, target_h), interpolation=cv2.INTER_LANCZOS4)
+            else:
+                gray_resized = gray
+
+            # Variant 2: CLAHE Contrast Equalization
+            clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+            clahe_img = clahe.apply(gray_resized)
+
+            buf_clahe = io.BytesIO()
+            Image.fromarray(clahe_img).save(buf_clahe, format="PNG")
+            variants.append(("clahe_contrast", buf_clahe.getvalue()))
+
+            # Variant 3: Adaptive Binarization Thresholding
+            blurred = cv2.GaussianBlur(gray_resized, (3, 3), 0)
+            thresh_img = cv2.adaptiveThreshold(
+                blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+            )
+            buf_thresh = io.BytesIO()
+            Image.fromarray(thresh_img).save(buf_thresh, format="PNG")
+            variants.append(("adaptive_threshold", buf_thresh.getvalue()))
+
+        except Exception:  # noqa: BLE001
+            pass
+
+        return variants

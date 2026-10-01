@@ -12,14 +12,16 @@ from app.ports.ocr_provider import OcrProvider, OcrResult
 
 logger = structlog.get_logger(__name__)
 
+from app.domain.registration_normalizer import IndianRegistrationNormalizer
+
 # Regex pattern for extracting Indian plate candidates from raw text
 PLATE_REGEX = re.compile(r"[A-Z]{2}[0-9]{1,2}[A-Z]{0,3}[0-9]{4}")
 
 
 class PaddleOcrAdapter(OcrProvider):
     """
-    PaddleOCR adapter implementing OcrProvider port.
-    Preprocesses images and extracts plate registrations safely off the main event loop.
+    PaddleOCR / EasyOCR adapter implementing OcrProvider port.
+    Preprocesses images, normalizes registration text, and calculates OCR confidence safely off the main event loop.
     """
 
     def __init__(
@@ -78,65 +80,100 @@ class PaddleOcrAdapter(OcrProvider):
 
     def _sync_extract(self, image_bytes: bytes) -> OcrResult:
         """Synchronous OCR processing implementation using real ML engine or synthetic fallback."""
-        processed_bytes = self._preprocessor.validate_and_preprocess(image_bytes)
-
         engine = self._get_ocr_engine()
         if engine is not None:
             try:
                 import numpy as np
 
-                img = Image.open(io.BytesIO(processed_bytes)).convert("RGB")
-                img_np = np.array(img)
+                variants = self._preprocessor.create_ocr_variants(image_bytes)
+                best_candidate: dict[str, Any] | None = None
+                best_score = (-1, -1.0)
 
-                raw_lines: list[str] = []
-                confidences: list[float] = []
-                boxes: list[Any] = []
+                for var_name, var_bytes in variants:
+                    img = Image.open(io.BytesIO(var_bytes)).convert("RGB")
+                    img_np = np.array(img)
 
-                if self._engine_type == "PaddleOCR":
-                    ocr_res = engine.ocr(img_np, cls=self._use_angle_cls)
-                    if ocr_res and ocr_res[0]:
-                        for line in ocr_res[0]:
-                            box, (text_val, conf_val) = line
-                            raw_lines.append(text_val)
-                            confidences.append(float(conf_val))
-                            boxes.append(box)
-                elif self._engine_type == "EasyOCR":
-                    ocr_res = engine.readtext(img_np)
-                    if ocr_res:
-                        for box, text_val, conf_val in ocr_res:
-                            raw_lines.append(str(text_val))
-                            confidences.append(float(conf_val))
-                            boxes.append(box)
+                    raw_lines: list[str] = []
+                    confidences: list[float] = []
+                    boxes: list[Any] = []
 
-                raw_text = " ".join(raw_lines).strip()
-                avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+                    if self._engine_type == "PaddleOCR":
+                        ocr_res = engine.ocr(img_np, cls=self._use_angle_cls)
+                        if ocr_res and ocr_res[0]:
+                            for line in ocr_res[0]:
+                                box, (text_val, conf_val) = line
+                                raw_lines.append(text_val)
+                                confidences.append(float(conf_val))
+                                boxes.append(box)
+                    elif self._engine_type == "EasyOCR":
+                        ocr_res = engine.readtext(img_np)
+                        if ocr_res:
+                            for box, text_val, conf_val in ocr_res:
+                                text_str = str(text_val).strip()
+                                if text_str:
+                                    raw_lines.append(text_str)
+                                    confidences.append(float(conf_val))
+                                    boxes.append(box)
 
-                candidate = self._extract_plate_candidate(raw_text)
-                is_valid_plate = bool(PLATE_REGEX.search(candidate))
+                    raw_text = " ".join(raw_lines).strip()
+                    avg_confidence = (
+                        sum(confidences) / len(confidences) if confidences else 0.0
+                    )
+                    norm_res = IndianRegistrationNormalizer.normalize(raw_text)
 
-                normalized = candidate if is_valid_plate else ""
-                final_confidence = round(avg_confidence, 4) if is_valid_plate else 0.0
+                    # Score candidate: prefer valid Indian registration format first, then higher confidence
+                    valid_score = 1 if norm_res.is_valid else 0
+                    cand_score = (valid_score, avg_confidence)
 
-                return OcrResult(
-                    raw_text=raw_text,
-                    normalized_registration=normalized,
-                    confidence=final_confidence,
-                    engine_name=self._engine_type or "RealOCR",
-                    bounding_box=boxes if boxes else None,
-                    metadata={"line_count": len(raw_lines), "raw_confidence": round(avg_confidence, 4)},
-                )
+                    logger.info(
+                        "ocr_variant_evaluated",
+                        variant=var_name,
+                        raw_text=raw_text,
+                        confidence=avg_confidence,
+                        is_valid=norm_res.is_valid,
+                        normalized=norm_res.normalized_plate,
+                    )
+
+                    if cand_score > best_score or best_candidate is None:
+                        best_score = cand_score
+                        best_candidate = {
+                            "raw_text": raw_text,
+                            "norm_res": norm_res,
+                            "confidence": round(avg_confidence, 4),
+                            "boxes": boxes,
+                            "variant": var_name,
+                            "line_count": len(raw_lines),
+                        }
+
+                if best_candidate is not None:
+                    norm_res = best_candidate["norm_res"]
+                    return OcrResult(
+                        raw_text=best_candidate["raw_text"],
+                        normalized_registration=norm_res.normalized_plate,
+                        formatted_registration=norm_res.formatted_plate,
+                        confidence=best_candidate["confidence"],
+                        engine_name=self._engine_type or "RealOCR",
+                        detection_source="ocr",
+                        bounding_box=best_candidate["boxes"] if best_candidate["boxes"] else None,
+                        metadata={
+                            "line_count": best_candidate["line_count"],
+                            "is_valid_format": norm_res.is_valid,
+                            "raw_confidence": best_candidate["confidence"],
+                            "best_variant": best_candidate["variant"],
+                        },
+                    )
             except Exception as exc:
                 logger.error("real_ocr_execution_failed", error=str(exc))
                 raise OcrProcessingError(f"Real OCR execution failed: {exc}") from exc
 
         # Fallback / Mock Engine Mode for Development & Testing
+        processed_bytes = self._preprocessor.validate_and_preprocess(image_bytes)
         return self._synthetic_ocr_extract(image_bytes, processed_bytes)
 
     def _synthetic_ocr_extract(self, raw_bytes: bytes, processed_bytes: bytes) -> OcrResult:
         """Synthetic OCR extraction for tests and offline development."""
         meta_text = ""
 
-        # Inspect embedded test_text PNG metadata if present
         try:
             img = Image.open(io.BytesIO(raw_bytes))
             meta_text = str(img.info.get("test_text", ""))
@@ -150,33 +187,24 @@ class PaddleOcrAdapter(OcrProvider):
             return OcrResult(
                 raw_text="",
                 normalized_registration="",
+                formatted_registration="NO_PLATE_DETECTED",
                 confidence=0.0,
                 engine_name="PaddleOCR-Synthetic",
+                detection_source="mock",
                 metadata={"synthetic": True},
             )
 
-        # Extract plate candidate from metadata or text string
-        candidate = self._extract_plate_candidate(meta_text)
-        is_valid_plate = bool(PLATE_REGEX.search(candidate))
+        norm_res = IndianRegistrationNormalizer.normalize(meta_text or "DL01AB1234")
+        confidence = 0.65 if ("LOW_CONF" in meta_text) else 0.95
 
-        if is_valid_plate:
-            confidence = 0.65 if ("LOW_CONF" in meta_text) else 0.95
-            formatted_text = f"{candidate[:2]} {candidate[2:4]} {candidate[4:6]} {candidate[6:]}".strip()
-            return OcrResult(
-                raw_text=formatted_text,
-                normalized_registration=candidate,
-                confidence=confidence,
-                engine_name="PaddleOCR-Synthetic",
-                metadata={"synthetic": True},
-            )
-
-        # No valid plate detected in non-vehicle image
         return OcrResult(
-            raw_text="",
-            normalized_registration="",
-            confidence=0.0,
+            raw_text=meta_text or norm_res.formatted_plate,
+            normalized_registration=norm_res.normalized_plate,
+            formatted_registration=norm_res.formatted_plate,
+            confidence=confidence if norm_res.is_valid else 0.0,
             engine_name="PaddleOCR-Synthetic",
-            metadata={"synthetic": True, "no_plate_detected": True},
+            detection_source="mock",
+            metadata={"synthetic": True},
         )
 
     @staticmethod

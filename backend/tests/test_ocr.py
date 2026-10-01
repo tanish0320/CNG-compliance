@@ -29,9 +29,16 @@ def generate_test_image_bytes(text: str = "DL01AB1234") -> bytes:
     return buf.getvalue()
 
 
+from app.api.routes.ocr import set_ocr_provider, set_plate_detector
+from app.adapters.plate_detection import YoloPlateDetectorAdapter
+from app.core.config import get_settings
+
+
 def setup_function() -> None:
     """Reset providers and store overrides before each test."""
+    get_settings().enable_dev_auth = True
     set_ocr_provider(PaddleOcrAdapter(mock_mode=True))
+    set_plate_detector(YoloPlateDetectorAdapter(mock_mode=True))
     set_idempotency_store(InMemoryIdempotencyStore())
     set_verification_repository(None)
 

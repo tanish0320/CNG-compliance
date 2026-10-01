@@ -14,4 +14,9 @@ node_modules/
 .mypy_cache/
 .ruff_cache/
 *.jpg
+*.jpeg
+*.png
+*.pt
+camera_runtime.txt
+dumpsys_camera.txt
 

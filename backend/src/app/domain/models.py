@@ -44,8 +44,10 @@ class VerificationResult(BaseModel):
 class OcrExtractResponse(BaseModel):
     raw_text: str
     normalized_registration: str
+    formatted_registration: str = ""
     confidence: float = Field(ge=0, le=1)
     engine_name: str = "PaddleOCR"
+    detection_source: str = "ocr"
     manual_review_required: bool = False
     verification_result: VerificationResult | None = None
 

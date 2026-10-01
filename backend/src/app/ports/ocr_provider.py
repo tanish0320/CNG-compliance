@@ -8,7 +8,9 @@ class OcrResult:
     raw_text: str
     normalized_registration: str
     confidence: float
+    formatted_registration: str = ""
     engine_name: str = "PaddleOCR"
+    detection_source: str = "ocr"
     bounding_box: list[list[float]] | None = None
     metadata: dict[str, Any] | None = None
 
