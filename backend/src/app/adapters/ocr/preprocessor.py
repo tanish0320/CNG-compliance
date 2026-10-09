@@ -4,7 +4,7 @@ from PIL import Image, ImageEnhance, ImageOps
 
 from app.domain.exceptions import InvalidImageError
 
-MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024  # 5 MB
+MAX_IMAGE_SIZE_BYTES = 25 * 1024 * 1024  # 25 MB
 ALLOWED_FORMATS = {"JPEG", "PNG", "WEBP"}
 ALLOWED_MIME_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
@@ -42,8 +42,8 @@ class ImagePreprocessor:
                     f"Unsupported image format: '{image.format}'. Allowed formats: {ALLOWED_FORMATS}"
                 )
 
-            # Prevent decompression bomb attacks
-            if image.width * image.height > 25_000_000:
+            # Prevent decompression bomb attacks (allow up to 60 MP camera sensors)
+            if image.width * image.height > 60_000_000:
                 raise InvalidImageError("Image dimensions are excessively large")
 
             # Preprocessing steps:

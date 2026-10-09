@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=80", "wheel"]
+requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -12,7 +12,8 @@ dependencies = [
   "pydantic>=2.11,<3.0",
   "pydantic-settings>=2.10,<3.0",
   "structlog>=25.4,<26.0",
-  "sqlalchemy>=2.0,<3.0",
+  "sqlalchemy[asyncio]>=2.0,<3.0",
+  "greenlet>=3.0.0",
   "alembic>=1.13,<2.0",
   "asyncpg>=0.29,<1.0",
   "aiosqlite>=0.20,<1.0",
@@ -23,6 +24,9 @@ dependencies = [
   "opentelemetry-api>=1.20,<2.0",
   "opentelemetry-sdk>=1.20,<2.0",
   "pyjwt[crypto]>=2.8.0,<3.0",
+  "opencv-python-headless>=4.8,<5.0",
+  "ultralytics>=8.0,<9.0",
+  "easyocr>=1.7.0",
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,2542 @@
+[
+  {
+    "index": 1,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.05.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.78,
+    "bbox": [
+      178,
+      169,
+      931,
+      625
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 52.75,
+      "michelson_contrast": 0.388,
+      "delta_e_color_diff": 119.68,
+      "laplacian_var": 298.0,
+      "mean_fg": 78.8,
+      "mean_bg": 178.6
+    },
+    "raw_text": "HRSSA 26100 IND",
+    "normalized_registration": "HR55AZ6100",
+    "formatted_registration": "HR55 AZ6100",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.952,
+    "is_low_contrast": false,
+    "failure_reasons": []
+  },
+  {
+    "index": 2,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.06 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.76,
+    "bbox": [
+      428,
+      243,
+      526,
+      314
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 27.81,
+      "michelson_contrast": 0.443,
+      "delta_e_color_diff": 67.1,
+      "laplacian_var": 341.01,
+      "mean_fg": 32.1,
+      "mean_bg": 83.3
+    },
+    "raw_text": "Kpeke 8222",
+    "normalized_registration": "KPEKE8222",
+    "formatted_registration": "KPEKE8222",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.559,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.56)"
+    ]
+  },
+  {
+    "index": 3,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.06 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      108,
+      697,
+      561,
+      809
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 30.57,
+      "michelson_contrast": 0.183,
+      "delta_e_color_diff": 57.23,
+      "laplacian_var": 424.4,
+      "mean_fg": 131.8,
+      "mean_bg": 190.8
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 4,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.06 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.82,
+    "bbox": [
+      359,
+      741,
+      679,
+      971
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 50.23,
+      "michelson_contrast": 0.467,
+      "delta_e_color_diff": 112.87,
+      "laplacian_var": 574.73,
+      "mean_fg": 52.7,
+      "mean_bg": 145.0
+    },
+    "raw_text": "HRSSA c3282",
+    "normalized_registration": "HR55AC3282",
+    "formatted_registration": "HR55 AC3282",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.631,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.63)"
+    ]
+  },
+  {
+    "index": 5,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.06.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      637,
+      303,
+      832,
+      391
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 30.92,
+      "michelson_contrast": 0.324,
+      "delta_e_color_diff": 58.5,
+      "laplacian_var": 354.76,
+      "mean_fg": 57.7,
+      "mean_bg": 112.8
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 6,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.07 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.81,
+    "bbox": [
+      211,
+      612,
+      735,
+      968
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 52.64,
+      "michelson_contrast": 0.402,
+      "delta_e_color_diff": 121.57,
+      "laplacian_var": 256.45,
+      "mean_fg": 73.1,
+      "mean_bg": 171.2
+    },
+    "raw_text": "HRSSA Z741L INB",
+    "normalized_registration": "HRSSAZ741LINB",
+    "formatted_registration": "HRSSAZ741LINB",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.617,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.62)"
+    ]
+  },
+  {
+    "index": 7,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.07 (2).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 50.4,
+      "michelson_contrast": 0.36,
+      "delta_e_color_diff": 86.73,
+      "laplacian_var": 328.39,
+      "mean_fg": 75.2,
+      "mean_bg": 159.7
+    },
+    "raw_text": "#nteneee",
+    "normalized_registration": "NTENEEE",
+    "formatted_registration": "NTENEEE",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 8,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.07.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      374,
+      521,
+      631,
+      585
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 35.25,
+      "michelson_contrast": 0.194,
+      "delta_e_color_diff": 67.6,
+      "laplacian_var": 1002.18,
+      "mean_fg": 150.2,
+      "mean_bg": 222.6
+    },
+    "raw_text": "5 ,",
+    "normalized_registration": "5",
+    "formatted_registration": "5",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.653,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.65)"
+    ]
+  },
+  {
+    "index": 9,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.08 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.46,
+    "bbox": [
+      0,
+      0,
+      568,
+      899
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 46.22,
+      "michelson_contrast": 0.419,
+      "delta_e_color_diff": 94.27,
+      "laplacian_var": 97.41,
+      "mean_fg": 63.6,
+      "mean_bg": 155.5
+    },
+    "raw_text": "Mob:: BE STAL Date Datey",
+    "normalized_registration": "MOBBESTALDATEDATEY",
+    "formatted_registration": "MOBBESTALDATEDATEY",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.548,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.55)"
+    ]
+  },
+  {
+    "index": 10,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.08 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.84,
+    "bbox": [
+      54,
+      399,
+      899,
+      1133
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 32.53,
+      "michelson_contrast": 0.291,
+      "delta_e_color_diff": 78.09,
+      "laplacian_var": 112.9,
+      "mean_fg": 79.6,
+      "mean_bg": 145.1
+    },
+    "raw_text": "DLZL 9156",
+    "normalized_registration": "DLZL9156",
+    "formatted_registration": "DLZL9156",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.628,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.63)"
+    ]
+  },
+  {
+    "index": 11,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.08 (3).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 29.45,
+      "michelson_contrast": 0.202,
+      "delta_e_color_diff": 55.03,
+      "laplacian_var": 40.88,
+      "mean_fg": 108.9,
+      "mean_bg": 164.0
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 12,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.08.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      302,
+      642,
+      706,
+      891
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 43.54,
+      "michelson_contrast": 0.314,
+      "delta_e_color_diff": 87.95,
+      "laplacian_var": 327.73,
+      "mean_fg": 83.3,
+      "mean_bg": 159.5
+    },
+    "raw_text": "RJ32 IND CD9600",
+    "normalized_registration": "RJ32CD9600",
+    "formatted_registration": "RJ32 CD9600",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.712,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.71)"
+    ]
+  },
+  {
+    "index": 13,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.09 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.83,
+    "bbox": [
+      189,
+      512,
+      575,
+      854
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 62.21,
+      "michelson_contrast": 0.488,
+      "delta_e_color_diff": 126.13,
+      "laplacian_var": 783.75,
+      "mean_fg": 60.3,
+      "mean_bg": 175.2
+    },
+    "raw_text": "ND HRs6 B7838",
+    "normalized_registration": "NDHRS6B7838",
+    "formatted_registration": "NDHRS6B7838",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.715,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.71)"
+    ]
+  },
+  {
+    "index": 14,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.09 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.74,
+    "bbox": [
+      376,
+      780,
+      534,
+      887
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 44.28,
+      "michelson_contrast": 0.451,
+      "delta_e_color_diff": 96.7,
+      "laplacian_var": 666.85,
+      "mean_fg": 50.4,
+      "mean_bg": 133.0
+    },
+    "raw_text": "HR58 IND 07551",
+    "normalized_registration": "HR580755",
+    "formatted_registration": "HR58 0755",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.578,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.58)"
+    ]
+  },
+  {
+    "index": 15,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.09 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.84,
+    "bbox": [
+      119,
+      640,
+      484,
+      892
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 45.98,
+      "michelson_contrast": 0.457,
+      "delta_e_color_diff": 104.78,
+      "laplacian_var": 418.01,
+      "mean_fg": 51.1,
+      "mean_bg": 137.3
+    },
+    "raw_text": "HR L5: IND C0.26",
+    "normalized_registration": "HRL5C026",
+    "formatted_registration": "HRL5C026",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.278,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.28)"
+    ]
+  },
+  {
+    "index": 16,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.09.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 59.52,
+      "michelson_contrast": 0.49,
+      "delta_e_color_diff": 115.36,
+      "laplacian_var": 206.81,
+      "mean_fg": 57.4,
+      "mean_bg": 167.8
+    },
+    "raw_text": "KAISHNA CNG hyoro TestInG Trmn IL*",
+    "normalized_registration": "KAISHNACNGHYOROTESTINGTRMNIL",
+    "formatted_registration": "KAISHNACNGHYOROTESTINGTRMNIL",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.083,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.08)"
+    ]
+  },
+  {
+    "index": 17,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.10 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.64,
+    "bbox": [
+      389,
+      297,
+      1241,
+      610
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 23.93,
+      "michelson_contrast": 0.259,
+      "delta_e_color_diff": 56.23,
+      "laplacian_var": 247.33,
+      "mean_fg": 76.6,
+      "mean_bg": 130.2
+    },
+    "raw_text": "Waebd aated Ueedod VEHICLE REGISTRATION NO: HRSETZTL CNG CYLINDER IDENTIFICATION NUMBERS (AS PER AIS 028) 975 8 5 3 8 3 5 930 6297 9 338012 81 306",
+    "normalized_registration": "WAEBDAATEDUEEDODVEHICLEREGISTRATIONNOHRSETZTLCNGCYLERIDENTIFICATIONNUMBERSASPERAIS0289758538359306297933801281306",
+    "formatted_registration": "WAEBDAATEDUEEDODVEHICLEREGISTRATIONNOHRSETZTLCNGCYLERIDENTIFICATIONNUMBERSASPERAIS0289758538359306297933801281306",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.645,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.65)"
+    ]
+  },
+  {
+    "index": 18,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.10 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.81,
+    "bbox": [
+      228,
+      620,
+      689,
+      884
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 45.96,
+      "michelson_contrast": 0.442,
+      "delta_e_color_diff": 112.54,
+      "laplacian_var": 362.87,
+      "mean_fg": 58.1,
+      "mean_bg": 150.2
+    },
+    "raw_text": "IND HRSS X3719",
+    "normalized_registration": "HR55X3719",
+    "formatted_registration": "HR55 X3719",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.737,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.74)"
+    ]
+  },
+  {
+    "index": 19,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.10 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      900,
+      579,
+      1149,
+      623
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 35.16,
+      "michelson_contrast": 0.437,
+      "delta_e_color_diff": 96.52,
+      "laplacian_var": 2150.07,
+      "mean_fg": 59.4,
+      "mean_bg": 151.7
+    },
+    "raw_text": "eEn DIX_ Lta\" Wit",
+    "normalized_registration": "EENDIXLTAWIT",
+    "formatted_registration": "EENDIXLTAWIT",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.005,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 20,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.10.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.84,
+    "bbox": [
+      219,
+      427,
+      718,
+      759
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 37.89,
+      "michelson_contrast": 0.339,
+      "delta_e_color_diff": 94.81,
+      "laplacian_var": 290.86,
+      "mean_fg": 70.8,
+      "mean_bg": 143.5
+    },
+    "raw_text": "IND; HR55 2214",
+    "normalized_registration": "HR552214",
+    "formatted_registration": "HR55 2214",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.873,
+    "is_low_contrast": false,
+    "failure_reasons": []
+  },
+  {
+    "index": 21,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.11 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.58,
+    "bbox": [
+      364,
+      243,
+      1031,
+      647
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 47.19,
+      "michelson_contrast": 0.392,
+      "delta_e_color_diff": 94.04,
+      "laplacian_var": 1596.15,
+      "mean_fg": 71.6,
+      "mean_bg": 163.8
+    },
+    "raw_text": "COMPLIANCE PLTE AUGUSTA ENGINEERING CNG CYLINDER TESTING CO, Kh_ No. 40/7 Ghumanhera Village Near by Arlun Cricket Academy; Jhuljhuli Authority, Najafgarh, New Delhi-110073 VEHICLE REGISTRATION NO CNG CYLINDER IDENTIFICATION NUMBERS (AS PERAIS 028) 5255 3493 9 WATER CAPACITY ILtRSI DATE OF LAST TeST 40Z DATE OF NEXT TEST (W9810598155,98996865 7503892541,9266530517",
+    "normalized_registration": "COMPLIANCEPLTEAUGUSTAENGINEERINGCNGCYLERTESTINGCOKHNO407GHUMANHERAVILLAGENEARBYARLUNCRICKETACADEMYJHULJHULIAUTHORITYNAJAFGARHNEWDELHI110073VEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONNUMBERSASPERAIS028525534939WATERCAPACITYILTRSIDATEOFLASTTEST40ZDATEOFNEXTTESTW98105981559899686575038925419266530517",
+    "formatted_registration": "COMPLIANCEPLTEAUGUSTAENGINEERINGCNGCYLERTESTINGCOKHNO407GHUMANHERAVILLAGENEARBYARLUNCRICKETACADEMYJHULJHULIAUTHORITYNAJAFGARHNEWDELHI110073VEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONNUMBERSASPERAIS028525534939WATERCAPACITYILTRSIDATEOFLASTTEST40ZDATEOFNEXTTESTW98105981559899686575038925419266530517",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.606,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.61)"
+    ]
+  },
+  {
+    "index": 22,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.11 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.56,
+    "bbox": [
+      397,
+      350,
+      1006,
+      736
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 51.73,
+      "michelson_contrast": 0.394,
+      "delta_e_color_diff": 124.6,
+      "laplacian_var": 625.43,
+      "mean_fg": 78.5,
+      "mean_bg": 180.7
+    },
+    "raw_text": "HRG3C AND 0",
+    "normalized_registration": "HRG3CAND0",
+    "formatted_registration": "HRG3CAND0",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.676,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.68)"
+    ]
+  },
+  {
+    "index": 23,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.11 (3).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 47.9,
+      "michelson_contrast": 0.276,
+      "delta_e_color_diff": 81.5,
+      "laplacian_var": 222.98,
+      "mean_fg": 108.3,
+      "mean_bg": 191.1
+    },
+    "raw_text": "CNG COMPLIANCE PLATS",
+    "normalized_registration": "CNGCOMPLIANCEPLATS",
+    "formatted_registration": "CNGCOMPLIANCEPLATS",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.542,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.54)"
+    ]
+  },
+  {
+    "index": 24,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.11.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.87,
+    "bbox": [
+      324,
+      130,
+      798,
+      448
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 40.74,
+      "michelson_contrast": 0.372,
+      "delta_e_color_diff": 95.18,
+      "laplacian_var": 219.36,
+      "mean_fg": 65.8,
+      "mean_bg": 143.8
+    },
+    "raw_text": "DL 16 IND E2070",
+    "normalized_registration": "DL16E2070",
+    "formatted_registration": "DL16 E2070",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.856,
+    "is_low_contrast": false,
+    "failure_reasons": []
+  },
+  {
+    "index": 25,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.12 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.59,
+    "bbox": [
+      0,
+      293,
+      724,
+      875
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 43.21,
+      "michelson_contrast": 0.255,
+      "delta_e_color_diff": 82.19,
+      "laplacian_var": 104.54,
+      "mean_fg": 114.2,
+      "mean_bg": 192.3
+    },
+    "raw_text": "HRSS T3706 iNUe",
+    "normalized_registration": "HRSST3706INUE",
+    "formatted_registration": "HRSST3706INUE",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.54,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.54)"
+    ]
+  },
+  {
+    "index": 26,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.12 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.74,
+    "bbox": [
+      164,
+      508,
+      748,
+      871
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 69.1,
+      "michelson_contrast": 0.507,
+      "delta_e_color_diff": 131.5,
+      "laplacian_var": 2273.45,
+      "mean_fg": 63.3,
+      "mean_bg": 193.2
+    },
+    "raw_text": "(M) 9990964636 COMPLIANCE PLATE] (M) 9810656223 GARUD GASES SOLUTION KA.N0.3/17 _ TAJ PUR KHURD; TAJ PUR_ NAJAFGARH_DELHI-110071 VEHICLE REGISTRATION No CNG CYLINDER IDENTIFICATION MUMBERS (AS PER AIS 028) MRTEF CAPACITY (LtRS DATE OF LAST TEST DATE OF HEXT TEST",
+    "normalized_registration": "M9990964636COMPLIANCEPLATEM9810656223GARUDGASESSOLUTIONKAN0317TAJPURKHURDTAJPURNAJAFGARHDELHI110071VEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONMUMBERSASPERAIS028MRTEFCAPACITYLTRSDATEOFLASTTESTDATEOFHEXTTEST",
+    "formatted_registration": "M9990964636COMPLIANCEPLATEM9810656223GARUDGASESSOLUTIONKAN0317TAJPURKHURDTAJPURNAJAFGARHDELHI110071VEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONMUMBERSASPERAIS028MRTEFCAPACITYLTRSDATEOFLASTTESTDATEOFHEXTTEST",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.721,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.72)"
+    ]
+  },
+  {
+    "index": 27,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.12 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.54,
+    "bbox": [
+      139,
+      408,
+      771,
+      623
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 39.96,
+      "michelson_contrast": 0.268,
+      "delta_e_color_diff": 69.35,
+      "laplacian_var": 74.57,
+      "mean_fg": 91.7,
+      "mean_bg": 158.8
+    },
+    "raw_text": "1326 nto#u",
+    "normalized_registration": "1326NTOU",
+    "formatted_registration": "1326NTOU",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.543,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.54)"
+    ]
+  },
+  {
+    "index": 28,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.12.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.58,
+    "bbox": [
+      174,
+      365,
+      763,
+      824
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 25.27,
+      "michelson_contrast": 0.243,
+      "delta_e_color_diff": 69.95,
+      "laplacian_var": 1004.33,
+      "mean_fg": 110.8,
+      "mean_bg": 181.9
+    },
+    "raw_text": "Mob. 9811,555850 COMPLIANCE PLATER Mob; : 9718973636 JMd CYLINDER TESTING COMPANY Khasra No,60G, Village-Hiran Kudna, New Delhi-(10041 Bakkarwala Hiran Kudna Road, Near: IGL CNG Pump Bakkarwala EMall : [moctcz2@gqallcom VeHICLE reGistrATION NO D 0 370 CnG CyLndeR IDeNTIFICATION NumbeRS [AS PER AIS : 028) 198 38 P82 2 10 26 10 525 I2q0 52 hater CapacITy (LtRS) 70 DATE OF LAST TEST 202 daTE OF MEXT TEST 02",
+    "normalized_registration": "MOB9811555850COMPLIANCEPLATERMOB9718973636JMDCYLERTESTINGCOMPANYKHASRANO60GVILLAGEHIRANKUDNANEWDELHI10041BAKKARWALAHIRANKUDNAROADNEARIGLCNGPUMPBAKKARWALAEMALLMOCTCZ2GQALLCOMVEHICLEREGISTRATIONNOD0370CNGCYLNDERIDENTIFICATIONNUMBERSASPERAIS02819838P822102610525I2Q052HATERCAPACITYLTRS70DATEOFLASTTEST202DATEOFMEXTTEST02",
+    "formatted_registration": "MOB9811555850COMPLIANCEPLATERMOB9718973636JMDCYLERTESTINGCOMPANYKHASRANO60GVILLAGEHIRANKUDNANEWDELHI10041BAKKARWALAHIRANKUDNAROADNEARIGLCNGPUMPBAKKARWALAEMALLMOCTCZ2GQALLCOMVEHICLEREGISTRATIONNOD0370CNGCYLNDERIDENTIFICATIONNUMBERSASPERAIS02819838P822102610525I2Q052HATERCAPACITYLTRS70DATEOFLASTTEST202DATEOFMEXTTEST02",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.517,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.52)"
+    ]
+  },
+  {
+    "index": 29,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.13 (1).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 54.56,
+      "michelson_contrast": 0.304,
+      "delta_e_color_diff": 92.56,
+      "laplacian_var": 4.79,
+      "mean_fg": 108.2,
+      "mean_bg": 202.9
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 30,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.13 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.65,
+    "bbox": [
+      29,
+      1192,
+      899,
+      1599
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 34.19,
+      "michelson_contrast": 0.296,
+      "delta_e_color_diff": 60.77,
+      "laplacian_var": 59.2,
+      "mean_fg": 68.0,
+      "mean_bg": 125.2
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 31,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.13 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.79,
+    "bbox": [
+      203,
+      586,
+      732,
+      875
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 48.12,
+      "michelson_contrast": 0.293,
+      "delta_e_color_diff": 117.73,
+      "laplacian_var": 333.83,
+      "mean_fg": 107.6,
+      "mean_bg": 196.7
+    },
+    "raw_text": "HR66 IND: B2003",
+    "normalized_registration": "HR66B2003",
+    "formatted_registration": "HR66 B2003",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.794,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.79)"
+    ]
+  },
+  {
+    "index": 32,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.13.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 38.07,
+      "michelson_contrast": 0.243,
+      "delta_e_color_diff": 73.08,
+      "laplacian_var": 118.91,
+      "mean_fg": 109.3,
+      "mean_bg": 179.3
+    },
+    "raw_text": "Hr8& 472",
+    "normalized_registration": "HR8472",
+    "formatted_registration": "HR8472",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.588,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.59)"
+    ]
+  },
+  {
+    "index": 33,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.14 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      429,
+      765,
+      515,
+      785
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 53.16,
+      "michelson_contrast": 0.285,
+      "delta_e_color_diff": 88.12,
+      "laplacian_var": 469.28,
+      "mean_fg": 114.1,
+      "mean_bg": 204.8
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 34,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.14.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      181,
+      528,
+      699,
+      763
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 51.19,
+      "michelson_contrast": 0.492,
+      "delta_e_color_diff": 101.2,
+      "laplacian_var": 297.12,
+      "mean_fg": 47.5,
+      "mean_bg": 139.3
+    },
+    "raw_text": "2 %866",
+    "normalized_registration": "2866",
+    "formatted_registration": "2866",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.639,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.64)"
+    ]
+  },
+  {
+    "index": 35,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.15 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.63,
+    "bbox": [
+      51,
+      531,
+      1200,
+      860
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 54.75,
+      "michelson_contrast": 0.379,
+      "delta_e_color_diff": 122.16,
+      "laplacian_var": 158.28,
+      "mean_fg": 81.0,
+      "mean_bg": 179.8
+    },
+    "raw_text": "|HR55AK9789",
+    "normalized_registration": "HR55AK9789",
+    "formatted_registration": "HR55 AK9789",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.407,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.41)"
+    ]
+  },
+  {
+    "index": 36,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.15 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      100,
+      265,
+      1199,
+      798
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 33.72,
+      "michelson_contrast": 0.355,
+      "delta_e_color_diff": 111.2,
+      "laplacian_var": 819.07,
+      "mean_fg": 93.4,
+      "mean_bg": 196.3
+    },
+    "raw_text": "(M) 9899686522 COMPLIANCE PLATE (M) 9999900477 GUrU KIRPA CYLINDER TESTING CO. KH. NO. 10/7 NANGLOI; NAJAFGARH ROAD, DELHI VEHICLE REGISTRATION NO CNG CYLINDER IDENTIFICATION NumbERS PER AIS 028) t[ WATER CAPACITY (LtrS) DATE OF LAST TeST DATE OF NEXT TEST (A5",
+    "normalized_registration": "M9899686522COMPLIANCEPLATEM9999900477GURUKIRPACYLERTESTINGCOKHNO107NANGLOINAJAFGARHROADDELHIVEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONNUMBERSPERAIS028TWATERCAPACITYLTRSDATEOFLASTTESTDATEOFNEXTTESTA5",
+    "formatted_registration": "M9899686522COMPLIANCEPLATEM9999900477GURUKIRPACYLERTESTINGCOKHNO107NANGLOINAJAFGARHROADDELHIVEHICLEREGISTRATIONNOCNGCYLERIDENTIFICATIONNUMBERSPERAIS028TWATERCAPACITYLTRSDATEOFLASTTESTDATEOFNEXTTESTA5",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.665,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.66)"
+    ]
+  },
+  {
+    "index": 37,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.15 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.48,
+    "bbox": [
+      0,
+      0,
+      1200,
+      347
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 57.86,
+      "michelson_contrast": 0.521,
+      "delta_e_color_diff": 137.96,
+      "laplacian_var": 119.0,
+      "mean_fg": 60.1,
+      "mean_bg": 191.1
+    },
+    "raw_text": "Cii",
+    "normalized_registration": "CII",
+    "formatted_registration": "CII",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.032,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.03)"
+    ]
+  },
+  {
+    "index": 38,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.15.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 61.61,
+      "michelson_contrast": 0.426,
+      "delta_e_color_diff": 119.77,
+      "laplacian_var": 278.02,
+      "mean_fg": 78.8,
+      "mean_bg": 195.8
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 39,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.16 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      210,
+      495,
+      816,
+      788
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 46.12,
+      "michelson_contrast": 0.368,
+      "delta_e_color_diff": 116.6,
+      "laplacian_var": 504.03,
+      "mean_fg": 76.7,
+      "mean_bg": 165.8
+    },
+    "raw_text": "HRSS IND AF5624",
+    "normalized_registration": "HR55AF5624",
+    "formatted_registration": "HR55 AF5624",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.735,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.73)"
+    ]
+  },
+  {
+    "index": 40,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.16 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.78,
+    "bbox": [
+      157,
+      472,
+      1007,
+      1054
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 41.67,
+      "michelson_contrast": 0.382,
+      "delta_e_color_diff": 88.85,
+      "laplacian_var": 537.91,
+      "mean_fg": 61.0,
+      "mean_bg": 136.5
+    },
+    "raw_text": "75 Co026",
+    "normalized_registration": "75CO026",
+    "formatted_registration": "75CO026",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.679,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.68)"
+    ]
+  },
+  {
+    "index": 41,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.16.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      606,
+      727,
+      753,
+      770
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 33.18,
+      "michelson_contrast": 0.406,
+      "delta_e_color_diff": 120.5,
+      "laplacian_var": 2301.18,
+      "mean_fg": 89.6,
+      "mean_bg": 212.1
+    },
+    "raw_text": "8i",
+    "normalized_registration": "8I",
+    "formatted_registration": "8I",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.082,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.08)"
+    ]
+  },
+  {
+    "index": 42,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.17 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.81,
+    "bbox": [
+      337,
+      514,
+      919,
+      815
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 64.41,
+      "michelson_contrast": 0.501,
+      "delta_e_color_diff": 146.65,
+      "laplacian_var": 907.1,
+      "mean_fg": 59.4,
+      "mean_bg": 179.0
+    },
+    "raw_text": "HR55a IND X5449",
+    "normalized_registration": "HR55AX5449",
+    "formatted_registration": "HR55 AX5449",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.777,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.78)"
+    ]
+  },
+  {
+    "index": 43,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.17 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.64,
+    "bbox": [
+      220,
+      502,
+      907,
+      864
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 44.66,
+      "michelson_contrast": 0.404,
+      "delta_e_color_diff": 107.68,
+      "laplacian_var": 501.19,
+      "mean_fg": 64.7,
+      "mean_bg": 152.3
+    },
+    "raw_text": "HR55 IND X3719_",
+    "normalized_registration": "HR55X3719",
+    "formatted_registration": "HR55 X3719",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.658,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.66)"
+    ]
+  },
+  {
+    "index": 44,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.17.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      406,
+      590,
+      545,
+      619
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 33.76,
+      "michelson_contrast": 0.31,
+      "delta_e_color_diff": 103.66,
+      "laplacian_var": 3145.87,
+      "mean_fg": 120.5,
+      "mean_bg": 228.8
+    },
+    "raw_text": "28",
+    "normalized_registration": "28",
+    "formatted_registration": "28",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.799,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.80)"
+    ]
+  },
+  {
+    "index": 45,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.18 (1).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 49.32,
+      "michelson_contrast": 0.359,
+      "delta_e_color_diff": 101.85,
+      "laplacian_var": 109.65,
+      "mean_fg": 91.7,
+      "mean_bg": 194.6
+    },
+    "raw_text": "Ml CtLirQER",
+    "normalized_registration": "MLCTLIRQER",
+    "formatted_registration": "MLCTLIRQER",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.071,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.07)"
+    ]
+  },
+  {
+    "index": 46,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.18 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.59,
+    "bbox": [
+      375,
+      466,
+      631,
+      737
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 39.26,
+      "michelson_contrast": 0.359,
+      "delta_e_color_diff": 77.97,
+      "laplacian_var": 443.37,
+      "mean_fg": 59.5,
+      "mean_bg": 126.1
+    },
+    "raw_text": "Mno Nrsst 3791 Moms",
+    "normalized_registration": "MNONRSST3791MOMS",
+    "formatted_registration": "MNONRSST3791MOMS",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.336,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.34)"
+    ]
+  },
+  {
+    "index": 47,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.18 (3).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 62.68,
+      "michelson_contrast": 0.467,
+      "delta_e_color_diff": 119.87,
+      "laplacian_var": 488.91,
+      "mean_fg": 64.4,
+      "mean_bg": 177.2
+    },
+    "raw_text": "3347784623",
+    "normalized_registration": "3347784623",
+    "formatted_registration": "3347784623",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.023,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.02)"
+    ]
+  },
+  {
+    "index": 48,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.18.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      737,
+      827,
+      1300,
+      944
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 40.93,
+      "michelson_contrast": 0.409,
+      "delta_e_color_diff": 120.59,
+      "laplacian_var": 1872.41,
+      "mean_fg": 87.7,
+      "mean_bg": 209.3
+    },
+    "raw_text": "ule GUG AIS028",
+    "normalized_registration": "ULEGUGAIS028",
+    "formatted_registration": "ULEGUGAIS028",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.643,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.64)"
+    ]
+  },
+  {
+    "index": 49,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.19 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.71,
+    "bbox": [
+      395,
+      599,
+      1090,
+      976
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 54.58,
+      "michelson_contrast": 0.436,
+      "delta_e_color_diff": 121.39,
+      "laplacian_var": 308.94,
+      "mean_fg": 63.4,
+      "mean_bg": 161.7
+    },
+    "raw_text": "HR63D 0682",
+    "normalized_registration": "HR63D0682",
+    "formatted_registration": "HR63 D0682",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.683,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.68)"
+    ]
+  },
+  {
+    "index": 50,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.19.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.68,
+    "bbox": [
+      0,
+      654,
+      799,
+      1081
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 41.59,
+      "michelson_contrast": 0.261,
+      "delta_e_color_diff": 81.56,
+      "laplacian_var": 293.52,
+      "mean_fg": 91.9,
+      "mean_bg": 156.7
+    },
+    "raw_text": "Jp DL 03903 IND",
+    "normalized_registration": "DL003903",
+    "formatted_registration": "DL00 3903",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.809,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.81)"
+    ]
+  },
+  {
+    "index": 51,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.20 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.89,
+    "bbox": [
+      175,
+      619,
+      757,
+      928
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 38.34,
+      "michelson_contrast": 0.248,
+      "delta_e_color_diff": 78.89,
+      "laplacian_var": 418.24,
+      "mean_fg": 99.6,
+      "mean_bg": 165.4
+    },
+    "raw_text": "HRSSA IND 28066",
+    "normalized_registration": "HR55AZ8066",
+    "formatted_registration": "HR55 AZ8066",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.904,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color"
+    ]
+  },
+  {
+    "index": 52,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.20 (2).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 46.86,
+      "michelson_contrast": 0.312,
+      "delta_e_color_diff": 82.34,
+      "laplacian_var": 398.25,
+      "mean_fg": 90.4,
+      "mean_bg": 172.6
+    },
+    "raw_text": "Keotors LIMITED COMPLIANCE PLATE. GNG Cylinder Identification Number(s) Gonut Oibbzz Aocbocgb37 W2ccocGCoD Weco0cee53 HZCOLISD Date of Installation 03*2020 cabacily Uutra] of tne Date ot Last Retest installatlon Enns VahicGNG RegistrationIdeR3ic3i883\"No. Ungtamatn compllca Wubd hv TATa requircmonts Motons LIMITED Oias 028 tol Jaio0",
+    "normalized_registration": "KEOTORSLIMITEDCOMPLIANCEPLATEGNGCYLERIDENTIFICATIONNUMBERSGONUTOIBBZZAOCBOCGB37W2CCOCGCODWECO0CEE53HZCOLISDDATEOFINSTALLATION032020CABACILYUUTRAOFTNEDATEOTLASTRETESTINSTALLATLONENNSVAHICGNGREGISTRATIONIDER3IC3I883NOUNGTAMATNCOMPLLCAWUBDHVTATAREQUIRCMONTSMOTONSLIMITEDOIAS028TOLJAIO0",
+    "formatted_registration": "KEOTORSLIMITEDCOMPLIANCEPLATEGNGCYLERIDENTIFICATIONNUMBERSGONUTOIBBZZAOCBOCGB37W2CCOCGCODWECO0CEE53HZCOLISDDATEOFINSTALLATION032020CABACILYUUTRAOFTNEDATEOTLASTRETESTINSTALLATLONENNSVAHICGNGREGISTRATIONIDER3IC3I883NOUNGTAMATNCOMPLLCAWUBDHVTATAREQUIRCMONTSMOTONSLIMITEDOIAS028TOLJAIO0",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.28,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.28)"
+    ]
+  },
+  {
+    "index": 53,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.20 (3).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.81,
+    "bbox": [
+      436,
+      301,
+      953,
+      646
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 46.85,
+      "michelson_contrast": 0.437,
+      "delta_e_color_diff": 106.79,
+      "laplacian_var": 383.61,
+      "mean_fg": 55.4,
+      "mean_bg": 141.3
+    },
+    "raw_text": "RJ02 GB 1852",
+    "normalized_registration": "RJ02GB1852",
+    "formatted_registration": "RJ02 GB1852",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.595,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.60)"
+    ]
+  },
+  {
+    "index": 54,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.20.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 34.94,
+      "michelson_contrast": 0.195,
+      "delta_e_color_diff": 62.62,
+      "laplacian_var": 488.6,
+      "mean_fg": 134.0,
+      "mean_bg": 198.9
+    },
+    "raw_text": "CYLINDER /ESTING COMPANY OaD >",
+    "normalized_registration": "CYLERESTINGCOMPANYOAD",
+    "formatted_registration": "CYLERESTINGCOMPANYOAD",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.177,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.18)"
+    ]
+  },
+  {
+    "index": 55,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.21 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.8,
+    "bbox": [
+      180,
+      350,
+      1008,
+      673
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 50.08,
+      "michelson_contrast": 0.364,
+      "delta_e_color_diff": 88.97,
+      "laplacian_var": 277.78,
+      "mean_fg": 73.3,
+      "mean_bg": 157.1
+    },
+    "raw_text": "IND' HR56 c9551 Boaid 7y",
+    "normalized_registration": "HR56C9551",
+    "formatted_registration": "HR56 C9551",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.451,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.45)"
+    ]
+  },
+  {
+    "index": 56,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.21 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      821,
+      523,
+      1113,
+      592
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 32.34,
+      "michelson_contrast": 0.297,
+      "delta_e_color_diff": 68.77,
+      "laplacian_var": 355.56,
+      "mean_fg": 79.1,
+      "mean_bg": 145.8
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 57,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.21.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.52,
+    "bbox": [
+      281,
+      354,
+      1070,
+      663
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 21.05,
+      "michelson_contrast": 0.126,
+      "delta_e_color_diff": 39.23,
+      "laplacian_var": 453.08,
+      "mean_fg": 141.3,
+      "mean_bg": 182.0
+    },
+    "raw_text": "niale Jesli @9i VehICLe registrationno RJ02GB 18 CNC CylinDer Identification NumberS (AS, 47.4 8 747 0 7 4 7.39 740167",
+    "normalized_registration": "AS474874",
+    "formatted_registration": "AS47 4874",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.458,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.46)"
+    ]
+  },
+  {
+    "index": 58,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.22 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.28,
+    "bbox": [
+      100,
+      473,
+      862,
+      1061
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 34.2,
+      "michelson_contrast": 0.292,
+      "delta_e_color_diff": 82.28,
+      "laplacian_var": 1115.54,
+      "mean_fg": 100.8,
+      "mean_bg": 183.9
+    },
+    "raw_text": "Mod: 9811555850 co\"PLIANCE PLATE [ Mob: 971897353 Jind CYLINder TESTING COMPANY Khasra No,606, Village-Hiran Kudra Ker Delhi Baxka Kudna Road; Near; IGL CNG Pump Baxkarkala Bakkarwala Hiran Samall-com REGISTRATIONNO HR 6 0 2640 VEHICLE NumbeRS (AS PER AIS : 0282 CNG CYLINDER IDENTIFICATION 8 8 18 83 9 8 8 553 33 3 6 52 8 5.,6 WATER CAPACITY (LTRS) DATE OF LAST TEST DATE OF NEXT TEST mdcic 2 BMall",
+    "normalized_registration": "OD981155",
+    "formatted_registration": "OD98 1155",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.637,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.64)"
+    ]
+  },
+  {
+    "index": 59,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.22 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      289,
+      544,
+      873,
+      918
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 41.56,
+      "michelson_contrast": 0.395,
+      "delta_e_color_diff": 116.76,
+      "laplacian_var": 367.4,
+      "mean_fg": 74.2,
+      "mean_bg": 170.9
+    },
+    "raw_text": "IND HR63 02670",
+    "normalized_registration": "HR630267",
+    "formatted_registration": "HR63 0267",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.818,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.82)"
+    ]
+  },
+  {
+    "index": 60,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.22.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 51.51,
+      "michelson_contrast": 0.302,
+      "delta_e_color_diff": 94.4,
+      "laplacian_var": 146.87,
+      "mean_fg": 100.3,
+      "mean_bg": 187.1
+    },
+    "raw_text": "HR 25; IND C0i026",
+    "normalized_registration": "HR25CO1026",
+    "formatted_registration": "HR25 CO1026",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.611,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.61)"
+    ]
+  },
+  {
+    "index": 61,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.23 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.75,
+    "bbox": [
+      164,
+      376,
+      899,
+      977
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 53.87,
+      "michelson_contrast": 0.385,
+      "delta_e_color_diff": 109.34,
+      "laplacian_var": 371.16,
+      "mean_fg": 77.8,
+      "mean_bg": 175.3
+    },
+    "raw_text": "HR L5 , C00251 IND",
+    "normalized_registration": "HR15CO0251",
+    "formatted_registration": "HR15 CO0251",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.647,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.65)"
+    ]
+  },
+  {
+    "index": 62,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.23 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.54,
+    "bbox": [
+      95,
+      723,
+      475,
+      793
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 35.42,
+      "michelson_contrast": 0.348,
+      "delta_e_color_diff": 95.78,
+      "laplacian_var": 1624.23,
+      "mean_fg": 89.5,
+      "mean_bg": 185.1
+    },
+    "raw_text": "567",
+    "normalized_registration": "567",
+    "formatted_registration": "567",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.544,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.54)"
+    ]
+  },
+  {
+    "index": 63,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.23.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      424,
+      650,
+      605,
+      693
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 43.77,
+      "michelson_contrast": 0.551,
+      "delta_e_color_diff": 135.46,
+      "laplacian_var": 2585.69,
+      "mean_fg": 53.3,
+      "mean_bg": 184.2
+    },
+    "raw_text": "Alml4W4737-\" Lto 2",
+    "normalized_registration": "ML04W4737",
+    "formatted_registration": "ML04 W4737",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.001,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 64,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.24 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      1057,
+      654,
+      1474,
+      778
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 54.57,
+      "michelson_contrast": 0.364,
+      "delta_e_color_diff": 110.28,
+      "laplacian_var": 586.9,
+      "mean_fg": 98.3,
+      "mean_bg": 210.9
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 65,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.24 (2).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 63.2,
+      "michelson_contrast": 0.438,
+      "delta_e_color_diff": 128.86,
+      "laplacian_var": 215.34,
+      "mean_fg": 87.5,
+      "mean_bg": 223.9
+    },
+    "raw_text": "IRL 980",
+    "normalized_registration": "IRL980",
+    "formatted_registration": "IRL980",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.211,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.21)"
+    ]
+  },
+  {
+    "index": 66,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.24.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.78,
+    "bbox": [
+      130,
+      465,
+      866,
+      897
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 36.06,
+      "michelson_contrast": 0.227,
+      "delta_e_color_diff": 92.1,
+      "laplacian_var": 219.04,
+      "mean_fg": 120.7,
+      "mean_bg": 191.7
+    },
+    "raw_text": "HR63C 9852",
+    "normalized_registration": "HR63C9852",
+    "formatted_registration": "HR63 C9852",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.872,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color"
+    ]
+  },
+  {
+    "index": 67,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.25 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.67,
+    "bbox": [
+      84,
+      380,
+      726,
+      795
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 45.06,
+      "michelson_contrast": 0.24,
+      "delta_e_color_diff": 81.46,
+      "laplacian_var": 1831.88,
+      "mean_fg": 122.9,
+      "mean_bg": 200.6
+    },
+    "raw_text": "Ph : 9213425070 COMPLIANCE PLATE Ph : 9213958355 9811123672 9968033090 SHREE RAM CNG CYLINDER TESTING CO: Yik Mt GsuehrateeneVldt Nd Dre*: #iaeMi-*11671 veXICLE REGISTRATION NO CNG CYUNDER IDENTIFICATIQN NumpeRS (AS PER AlS 0281 05 $4 76. 58 60L1-51 WiatcR capacity (Ltrs) OATE LAsT test Date Of NexttesT",
+    "normalized_registration": "PH9213425070COMPLIANCEPLATEPH921395835598111236729968033090SHREERAMCNGCYLERTESTINGCOYIKMTGSUEHRATEENEVLDTNDDREIAEMI11671VEXICLEREGISTRATIONNOCNGCYUNDERIDENTIFICATIQNNUMPERSASPERALS0281054765860L151WIATCRCAPACITYLTRSOATELASTTESTDATEOFNEXTTEST",
+    "formatted_registration": "PH9213425070COMPLIANCEPLATEPH921395835598111236729968033090SHREERAMCNGCYLERTESTINGCOYIKMTGSUEHRATEENEVLDTNDDREIAEMI11671VEXICLEREGISTRATIONNOCNGCYUNDERIDENTIFICATIQNNUMPERSASPERALS0281054765860L151WIATCRCAPACITYLTRSOATELASTTESTDATEOFNEXTTEST",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.398,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.40)"
+    ]
+  },
+  {
+    "index": 68,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.25 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.57,
+    "bbox": [
+      148,
+      409,
+      780,
+      683
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 45.27,
+      "michelson_contrast": 0.261,
+      "delta_e_color_diff": 89.02,
+      "laplacian_var": 311.35,
+      "mean_fg": 114.2,
+      "mean_bg": 195.1
+    },
+    "raw_text": "7445 58 C HR",
+    "normalized_registration": "744558CHR",
+    "formatted_registration": "744558CHR",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.962,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format"
+    ]
+  },
+  {
+    "index": 69,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.25.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.66,
+    "bbox": [
+      124,
+      1232,
+      899,
+      1599
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 39.74,
+      "michelson_contrast": 0.287,
+      "delta_e_color_diff": 71.6,
+      "laplacian_var": 113.18,
+      "mean_fg": 87.2,
+      "mean_bg": 157.4
+    },
+    "raw_text": "",
+    "normalized_registration": "",
+    "formatted_registration": "NO_PLATE_DETECTED",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.0,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.00)"
+    ]
+  },
+  {
+    "index": 70,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.26 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.85,
+    "bbox": [
+      40,
+      468,
+      899,
+      920
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 47.51,
+      "michelson_contrast": 0.287,
+      "delta_e_color_diff": 115.35,
+      "laplacian_var": 445.51,
+      "mean_fg": 110.1,
+      "mean_bg": 198.7
+    },
+    "raw_text": "RJ0z IND GB 1852",
+    "normalized_registration": "RJ02GB1852",
+    "formatted_registration": "RJ02 GB1852",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.663,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.66)"
+    ]
+  },
+  {
+    "index": 71,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.26 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.83,
+    "bbox": [
+      2,
+      611,
+      789,
+      1217
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 49.74,
+      "michelson_contrast": 0.343,
+      "delta_e_color_diff": 100.43,
+      "laplacian_var": 248.92,
+      "mean_fg": 83.1,
+      "mean_bg": 169.9
+    },
+    "raw_text": "RJ3z GB7022/ IN",
+    "normalized_registration": "RJ32GB7022",
+    "formatted_registration": "RJ32 GB7022",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.642,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "low_ocr_confidence(0.64)"
+    ]
+  },
+  {
+    "index": 72,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.26.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.43,
+    "bbox": [
+      0,
+      454,
+      899,
+      999
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 47.35,
+      "michelson_contrast": 0.416,
+      "delta_e_color_diff": 117.73,
+      "laplacian_var": 1255.46,
+      "mean_fg": 82.6,
+      "mean_bg": 200.5
+    },
+    "raw_text": "M) 9899686522 COMPLIANCE PLATE (M) 9999900477 GURU KIRPA CYLINDER TESTING Co; KH: NO. 10/7, NANGLOI; NAJAFGARH ROAD, DELHI VEHICLE REGISTRATION NO 0 $ 7022 CNG CYLINDER IDENTIFICATION NUMBERS (AS PER AIS 028) K255 6231} \"1330 2332 62 Q5 4224 01e WATER CAPACITY (LTRS) DATE OF LAST TEST 021 DATE OF NEXT TEST 1 0",
+    "normalized_registration": "M9899686522COMPLIANCEPLATEM9999900477GURUKIRPACYLERTESTINGCOKHNO107NANGLOINAJAFGARHROADDELHIVEHICLEREGISTRATIONNO07022CNGCYLERIDENTIFICATIONNUMBERSASPERAIS028K25562311330233262Q5422401EWATERCAPACITYLTRSDATEOFLASTTEST021DATEOFNEXTTEST10",
+    "formatted_registration": "M9899686522COMPLIANCEPLATEM9999900477GURUKIRPACYLERTESTINGCOKHNO107NANGLOINAJAFGARHROADDELHIVEHICLEREGISTRATIONNO07022CNGCYLERIDENTIFICATIONNUMBERSASPERAIS028K25562311330233262Q5422401EWATERCAPACITYLTRSDATEOFLASTTEST021DATEOFNEXTTEST10",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.641,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.64)"
+    ]
+  },
+  {
+    "index": 73,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.27 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.77,
+    "bbox": [
+      0,
+      165,
+      800,
+      654
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 56.89,
+      "michelson_contrast": 0.378,
+      "delta_e_color_diff": 115.82,
+      "laplacian_var": 399.15,
+      "mean_fg": 83.2,
+      "mean_bg": 184.3
+    },
+    "raw_text": "IND HRbC 9508",
+    "normalized_registration": "HRBC9508",
+    "formatted_registration": "HRBC9508",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.721,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.72)"
+    ]
+  },
+  {
+    "index": 74,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.27 (2).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 60.58,
+      "michelson_contrast": 0.422,
+      "delta_e_color_diff": 110.08,
+      "laplacian_var": 463.75,
+      "mean_fg": 72.7,
+      "mean_bg": 178.7
+    },
+    "raw_text": "'cocte",
+    "normalized_registration": "COCTE",
+    "formatted_registration": "COCTE",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.258,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.26)"
+    ]
+  },
+  {
+    "index": 75,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.27.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      60,
+      789,
+      277,
+      832
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 27.77,
+      "michelson_contrast": 0.394,
+      "delta_e_color_diff": 114.64,
+      "laplacian_var": 1103.17,
+      "mean_fg": 88.7,
+      "mean_bg": 204.2
+    },
+    "raw_text": "1i 3 6",
+    "normalized_registration": "1I36",
+    "formatted_registration": "1I36",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.276,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.28)"
+    ]
+  },
+  {
+    "index": 76,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.28 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.83,
+    "bbox": [
+      497,
+      324,
+      1415,
+      804
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 36.83,
+      "michelson_contrast": 0.258,
+      "delta_e_color_diff": 85.3,
+      "laplacian_var": 149.26,
+      "mean_fg": 104.4,
+      "mean_bg": 176.8
+    },
+    "raw_text": "HR6?DL 1857",
+    "normalized_registration": "HR06DL1857",
+    "formatted_registration": "HR06 DL1857",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.468,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.47)"
+    ]
+  },
+  {
+    "index": 77,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.28 (2).jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 53.02,
+      "michelson_contrast": 0.407,
+      "delta_e_color_diff": 111.94,
+      "laplacian_var": 494.94,
+      "mean_fg": 81.5,
+      "mean_bg": 193.4
+    },
+    "raw_text": "Ttnrdenic Shree RAM CNG CYLINDER YESTING CO. Wenneneenehkt TEEETEATNEEH rus 745i D L aL",
+    "normalized_registration": "TTNRDENICSHREERAMCNGCYLERYESTINGCOWENNENEENEHKTTEEETEATNEEHRUS745IDLAL",
+    "formatted_registration": "TTNRDENICSHREERAMCNGCYLERYESTINGCOWENNENEENEHKTTEEETEATNEEHRUS745IDLAL",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.059,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.06)"
+    ]
+  },
+  {
+    "index": 78,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.28.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      810,
+      855,
+      1089,
+      912
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 39.1,
+      "michelson_contrast": 0.458,
+      "delta_e_color_diff": 130.45,
+      "laplacian_var": 1398.04,
+      "mean_fg": 77.5,
+      "mean_bg": 208.7
+    },
+    "raw_text": "LXa Lax",
+    "normalized_registration": "LXALAX",
+    "formatted_registration": "LXALAX",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.072,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.07)"
+    ]
+  },
+  {
+    "index": 79,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.29 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.68,
+    "bbox": [
+      195,
+      450,
+      1032,
+      911
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 32.0,
+      "michelson_contrast": 0.269,
+      "delta_e_color_diff": 93.65,
+      "laplacian_var": 220.98,
+      "mean_fg": 116.6,
+      "mean_bg": 202.2
+    },
+    "raw_text": "HR8 & 1331",
+    "normalized_registration": "HR081331",
+    "formatted_registration": "HR08 1331",
+    "is_valid_plate": true,
+    "ocr_confidence": 0.56,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "low_ocr_confidence(0.56)"
+    ]
+  },
+  {
+    "index": 80,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.29 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      583,
+      738,
+      701,
+      776
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 36.72,
+      "michelson_contrast": 0.393,
+      "delta_e_color_diff": 92.67,
+      "laplacian_var": 3134.1,
+      "mean_fg": 69.0,
+      "mean_bg": 158.4
+    },
+    "raw_text": "3 30",
+    "normalized_registration": "330",
+    "formatted_registration": "330",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.787,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.79)"
+    ]
+  },
+  {
+    "index": 81,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.29.jpeg",
+    "plate_detected": false,
+    "detector_conf": 0.0,
+    "bbox": null,
+    "crop_source": "full_image",
+    "metrics": {
+      "gray_std": 33.83,
+      "michelson_contrast": 0.197,
+      "delta_e_color_diff": 55.64,
+      "laplacian_var": 46.64,
+      "mean_fg": 116.0,
+      "mean_bg": 172.8
+    },
+    "raw_text": "CYLINDER compant TeSTING Konuo ck CtL}",
+    "normalized_registration": "CYLERCOMPANTTESTINGKONUOCKCTL",
+    "formatted_registration": "CYLERCOMPANTTESTINGKONUOCKCTL",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.255,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "plate_detection_missed",
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.25)"
+    ]
+  },
+  {
+    "index": 82,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.30 (1).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.34,
+    "bbox": [
+      100,
+      205,
+      899,
+      889
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 48.2,
+      "michelson_contrast": 0.264,
+      "delta_e_color_diff": 79.23,
+      "laplacian_var": 463.35,
+      "mean_fg": 115.0,
+      "mean_bg": 197.6
+    },
+    "raw_text": "Cq008",
+    "normalized_registration": "CQ008",
+    "formatted_registration": "CQ008",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.38,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.38)"
+    ]
+  },
+  {
+    "index": 83,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.30 (2).jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.7,
+    "bbox": [
+      437,
+      624,
+      637,
+      666
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 35.61,
+      "michelson_contrast": 0.571,
+      "delta_e_color_diff": 130.08,
+      "laplacian_var": 1841.57,
+      "mean_fg": 46.5,
+      "mean_bg": 170.3
+    },
+    "raw_text": "~sa: A4",
+    "normalized_registration": "SAA4",
+    "formatted_registration": "SAA4",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.006,
+    "is_low_contrast": false,
+    "failure_reasons": [
+      "invalid_registration_format",
+      "low_ocr_confidence(0.01)"
+    ]
+  },
+  {
+    "index": 84,
+    "filename": "WhatsApp Image 2026-09-20 at 19.20.30.jpeg",
+    "plate_detected": true,
+    "detector_conf": 0.83,
+    "bbox": [
+      235,
+      197,
+      1580,
+      751
+    ],
+    "crop_source": "yolo_crop",
+    "metrics": {
+      "gray_std": 44.64,
+      "michelson_contrast": 0.314,
+      "delta_e_color_diff": 99.87,
+      "laplacian_var": 282.33,
+      "mean_fg": 93.8,
+      "mean_bg": 179.6
+    },
+    "raw_text": "IND HR c7507 45",
+    "normalized_registration": "HRC750745",
+    "formatted_registration": "HRC750745",
+    "is_valid_plate": false,
+    "ocr_confidence": 0.786,
+    "is_low_contrast": true,
+    "failure_reasons": [
+      "low_contrast_same_color",
+      "invalid_registration_format",
+      "low_ocr_confidence(0.79)"
+    ]
+  }
+]

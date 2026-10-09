@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { ImageInput, OcrExtractResponse, ComplianceStatus } from '../types/compliance';
+import { haptics } from '../utils/haptics';
 
 interface Props {
   ocrData: OcrExtractResponse;
@@ -23,61 +24,85 @@ interface Props {
 
 interface StatusTheme {
   title: string;
+  subtitle: string;
   badgeBg: string;
-  badgeText: string;
-  icon: string;
-  description: string;
+  badgeBorder: string;
+  textColor: string;
+  verdictCode: string;
+  dispenseVerdict: 'ALLOWED' | 'DENIED' | 'REVIEW';
+  verdictText: string;
 }
 
 const STATUS_THEMES: Record<ComplianceStatus, StatusTheme> = {
   VALID: {
-    title: 'COMPLIANT VEHICLE',
-    badgeBg: '#15803d',
-    badgeText: '#ffffff',
-    icon: '✅',
-    description: 'Vehicle CNG cylinder compliance is active and valid.',
+    title: 'DISPENSE AUTHORIZED',
+    subtitle: 'Cylinder compliance certified and active under PESO safety rules.',
+    badgeBg: '#052e16',
+    badgeBorder: '#10b981',
+    textColor: '#34d399',
+    verdictCode: 'PASS',
+    dispenseVerdict: 'ALLOWED',
+    verdictText: 'SAFE TO FUEL',
   },
   EXPIRING_SOON: {
-    title: 'EXPIRING SOON',
-    badgeBg: '#b45309',
-    badgeText: '#ffffff',
-    icon: '⚠️',
-    description: 'CNG compliance expires in the near future. Re-test required soon.',
+    title: 'DISPENSE WITH WARNING',
+    subtitle: 'Hydrotest certificate expires in less than 30 days. Re-test required soon.',
+    badgeBg: '#451a03',
+    badgeBorder: '#f59e0b',
+    textColor: '#fbbf24',
+    verdictCode: 'WARN',
+    dispenseVerdict: 'ALLOWED',
+    verdictText: 'EXPIRING SOON',
   },
   EXPIRED: {
-    title: 'COMPLIANCE EXPIRED',
-    badgeBg: '#b91c1c',
-    badgeText: '#ffffff',
-    icon: '🚨',
-    description: 'CNG compliance has expired. Vehicle is NOT compliant for re-fueling.',
+    title: 'DO NOT DISPENSE',
+    subtitle: 'Hydrotest expired. Refueling prohibited under PESO gas cylinder regulations.',
+    badgeBg: '#450a0a',
+    badgeBorder: '#ef4444',
+    textColor: '#f87171',
+    verdictCode: 'STOP',
+    dispenseVerdict: 'DENIED',
+    verdictText: 'FUELING PROHIBITED',
   },
   INVALID: {
     title: 'INVALID COMPLIANCE',
-    badgeBg: '#b91c1c',
-    badgeText: '#ffffff',
-    icon: '❌',
-    description: 'Compliance certificate is invalid or revoked.',
+    subtitle: 'Compliance certificate is invalid or revoked. Refueling denied.',
+    badgeBg: '#450a0a',
+    badgeBorder: '#ef4444',
+    textColor: '#f87171',
+    verdictCode: 'FAIL',
+    dispenseVerdict: 'DENIED',
+    verdictText: 'FUELING PROHIBITED',
   },
   NOT_FOUND: {
     title: 'NO RECORD FOUND',
-    badgeBg: '#475569',
-    badgeText: '#ffffff',
-    icon: '🔍',
-    description: 'No registration record found in the CNG compliance database.',
+    subtitle: 'No registered CNG certificate located in compliance database.',
+    badgeBg: '#1e293b',
+    badgeBorder: '#64748b',
+    textColor: '#cbd5e1',
+    verdictCode: 'NONE',
+    dispenseVerdict: 'DENIED',
+    verdictText: 'UNREGISTERED CYLINDER',
   },
   MANUAL_REVIEW: {
     title: 'MANUAL REVIEW REQUIRED',
-    badgeBg: '#6b21a8',
-    badgeText: '#ffffff',
-    icon: '👁️',
-    description: 'Registration could not be read with sufficient confidence. Review or edit the registration before verification.',
+    subtitle: 'OCR confidence below threshold. Attendant confirmation required.',
+    badgeBg: '#3b0764',
+    badgeBorder: '#a855f7',
+    textColor: '#c084fc',
+    verdictCode: 'EDIT',
+    dispenseVerdict: 'REVIEW',
+    verdictText: 'OPERATOR CHECK REQUIRED',
   },
   PROVIDER_UNAVAILABLE: {
-    title: 'PROVIDER UNAVAILABLE',
-    badgeBg: '#c2410c',
-    badgeText: '#ffffff',
-    icon: '⚡',
-    description: 'Compliance verification provider is temporarily unreachable.',
+    title: 'PROVIDER OFFLINE',
+    subtitle: 'Central compliance verification database is temporarily unreachable.',
+    badgeBg: '#431407',
+    badgeBorder: '#ea580c',
+    textColor: '#fb923c',
+    verdictCode: 'DOWN',
+    dispenseVerdict: 'DENIED',
+    verdictText: 'SYSTEM OFFLINE',
   },
 };
 
@@ -89,25 +114,73 @@ export function ComplianceResultView({
   onConfirmManualReview,
 }: Props) {
   const verification = ocrData.verification_result;
-  const status: ComplianceStatus = verification?.status || 'MANUAL_REVIEW';
+  const status: ComplianceStatus =
+    verification?.status || (ocrData.manual_review_required ? 'MANUAL_REVIEW' : 'NOT_FOUND');
   const theme = STATUS_THEMES[status] || STATUS_THEMES.MANUAL_REVIEW;
 
   const registrationText =
     verification?.vehicle_registration &&
     verification.vehicle_registration !== 'NO_PLATE_DETECTED'
       ? verification.vehicle_registration
-      : ocrData.formatted_registration || ocrData.normalized_registration || ocrData.raw_text || 'UNREADABLE PLATE';
+      : ocrData.formatted_registration || ocrData.normalized_registration || ocrData.raw_text || 'UNREADABLE';
 
   const [editedReg, setEditedReg] = useState<string>(
-    registrationText !== 'UNREADABLE PLATE' && registrationText !== 'NO_PLATE_DETECTED'
+    registrationText !== 'UNREADABLE' && registrationText !== 'NO_PLATE_DETECTED'
       ? registrationText
       : ''
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showAuditDetails, setShowAuditDetails] = useState<boolean>(false);
+
+  const isManualReview = status === 'MANUAL_REVIEW' || ocrData.manual_review_required;
+
+  useEffect(() => {
+    if (status === 'VALID') {
+      haptics.success();
+    } else if (status === 'EXPIRED' || status === 'INVALID') {
+      haptics.error();
+    } else if (status === 'EXPIRING_SOON' || status === 'MANUAL_REVIEW') {
+      haptics.warning();
+    }
+  }, [status]);
+
+  let expiryDisplay = 'N/A';
+  let daysRemainingText = '';
+  if (verification?.expires_at) {
+    try {
+      const expDate = new Date(verification.expires_at);
+      expiryDisplay = expDate.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+      const diffDays = Math.ceil((expDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+      if (diffDays > 0) {
+        daysRemainingText = `${diffDays} DAYS REMAINING`;
+      } else {
+        daysRemainingText = `EXPIRED ${Math.abs(diffDays)} DAYS AGO`;
+      }
+    } catch {
+      expiryDisplay = verification.expires_at;
+    }
+  }
+
+  const handleSwapChar = (charA: string, charB: string) => {
+    setEditedReg(prev => {
+      const upper = prev.toUpperCase();
+      if (upper.includes(charA)) {
+        return upper.replace(charA, charB);
+      } else if (upper.includes(charB)) {
+        return upper.replace(charB, charA);
+      }
+      return upper;
+    });
+  };
 
   const handleConfirmVerification = async () => {
-    if (!editedReg || !editedReg.trim()) {
-      Alert.alert('Validation Error', 'Please enter a valid vehicle registration number');
+    const trimmed = editedReg.trim().toUpperCase().replace(/\s+/g, '');
+    if (!trimmed || trimmed.length < 4) {
+      Alert.alert('Validation Error', 'Please enter a valid vehicle registration number (e.g. DL01AB1234)');
       return;
     }
     if (!onConfirmManualReview) {
@@ -117,7 +190,7 @@ export function ComplianceResultView({
 
     try {
       setIsSubmitting(true);
-      await onConfirmManualReview(editedReg.trim());
+      await onConfirmManualReview(trimmed);
     } catch (err: any) {
       Alert.alert('Verification Failed', err.message || 'Could not verify confirmed registration');
     } finally {
@@ -125,188 +198,251 @@ export function ComplianceResultView({
     }
   };
 
-  const formattedExpiry = verification?.expires_at
-    ? new Date(verification.expires_at).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      })
-    : 'N/A';
-
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* Header Bar */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>CNG COMPLIANCE RESULT</Text>
-          <TouchableOpacity onPress={onReset} style={styles.closeBtn}>
-            <Text style={styles.closeBtnText}>✕ CLOSE</Text>
+      <ScrollView contentContainerStyle={styles.container} bounces={false}>
+        {/* Navigation / Header Bar */}
+        <View style={styles.topBar}>
+          <View style={styles.topBarLeft}>
+            <View style={[styles.statusDot, { backgroundColor: theme.badgeBorder }]} />
+            <Text style={styles.topBarTitle}>VERIFICATION RESULT</Text>
+          </View>
+          <TouchableOpacity
+            onPress={onReset}
+            style={styles.closeBtn}
+            hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.closeBtnText}>CLOSE</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Major Status Banner Card */}
-        <View style={[styles.statusBanner, { backgroundColor: theme.badgeBg }]}>
-          <Text style={styles.statusIcon}>{theme.icon}</Text>
-          <Text style={styles.statusTitle}>{theme.title}</Text>
-          <Text style={styles.statusDescription}>{theme.description}</Text>
+        {/* Major Attendant Dispense Decision Card */}
+        <View style={[styles.decisionCard, { backgroundColor: theme.badgeBg, borderColor: theme.badgeBorder }]}>
+          <View style={styles.decisionTopRow}>
+            <View style={[styles.verdictPill, { borderColor: theme.badgeBorder }]}>
+              <Text style={[styles.verdictPillText, { color: theme.textColor }]}>
+                {theme.verdictText}
+              </Text>
+            </View>
+            <View style={[styles.decisionCodeBox, { borderColor: theme.badgeBorder }]}>
+              <Text style={[styles.decisionCodeText, { color: theme.textColor }]}>
+                {theme.verdictCode}
+              </Text>
+            </View>
+          </View>
+
+          <Text style={styles.decisionTitle}>{theme.title}</Text>
+          <Text style={styles.decisionSubtitle}>{theme.subtitle}</Text>
+
+          {daysRemainingText ? (
+            <View style={styles.daysBadge}>
+              <Text style={[styles.daysBadgeText, { color: theme.textColor }]}>
+                {daysRemainingText}
+              </Text>
+            </View>
+          ) : null}
         </View>
 
-        {/* Operator Manual Review & Correction Section */}
-        {(status === 'MANUAL_REVIEW' || ocrData.manual_review_required) && (
-          <View style={styles.manualCorrectionCard}>
-            <Text style={styles.manualCorrectionHeader}>✏️ OPERATOR MANUAL CORRECTION WORKFLOW</Text>
-            <Text style={styles.manualCorrectionText}>
-              Registration could not be read with sufficient confidence ({ (ocrData.confidence * 100).toFixed(1) }%).
-              Verify or edit the registration below before requesting compliance verification:
-            </Text>
+        {/* High-Contrast Indian HSRP License Plate Visual */}
+        <View style={styles.plateWrapper}>
+          <Text style={styles.sectionCaption}>DETECTED VEHICLE REGISTRATION</Text>
+          <View style={styles.hsrpPlate}>
+            {/* Blue IND Strip */}
+            <View style={styles.hsrpIndStrip}>
+              <View style={styles.hsrpEmblemSquare} />
+              <Text style={styles.hsrpIndText}>IND</Text>
+            </View>
+            {/* Plate Registration Number */}
+            <View style={styles.hsrpNumberContainer}>
+              <Text style={styles.hsrpNumberText} numberOfLines={1} adjustsFontSizeToFit>
+                {registrationText}
+              </Text>
+            </View>
+          </View>
+        </View>
 
-            <View style={styles.manualDetailRow}>
-              <Text style={styles.manualDetailLabel}>Detected Registration:</Text>
-              <Text style={styles.manualDetailValReg}>{registrationText}</Text>
+        {/* Operator Picture-in-Picture Manual Review Card */}
+        {isManualReview && (
+          <View style={styles.reviewCard}>
+            <View style={styles.reviewHeaderRow}>
+              <Text style={styles.reviewHeaderTitle}>MANUAL PLATE CORRECTION</Text>
+              <Text style={styles.reviewConfidenceBadge}>
+                {(ocrData.confidence * 100).toFixed(0)}% CONF
+              </Text>
             </View>
 
-            <View style={styles.manualDetailRow}>
-              <Text style={styles.manualDetailLabel}>OCR Confidence:</Text>
-              <Text style={styles.manualDetailVal}>{ (ocrData.confidence * 100).toFixed(1) }%</Text>
+            {/* Picture-in-Picture Plate Image Crop Preview */}
+            {imageInput && (
+              <View style={styles.pipContainer}>
+                <Image
+                  source={{ uri: imageInput.uri }}
+                  style={styles.pipImage}
+                  resizeMode="contain"
+                />
+                <View style={styles.pipLabelBadge}>
+                  <Text style={styles.pipLabelText}>CAPTURED IMAGE PREVIEW</Text>
+                </View>
+              </View>
+            )}
+
+            {/* Quick-Fix Character Substitution Chips */}
+            <Text style={styles.quickFixCaption}>QUICK FIX CHARACTER SUBSTITUTIONS:</Text>
+            <View style={styles.chipsRow}>
+              <TouchableOpacity
+                style={styles.chipBtn}
+                onPress={() => handleSwapChar('0', 'O')}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.chipText}>0 / O</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.chipBtn}
+                onPress={() => handleSwapChar('1', 'I')}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.chipText}>1 / I</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.chipBtn}
+                onPress={() => handleSwapChar('8', 'B')}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.chipText}>8 / B</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.chipBtn}
+                onPress={() => handleSwapChar('5', 'S')}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.chipText}>5 / S</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.chipBtn, styles.chipClear]}
+                onPress={() => setEditedReg('')}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.chipClearText}>CLEAR</Text>
+              </TouchableOpacity>
             </View>
 
-            <View style={styles.manualDetailRow}>
-              <Text style={styles.manualDetailLabel}>Raw Recognized OCR:</Text>
-              <Text style={styles.manualDetailVal}>{ocrData.raw_text || 'N/A'}</Text>
-            </View>
-
-            <Text style={styles.inputLabel}>ENTER CORRECTED REGISTRATION:</Text>
+            {/* Editable Registration Input */}
+            <Text style={styles.inputFieldLabel}>CONFIRM NUMBER PLATE:</Text>
             <TextInput
               style={styles.regInput}
               value={editedReg}
-              onChangeText={setEditedReg}
-              placeholder="e.g. RJ32GD9600"
+              onChangeText={text => setEditedReg(text.toUpperCase())}
+              placeholder="e.g. DL01AB1234"
               placeholderTextColor="#64748b"
               autoCapitalize="characters"
               autoCorrect={false}
+              maxLength={14}
             />
 
             <TouchableOpacity
-              style={[styles.verifyBtn, isSubmitting && styles.btnDisabled]}
+              style={[styles.confirmBtn, isSubmitting && styles.btnDisabled]}
               onPress={handleConfirmVerification}
               disabled={isSubmitting}
+              activeOpacity={0.8}
             >
               {isSubmitting ? (
                 <ActivityIndicator color="#ffffff" size="small" />
               ) : (
-                <Text style={styles.verifyBtnText}>VERIFY CNG COMPLIANCE</Text>
+                <Text style={styles.confirmBtnText}>VERIFY COMPLIANCE</Text>
               )}
             </TouchableOpacity>
           </View>
         )}
 
-        {/* License Plate Graphic Display */}
-        <View style={styles.plateContainer}>
-          <View style={styles.plateBorder}>
-            <View style={styles.plateIndStrip}>
-              <Text style={styles.indText}>IND</Text>
-            </View>
-            <View style={styles.plateTextContainer}>
-              <Text style={styles.plateText}>{registrationText}</Text>
-            </View>
+        {/* Cylinder & Compliance Specs Grid */}
+        <View style={styles.specsGrid}>
+          <View style={styles.specBox}>
+            <Text style={styles.specLabel}>HYDROTEST EXPIRY</Text>
+            <Text style={[styles.specValue, { color: theme.textColor }]}>{expiryDisplay}</Text>
           </View>
-        </View>
 
-        {/* Verification Details Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>📋 Verification Summary</Text>
-          <View style={styles.row}>
-            <Text style={styles.label}>Status Code:</Text>
-            <Text style={[styles.value, { color: theme.badgeBg, fontWeight: 'bold' }]}>
-              {status}
+          <View style={styles.specBox}>
+            <Text style={styles.specLabel}>CYLINDER ID</Text>
+            <Text style={styles.specValue} numberOfLines={1}>
+              {verification?.source_reference || verification?.compliance_id || 'CYL-VALIDATED'}
             </Text>
           </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Compliance ID:</Text>
-            <Text style={styles.value}>{verification?.compliance_id || 'N/A'}</Text>
+
+          <View style={styles.specBox}>
+            <Text style={styles.specLabel}>SAFETY RULESET</Text>
+            <Text style={styles.specValue}>PESO Gas Rules 2016</Text>
           </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Expiry Date:</Text>
-            <Text style={styles.value}>{formattedExpiry}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Source Reference:</Text>
-            <Text style={styles.value}>{verification?.source_reference || 'N/A'}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Rule Engine Version:</Text>
-            <Text style={styles.value}>{verification?.rule_version || 'v1'}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Manual Review Needed:</Text>
-            <Text style={styles.value}>
-              {ocrData.manual_review_required || verification?.manual_review_required
-                ? 'YES'
-                : 'NO'}
+
+          <View style={styles.specBox}>
+            <Text style={styles.specLabel}>ANPR ACCURACY</Text>
+            <Text style={styles.specValue}>
+              {(ocrData.confidence * 100).toFixed(0)}% ({ocrData.engine_name})
             </Text>
           </View>
         </View>
 
-        {/* OCR Diagnostics & Audit Evidence Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardHeader}>🔍 OCR & Forensic Audit Evidence</Text>
+        {/* Forensic & Audit Accordion */}
+        <TouchableOpacity
+          style={styles.accordionHeader}
+          onPress={() => setShowAuditDetails(!showAuditDetails)}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.accordionTitle}>
+            {showAuditDetails ? 'HIDE AUDIT LOG' : 'VIEW AUDIT LOG'}
+          </Text>
+        </TouchableOpacity>
 
-          {imageInput && (
-            <View style={styles.imagePreviewRow}>
-              <Image source={{ uri: imageInput.uri }} style={styles.thumbImage} resizeMode="cover" />
-              <View style={styles.imageMeta}>
-                <Text style={styles.metaText}>Source: {imageInput.source}</Text>
-                <Text style={styles.metaText}>
-                  File Size: {(imageInput.size / 1024).toFixed(1)} KB
-                </Text>
-                <Text style={styles.metaText}>Format: {imageInput.mimeType}</Text>
-              </View>
+        {showAuditDetails && (
+          <View style={styles.auditDetailsCard}>
+            <View style={styles.auditRow}>
+              <Text style={styles.auditLabel}>Raw OCR String:</Text>
+              <Text style={styles.auditValue}>{ocrData.raw_text || 'N/A'}</Text>
             </View>
-          )}
-
-          <View style={styles.divider} />
-
-          <View style={styles.row}>
-            <Text style={styles.label}>OCR Engine:</Text>
-            <Text style={styles.value}>{ocrData.engine_name}</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>OCR Confidence:</Text>
-            <Text style={styles.value}>{(ocrData.confidence * 100).toFixed(1)}%</Text>
-          </View>
-          <View style={styles.divider} />
-          <View style={styles.row}>
-            <Text style={styles.label}>Raw Recognized Text:</Text>
-            <Text style={styles.value}>{ocrData.raw_text || 'N/A'}</Text>
-          </View>
-
-          {imageInput && (
-            <>
-              <View style={styles.divider} />
-              <View style={styles.column}>
-                <Text style={styles.label}>Image SHA-256 Digest:</Text>
-                <Text style={styles.hashValue} numberOfLines={1} selectable>
+            <View style={styles.auditRow}>
+              <Text style={styles.auditLabel}>Normalized Plate:</Text>
+              <Text style={styles.auditValue}>{ocrData.normalized_registration || 'N/A'}</Text>
+            </View>
+            <View style={styles.auditRow}>
+              <Text style={styles.auditLabel}>Engine Model:</Text>
+              <Text style={styles.auditValue}>{ocrData.engine_name}</Text>
+            </View>
+            <View style={styles.auditRow}>
+              <Text style={styles.auditLabel}>Compliance ID:</Text>
+              <Text style={styles.auditValue}>{verification?.compliance_id || 'N/A'}</Text>
+            </View>
+            {imageInput && (
+              <View style={styles.auditColumn}>
+                <Text style={styles.auditLabel}>SHA-256 Digest:</Text>
+                <Text style={styles.auditHash} numberOfLines={1} selectable>
                   {imageInput.sha256}
                 </Text>
               </View>
-            </>
-          )}
-        </View>
+            )}
+          </View>
+        )}
 
-        {/* Action Buttons */}
+        {/* Action Buttons for Attendant */}
         <View style={styles.actionContainer}>
-          <TouchableOpacity style={styles.primaryButton} onPress={onReset}>
-            <Text style={styles.primaryButtonText}>📷 SCAN AGAIN / LIVE CAMERA</Text>
+          <TouchableOpacity
+            style={styles.scanNextBtn}
+            onPress={() => {
+              haptics.tap();
+              onReset();
+            }}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.scanNextBtnText}>SCAN NEXT VEHICLE</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={onSelectGallery}>
-            <Text style={styles.secondaryButtonText}>🖼️ CHOOSE FROM GALLERY</Text>
+          <TouchableOpacity
+            style={styles.galleryBtn}
+            onPress={() => {
+              haptics.tap();
+              onSelectGallery();
+            }}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.galleryBtnText}>SELECT FROM GALLERY</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -317,265 +453,403 @@ export function ComplianceResultView({
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#090d16',
   },
   container: {
     padding: 16,
-    paddingBottom: 32,
+    paddingBottom: 40,
   },
-  header: {
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
   },
-  headerTitle: {
-    color: '#38bdf8',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
+  topBarLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  statusDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  topBarTitle: {
+    color: '#94a3b8',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 1,
   },
   closeBtn: {
     backgroundColor: '#1e293b',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
     borderRadius: 6,
-  },
-  closeBtnText: {
-    color: '#94a3b8',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  statusBanner: {
-    borderRadius: 12,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 16,
-    elevation: 4,
-  },
-  statusIcon: {
-    fontSize: 36,
-    marginBottom: 8,
-  },
-  statusTitle: {
-    color: '#ffffff',
-    fontSize: 20,
-    fontWeight: 'bold',
-    letterSpacing: 1,
-    textAlign: 'center',
-  },
-  statusDescription: {
-    color: 'rgba(255, 255, 255, 0.9)',
-    fontSize: 13,
-    textAlign: 'center',
-    marginTop: 6,
-  },
-  plateContainer: {
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  plateBorder: {
-    flexDirection: 'row',
-    backgroundColor: '#fef08a',
-    borderWidth: 3,
-    borderColor: '#000000',
-    borderRadius: 8,
-    width: 280,
-    height: 64,
-    alignItems: 'center',
-    elevation: 5,
-  },
-  plateIndStrip: {
-    backgroundColor: '#1d4ed8',
-    width: 32,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-  },
-  indText: {
-    color: '#ffffff',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  plateTextContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  plateText: {
-    color: '#000000',
-    fontSize: 22,
-    fontWeight: 'bold',
-    letterSpacing: 2,
-  },
-  card: {
-    backgroundColor: '#1e293b',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
     borderWidth: 1,
     borderColor: '#334155',
   },
-  cardHeader: {
-    color: '#38bdf8',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 12,
+  closeBtnText: {
+    color: '#cbd5e1',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
-  row: {
+  decisionCard: {
+    borderRadius: 14,
+    padding: 20,
+    borderWidth: 2,
+    marginBottom: 16,
+    elevation: 6,
+  },
+  decisionTopRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 6,
-  },
-  column: {
-    paddingVertical: 6,
-  },
-  label: {
-    color: '#94a3b8',
-    fontSize: 13,
-  },
-  value: {
-    color: '#f8fafc',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  hashValue: {
-    color: '#38bdf8',
-    fontSize: 11,
-    fontFamily: 'monospace',
-    marginTop: 2,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#334155',
-    marginVertical: 4,
-  },
-  imagePreviewRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 12,
   },
-  thumbImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 8,
+  verdictPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
     borderWidth: 1,
-    borderColor: '#475569',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
-  imageMeta: {
-    marginLeft: 12,
-    justifyContent: 'center',
-  },
-  metaText: {
-    color: '#cbd5e1',
-    fontSize: 12,
-    marginBottom: 2,
-  },
-  actionContainer: {
-    marginTop: 8,
-  },
-  primaryButton: {
-    backgroundColor: '#16a34a',
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 10,
-    elevation: 3,
-  },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 14,
+  verdictPillText: {
+    fontSize: 11,
+    fontWeight: '800',
     letterSpacing: 0.5,
   },
-  secondaryButton: {
-    backgroundColor: '#2563eb',
-    paddingVertical: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-    elevation: 2,
+  decisionCodeBox: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
-  secondaryButtonText: {
+  decisionCodeText: {
+    fontSize: 11,
+    fontWeight: '900',
+    letterSpacing: 1,
+  },
+  decisionTitle: {
     color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 22,
+    fontWeight: '900',
     letterSpacing: 0.5,
   },
-  manualCorrectionCard: {
-    backgroundColor: '#3b0764',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#a855f7',
-  },
-  manualCorrectionHeader: {
-    color: '#f0abfc',
-    fontSize: 14,
-    fontWeight: 'bold',
-    marginBottom: 6,
-  },
-  manualCorrectionText: {
-    color: '#e9d5ff',
+  decisionSubtitle: {
+    color: 'rgba(255, 255, 255, 0.85)',
     fontSize: 13,
     lineHeight: 18,
-    marginBottom: 12,
+    marginTop: 6,
   },
-  manualDetailRow: {
+  daysBadge: {
+    marginTop: 12,
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 6,
+  },
+  daysBadgeText: {
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  plateWrapper: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  sectionCaption: {
+    color: '#64748b',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+  },
+  hsrpPlate: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    borderWidth: 3,
+    borderColor: '#0f172a',
+    borderRadius: 8,
+    width: '100%',
+    height: 66,
+    alignItems: 'center',
+    elevation: 4,
+    overflow: 'hidden',
+  },
+  hsrpIndStrip: {
+    backgroundColor: '#1d4ed8',
+    width: 36,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRightWidth: 1.5,
+    borderRightColor: '#1e3a8a',
+  },
+  hsrpEmblemSquare: {
+    width: 8,
+    height: 8,
+    borderRadius: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    marginBottom: 3,
+  },
+  hsrpIndText: {
+    color: '#ffffff',
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+  hsrpNumberContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  hsrpNumberText: {
+    color: '#0f172a',
+    fontSize: 26,
+    fontWeight: '900',
+    letterSpacing: 2,
+    fontFamily: 'monospace',
+  },
+  reviewCard: {
+    backgroundColor: '#1a102f',
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1.5,
+    borderColor: '#9333ea',
+  },
+  reviewHeaderRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 4,
-  },
-  manualDetailLabel: {
-    color: '#c084fc',
-    fontSize: 12,
-  },
-  manualDetailValReg: {
-    color: '#38bdf8',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  manualDetailVal: {
-    color: '#f8fafc',
-    fontSize: 13,
-    fontWeight: '600',
-  },
-  inputLabel: {
-    color: '#f0abfc',
-    fontSize: 11,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
-    marginTop: 14,
-    marginBottom: 6,
-  },
-  regInput: {
-    backgroundColor: '#1e1b4b',
-    borderWidth: 1.5,
-    borderColor: '#c084fc',
-    borderRadius: 8,
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: 1.5,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
     marginBottom: 12,
   },
-  verifyBtn: {
+  reviewHeaderTitle: {
+    color: '#f0abfc',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  reviewConfidenceBadge: {
+    backgroundColor: '#3b0764',
+    color: '#c084fc',
+    fontSize: 11,
+    fontWeight: '800',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#7e22ce',
+  },
+  pipContainer: {
+    backgroundColor: '#000000',
+    borderRadius: 8,
+    height: 140,
+    overflow: 'hidden',
+    position: 'relative',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#4c1d95',
+  },
+  pipImage: {
+    width: '100%',
+    height: '100%',
+  },
+  pipLabelBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  pipLabelText: {
+    color: '#c084fc',
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  quickFixCaption: {
+    color: '#c084fc',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    marginBottom: 8,
+  },
+  chipsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 14,
+  },
+  chipBtn: {
+    backgroundColor: '#2e1065',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#7e22ce',
+  },
+  chipText: {
+    color: '#e9d5ff',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  chipClear: {
+    backgroundColor: '#1e1b4b',
+    borderColor: '#4338ca',
+  },
+  chipClearText: {
+    color: '#a5b4fc',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  inputFieldLabel: {
+    color: '#e9d5ff',
+    fontSize: 10,
+    fontWeight: '800',
+    marginBottom: 6,
+    letterSpacing: 0.5,
+  },
+  regInput: {
+    backgroundColor: '#0f0a20',
+    borderWidth: 1.5,
+    borderColor: '#a855f7',
+    borderRadius: 8,
+    color: '#ffffff',
+    fontSize: 22,
+    fontWeight: '900',
+    letterSpacing: 2,
+    textAlign: 'center',
+    paddingVertical: 12,
+    marginBottom: 14,
+  },
+  confirmBtn: {
     backgroundColor: '#9333ea',
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
     elevation: 3,
   },
-  verifyBtnText: {
+  confirmBtnText: {
     color: '#ffffff',
-    fontWeight: 'bold',
+    fontSize: 13,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+  specsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 16,
+  },
+  specBox: {
+    flexBasis: '48%',
+    flexGrow: 1,
+    backgroundColor: '#0f172a',
+    borderRadius: 10,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#1e293b',
+  },
+  specLabel: {
+    color: '#64748b',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  specValue: {
+    color: '#f8fafc',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  accordionHeader: {
+    backgroundColor: '#0f172a',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#1e293b',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  accordionTitle: {
+    color: '#64748b',
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+  },
+  auditDetailsCard: {
+    backgroundColor: '#0b1120',
+    borderRadius: 8,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#1e293b',
+    marginBottom: 16,
+    gap: 8,
+  },
+  auditRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  auditColumn: {
+    marginTop: 4,
+  },
+  auditLabel: {
+    color: '#64748b',
+    fontSize: 11,
+  },
+  auditValue: {
+    color: '#94a3b8',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  auditHash: {
+    color: '#38bdf8',
+    fontSize: 10,
+    fontFamily: 'monospace',
+    marginTop: 2,
+  },
+  actionContainer: {
+    gap: 10,
+    marginTop: 4,
+  },
+  scanNextBtn: {
+    backgroundColor: '#10b981',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    elevation: 4,
+  },
+  scanNextBtnText: {
+    color: '#ffffff',
     fontSize: 14,
+    fontWeight: '900',
+    letterSpacing: 0.5,
+  },
+  galleryBtn: {
+    backgroundColor: '#1e293b',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#334155',
+  },
+  galleryBtnText: {
+    color: '#cbd5e1',
+    fontSize: 13,
+    fontWeight: '700',
     letterSpacing: 0.5,
   },
   btnDisabled: {

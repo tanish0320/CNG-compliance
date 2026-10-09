@@ -60,9 +60,22 @@ class PaddleOcrAdapter(OcrProvider):
             # 2. Attempt loading EasyOCR
             try:
                 import easyocr
-                self._ocr_engine = easyocr.Reader([self._lang], gpu=False)
+                import os
+
+                model_dir = None
+                for cand in ["/app/models/easyocr", "models/easyocr", "/data/Projects/CNG/models/easyocr"]:
+                    if os.path.exists(os.path.join(cand, "craft_mlt_25k.pth")):
+                        model_dir = cand
+                        break
+
+                self._ocr_engine = easyocr.Reader(
+                    [self._lang],
+                    gpu=False,
+                    model_storage_directory=model_dir,
+                    download_enabled=(model_dir is None),
+                )
                 self._engine_type = "EasyOCR"
-                logger.info("ocr_engine_loaded", engine="EasyOCR")
+                logger.info("ocr_engine_loaded", engine="EasyOCR", model_dir=model_dir)
                 return self._ocr_engine
             except Exception as exc:  # noqa: BLE001
                 logger.error("no_real_ocr_engine_available", error=str(exc))

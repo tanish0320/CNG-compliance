@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile.backend
+    container_name: cng-compliance-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      LOG_LEVEL: INFO
+      COMPLIANCE_PROVIDER: mock
+      OCR_PROVIDER: mock
+      ENABLE_DEV_AUTH: "true"
+      DATABASE_URL: sqlite+aiosqlite:////app/data/compliance.db
+    volumes:
+      - cng_backend_data:/app/data
+      - ./backend/src/app:/app/src/app
+      - ./models/easyocr:/app/models/easyocr:ro
+      - ./detected_crops:/app/detected_crops
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cng-compliance-tunnel
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://backend:8000
+    depends_on:
+      - backend
+
+volumes:
+  cng_backend_data:

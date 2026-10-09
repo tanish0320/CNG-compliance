@@ -1,4 +1,12 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
+
+# Install system runtime dependencies for OpenCV, PyTorch CPU, and healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    libgomp1 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create non-root system user and group for container security baseline
 RUN groupadd -g 10001 appgroup && \
@@ -6,18 +14,30 @@ RUN groupadd -g 10001 appgroup && \
 
 WORKDIR /app
 
-COPY backend /app
-RUN pip install --no-cache-dir .
+# Upgrade pip tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Change ownership of application directory to non-root user
-RUN chown -R appuser:appgroup /app
+# 1. Install lightweight CPU-only PyTorch (prevents downloading 5.5GB of CUDA bloat)
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+# 2. Copy dependencies first for Docker layer caching
+COPY backend/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu --default-timeout=120 --retries 5 -r requirements.txt
+
+# 3. Copy application code and install package
+COPY backend /app
+RUN pip install --no-cache-dir --no-deps -e .
+
+# Create data directory and change ownership to appuser
+RUN mkdir -p /app/data && chown -R appuser:appgroup /app
 
 USER appuser
 
 ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
