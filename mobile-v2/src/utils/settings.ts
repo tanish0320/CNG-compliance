@@ -10,7 +10,7 @@ export interface AppSettings {
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
-  apiBaseUrl: 'https://ozone-equality-consequences-hoping.trycloudflare.com',
+  apiBaseUrl: 'https://aviation-humanitarian-von-slowly.trycloudflare.com',
   stationName: 'GAIL Gas Sector 22',
   bayNumber: 'Bay 02 - Fast Fill',
   operatorId: 'Attendant Shift #1',
@@ -18,7 +18,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   autoTorch: false,
 };
 
-const SETTINGS_KEY = '@cng_app_settings_v2';
+const SETTINGS_KEY = '@cng_app_settings_v3';
 
 export async function loadSettings(): Promise<AppSettings> {
   try {
