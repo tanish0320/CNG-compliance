@@ -129,6 +129,7 @@ class VerificationService:
             compliance_id=record.compliance_id,
             expires_at=record.expires_at,
             source_reference=record.source_reference,
+            vehicle_details=record.vehicle_details,
         )
         if self._repository is not None:
             await self._repository.save_verification(

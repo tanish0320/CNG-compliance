@@ -20,6 +20,31 @@ class VerificationRequest(BaseModel):
     ocr_confidence: float | None = Field(default=None, ge=0, le=1)
 
 
+class VehicleDetails(BaseModel):
+    registration_no: str
+    formatted_registration: str | None = None
+    state_code: str | None = None
+    rto_name: str | None = None
+    vehicle_class: str | None = None
+    maker_model: str | None = None
+    fuel_type: str | None = None
+    chassis_no: str | None = None
+    engine_no: str | None = None
+    fitment_type: str | None = None
+    kit_serial_no: str | None = None
+    kit_manufacturer: str | None = None
+    cylinder_serial_no: str | None = None
+    cylinder_water_capacity_liters: float | None = None
+    last_hydro_test_date: str | None = None
+    next_hydro_test_due: str | None = None
+    compliance_plate_no: str | None = None
+    testing_agency: str | None = None
+    compliance_status: str | None = None
+    compliance_reason: str | None = None
+    fueling_permission: str | None = None
+    matched_via_fuzzy: bool = False
+
+
 class ProviderRecord(BaseModel):
     vehicle_registration: str
     compliance_id: str | None = None
@@ -28,6 +53,7 @@ class ProviderRecord(BaseModel):
     issued_at: datetime | None = None
     expires_at: datetime | None = None
     is_valid: bool | None = None
+    vehicle_details: VehicleDetails | None = None
 
 
 class VerificationResult(BaseModel):
@@ -39,6 +65,7 @@ class VerificationResult(BaseModel):
     source_reference: str | None = None
     rule_version: str = "v1"
     manual_review_required: bool = False
+    vehicle_details: VehicleDetails | None = None
 
 
 class OcrExtractResponse(BaseModel):

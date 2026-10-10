@@ -207,6 +207,7 @@ async def extract_ocr(
         source_reference=verification.source_reference,
         rule_version=verification.rule_version,
         manual_review_required=verification.manual_review_required,
+        vehicle_details=verification.vehicle_details,
     )
 
     return OcrExtractResponse(

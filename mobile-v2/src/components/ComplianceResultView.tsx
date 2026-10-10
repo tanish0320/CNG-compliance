@@ -354,6 +354,137 @@ export function ComplianceResultView({
           </View>
         )}
 
+        {/* Government CNG Vehicle & Cylinder Registry Details Card */}
+        {verification?.vehicle_details && (
+          <View style={styles.vehicleDetailsCard}>
+            <View style={styles.vehicleDetailsHeader}>
+              <View style={styles.vehicleHeaderLeft}>
+                <Text style={styles.vehicleSectionBadge}>VAHAN & PESO REGISTRY</Text>
+                <Text style={styles.vehicleModelTitle}>
+                  {verification.vehicle_details.maker_model || 'REGISTERED CNG VEHICLE'}
+                </Text>
+                <View style={styles.vehiclePillsRow}>
+                  {verification.vehicle_details.vehicle_class ? (
+                    <View style={styles.vehiclePill}>
+                      <Text style={styles.vehiclePillText}>
+                        {verification.vehicle_details.vehicle_class}
+                      </Text>
+                    </View>
+                  ) : null}
+                  {verification.vehicle_details.fuel_type ? (
+                    <View style={[styles.vehiclePill, styles.fuelPill]}>
+                      <Text style={[styles.vehiclePillText, styles.fuelPillText]}>
+                        {verification.vehicle_details.fuel_type}
+                      </Text>
+                    </View>
+                  ) : null}
+                  {verification.vehicle_details.matched_via_fuzzy ? (
+                    <View style={[styles.vehiclePill, styles.fuzzyPill]}>
+                      <Text style={[styles.vehiclePillText, styles.fuzzyPillText]}>
+                        ANPR AUTO-MATCHED
+                      </Text>
+                    </View>
+                  ) : null}
+                </View>
+              </View>
+            </View>
+
+            {/* Vehicle & Cylinder Data Rows */}
+            <View style={styles.vehicleDataGrid}>
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>RTO Authority:</Text>
+                <Text style={styles.vehicleDataValue} numberOfLines={1}>
+                  {verification.vehicle_details.rto_name || 'N/A'} ({verification.vehicle_details.state_code || ''})
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Fueling Permission:</Text>
+                <Text
+                  style={[
+                    styles.vehicleDataValue,
+                    {
+                      color:
+                        verification.vehicle_details.fueling_permission === 'ALLOWED'
+                          ? '#10b981'
+                          : '#ef4444',
+                      fontWeight: '800',
+                    },
+                  ]}
+                >
+                  {verification.vehicle_details.fueling_permission || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Cylinder Serial:</Text>
+                <Text style={styles.vehicleDataValueMono}>
+                  {verification.vehicle_details.cylinder_serial_no || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Water Capacity:</Text>
+                <Text style={styles.vehicleDataValue}>
+                  {verification.vehicle_details.cylinder_water_capacity_liters
+                    ? `${verification.vehicle_details.cylinder_water_capacity_liters} Liters`
+                    : 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Kit Manufacturer:</Text>
+                <Text style={styles.vehicleDataValue} numberOfLines={1}>
+                  {verification.vehicle_details.kit_manufacturer || verification.vehicle_details.kit_serial_no || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Testing Agency:</Text>
+                <Text style={styles.vehicleDataValue} numberOfLines={1}>
+                  {verification.vehicle_details.testing_agency || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Last Hydrotest Date:</Text>
+                <Text style={styles.vehicleDataValue}>
+                  {verification.vehicle_details.last_hydro_test_date || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Next Due Date:</Text>
+                <Text
+                  style={[
+                    styles.vehicleDataValue,
+                    {
+                      color: theme.textColor,
+                      fontWeight: '800',
+                    },
+                  ]}
+                >
+                  {verification.vehicle_details.next_hydro_test_due || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Chassis Number:</Text>
+                <Text style={styles.vehicleDataValueMono}>
+                  {verification.vehicle_details.chassis_no || 'N/A'}
+                </Text>
+              </View>
+
+              <View style={styles.vehicleDataRow}>
+                <Text style={styles.vehicleDataLabel}>Engine Number:</Text>
+                <Text style={styles.vehicleDataValueMono}>
+                  {verification.vehicle_details.engine_no || 'N/A'}
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
+
         {/* Cylinder & Compliance Specs Grid */}
         <View style={styles.specsGrid}>
           <View style={styles.specBox}>
@@ -745,6 +876,102 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '900',
     letterSpacing: 0.5,
+  },
+  vehicleDetailsCard: {
+    backgroundColor: '#0f172a',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#1e293b',
+    marginBottom: 16,
+  },
+  vehicleDetailsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    borderBottomWidth: 1,
+    borderBottomColor: '#1e293b',
+    paddingBottom: 12,
+    marginBottom: 12,
+  },
+  vehicleHeaderLeft: {
+    flex: 1,
+  },
+  vehicleSectionBadge: {
+    color: '#38bdf8',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
+    marginBottom: 4,
+  },
+  vehicleModelTitle: {
+    color: '#f8fafc',
+    fontSize: 16,
+    fontWeight: '900',
+    letterSpacing: 0.3,
+    marginBottom: 8,
+  },
+  vehiclePillsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  vehiclePill: {
+    backgroundColor: '#1e293b',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#334155',
+  },
+  vehiclePillText: {
+    color: '#94a3b8',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  fuelPill: {
+    backgroundColor: '#052e16',
+    borderColor: '#10b981',
+  },
+  fuelPillText: {
+    color: '#34d399',
+  },
+  fuzzyPill: {
+    backgroundColor: '#451a03',
+    borderColor: '#f59e0b',
+  },
+  fuzzyPillText: {
+    color: '#fbbf24',
+  },
+  vehicleDataGrid: {
+    gap: 8,
+  },
+  vehicleDataRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  vehicleDataLabel: {
+    color: '#64748b',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  vehicleDataValue: {
+    color: '#e2e8f0',
+    fontSize: 12,
+    fontWeight: '700',
+    maxWidth: '60%',
+    textAlign: 'right',
+  },
+  vehicleDataValueMono: {
+    color: '#38bdf8',
+    fontSize: 11,
+    fontWeight: '800',
+    fontFamily: 'monospace',
+    letterSpacing: 0.5,
+    maxWidth: '60%',
+    textAlign: 'right',
   },
   specsGrid: {
     flexDirection: 'row',
