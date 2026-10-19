@@ -17,26 +17,25 @@ export function ProcessingView({ statusText, imageInput }: Props) {
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
-        <ActivityIndicator size="large" color="#38bdf8" style={styles.spinner} />
-        <Text style={styles.title}>PROCESSING VEHICLE IMAGE</Text>
+        <View style={styles.spinnerWrap}>
+          <ActivityIndicator size="large" color="#15803D" />
+        </View>
+        <View style={styles.stepPill}>
+          <Text style={styles.stepPillText}>STEP 2 OF 2 • VERIFYING</Text>
+        </View>
+        <Text style={styles.title}>Checking CNG Compliance</Text>
         <Text style={styles.statusText}>{statusText}</Text>
 
-        {imageInput && (
+        {imageInput && imageInput.uri ? (
           <View style={styles.imageInfoContainer}>
-            {imageInput.uri ? (
-              <Image source={{ uri: imageInput.uri }} style={styles.thumb} resizeMode="cover" />
-            ) : null}
+            <Image source={{ uri: imageInput.uri }} style={styles.thumb} resizeMode="cover" />
             <View style={styles.metaContainer}>
+              <Text style={styles.metaTitle}>Plate Snapshot Captured</Text>
               <Text style={styles.metaText}>Source: {imageInput.source}</Text>
-              <Text style={styles.metaText}>
-                Size: {(imageInput.size / 1024).toFixed(1)} KB
-              </Text>
-              <Text style={styles.metaText}>
-                SHA-256: {imageInput.sha256 ? `${imageInput.sha256.substring(0, 16)}...` : 'Calculating...'}
-              </Text>
+              <Text style={styles.metaBadge}>PESO / VAHAN Live Lookup</Text>
             </View>
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   );
@@ -45,61 +44,96 @@ export function ProcessingView({ statusText, imageInput }: Props) {
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(15, 23, 42, 0.92)',
+    backgroundColor: 'rgba(15, 23, 42, 0.45)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
     padding: 24,
   },
   card: {
-    backgroundColor: '#1e293b',
+    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     padding: 24,
     alignItems: 'center',
     width: '100%',
     maxWidth: 360,
     borderWidth: 1,
-    borderColor: '#38bdf8',
-    elevation: 8,
+    borderColor: '#E2E8F0',
+    elevation: 6,
   },
-  spinner: {
-    marginBottom: 16,
+  spinnerWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#F0FDF4',
+    borderWidth: 1,
+    borderColor: '#BBF7D0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 14,
   },
-  title: {
-    color: '#38bdf8',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 0.5,
+  stepPill: {
+    backgroundColor: '#F1F5F9',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
     marginBottom: 8,
   },
+  stepPillText: {
+    color: '#64748B',
+    fontSize: 10,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+  },
+  title: {
+    color: '#0F172A',
+    fontSize: 18,
+    fontWeight: '800',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
   statusText: {
-    color: '#cbd5e1',
+    color: '#64748B',
     fontSize: 13,
     textAlign: 'center',
+    lineHeight: 19,
     marginBottom: 16,
   },
   imageInfoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#0f172a',
+    backgroundColor: '#F8FAFC',
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
     width: '100%',
   },
   thumb: {
-    width: 48,
-    height: 48,
-    borderRadius: 6,
+    width: 52,
+    height: 52,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: '#CBD5E1',
   },
   metaContainer: {
     marginLeft: 12,
     flex: 1,
   },
+  metaTitle: {
+    color: '#0F172A',
+    fontSize: 13,
+    fontWeight: '700',
+  },
   metaText: {
-    color: '#94a3b8',
+    color: '#64748B',
     fontSize: 11,
-    marginBottom: 2,
+    marginTop: 2,
+  },
+  metaBadge: {
+    color: '#15803D',
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 2,
   },
 });

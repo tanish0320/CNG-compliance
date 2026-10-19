@@ -21,12 +21,17 @@ router = APIRouter(prefix="/ocr", tags=["ocr"])
 
 _override_ocr_provider: OcrProvider | None = None
 _override_plate_detector: PlateDetector | None = None
+_default_ocr_provider: OcrProvider | None = None
+_default_plate_detector: PlateDetector | None = None
 
 
 def get_ocr_provider() -> OcrProvider:
+    global _default_ocr_provider
     if _override_ocr_provider is not None:
         return _override_ocr_provider
-    return PaddleOcrAdapter(mock_mode=False)
+    if _default_ocr_provider is None:
+        _default_ocr_provider = PaddleOcrAdapter(mock_mode=False)
+    return _default_ocr_provider
 
 
 def set_ocr_provider(provider: OcrProvider | None) -> None:
@@ -35,14 +40,18 @@ def set_ocr_provider(provider: OcrProvider | None) -> None:
 
 
 def get_plate_detector() -> PlateDetector:
+    global _default_plate_detector
     if _override_plate_detector is not None:
         return _override_plate_detector
-    return YoloPlateDetectorAdapter(mock_mode=False)
+    if _default_plate_detector is None:
+        _default_plate_detector = YoloPlateDetectorAdapter(mock_mode=False)
+    return _default_plate_detector
 
 
 def set_plate_detector(detector: PlateDetector | None) -> None:
     global _override_plate_detector
     _override_plate_detector = detector
+
 
 
 @router.post("/extract", response_model=OcrExtractResponse)

@@ -158,6 +158,14 @@ class PaddleOcrAdapter(OcrProvider):
                             "line_count": len(raw_lines),
                         }
 
+                    # Short-circuit if we already matched a valid Indian registration with good confidence
+                    if norm_res.is_valid and avg_confidence >= 0.55:
+                        break
+                    if var_name == "clahe_contrast" and not raw_lines and best_candidate["line_count"] == 0:
+                        break
+
+
+
                 if best_candidate is not None:
                     norm_res = best_candidate["norm_res"]
                     return OcrResult(
