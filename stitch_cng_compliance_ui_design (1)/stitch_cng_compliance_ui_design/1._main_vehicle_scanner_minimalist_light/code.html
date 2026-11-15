@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <meta content="mobile_stack" name="shell-type"/>
+  <title>CNG Compliance — Vehicle Plate Scanner</title>
+  
+  <!-- Fonts: Raleway (Headings) & DM Sans (Body, Microtype) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  
+  <!-- Iconify Solar Icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#C1A673",
+            "on-primary": "#FFFFFF",
+            surface: "#FAF7F2",
+            "surface-alt": "#FFFFFF",
+            "surface-muted": "#F2EFEA",
+            "surface-tonal": "#F0EAE1",
+            "on-surface": "#23201E",
+            "on-surface-variant": "#8A827A",
+            "on-surface-strong": "#4A4542",
+            border: "#EBE3D5",
+            destructive: "#8C4A4A",
+            "scrim-glass": "rgba(255,255,255,0.6)",
+            "scrim-glass-soft": "rgba(255,255,255,0.4)",
+          },
+          fontFamily: {
+            sans: ['"DM Sans"', 'sans-serif'],
+            heading: ['"Raleway"', 'sans-serif'],
+          },
+          boxShadow: {
+            glass: "0 12px 40px rgba(209,200,188,0.4)",
+            "glass-sm": "0 8px 16px rgba(209,200,188,0.3)",
+            "glass-nav": "0 16px 40px rgba(209,200,188,0.4)",
+            cta: "0 8px 20px rgba(193,166,115,0.3)",
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF7F2;
+        color: #23201E;
+      }
+      body {
+        overscroll-behavior: none;
+        font-family: 'DM Sans', sans-serif;
+        min-height: max(884px, 100dvh);
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 24px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#FAF7F2] text-[#23201E] flex flex-col min-h-screen antialiased selection:bg-[#C1A673]/20">
+
+  <!-- Top App Bar (Glassmorphic Floating Chrome) -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/40 backdrop-blur-xl border-b border-white/60 pt-safe transition-all">
+    <!-- OS Status Bar Simulation -->
+    <div class="flex justify-between items-center px-6 pt-2 pb-1 text-xs text-[#8A827A] font-medium">
+      <span class="font-semibold text-[#23201E] tracking-tight">09:41</span>
+      <div class="flex items-center gap-2 text-[#23201E]">
+        <iconify-icon icon="solar:transmission-linear" class="text-sm"></iconify-icon>
+        <iconify-icon icon="solar:wifi-router-minimalistic-linear" class="text-sm"></iconify-icon>
+        <iconify-icon icon="solar:battery-full-linear" class="text-sm"></iconify-icon>
+      </div>
+    </div>
+    
+    <!-- Navigation Chrome -->
+    <div class="h-16 px-6 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3.5 min-w-0">
+        <button aria-label="Go Back" class="size-11 rounded-full bg-white/50 backdrop-blur-md border border-white/60 shadow-glass-sm flex items-center justify-center text-[#23201E] hover:bg-white active:scale-95 transition-all" onclick="history.back()">
+          <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
+        </button>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="size-1.5 rounded-full bg-[#C1A673]"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A827A]">ONLINE • LANE 02</span>
+          </div>
+          <h1 class="font-heading text-xl font-normal tracking-[0.015em] text-[#23201E] truncate">Plate Verification</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="hidden xs:flex items-center gap-1.5 bg-white/50 backdrop-blur-md border border-white/60 px-3 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-[#4A4542] shadow-glass-sm">
+          <iconify-icon icon="solar:gas-station-linear" class="text-sm text-[#C1A673]"></iconify-icon>
+          <span>BAY 04</span>
+        </div>
+        <div class="size-11 rounded-full border-2 border-[#C1A673]/30 p-0.5 shadow-glass-sm bg-white/40">
+          <div class="w-full h-full rounded-full bg-[#F0EAE1] flex items-center justify-center text-[#23201E]">
+            <iconify-icon icon="solar:user-linear" class="text-lg text-[#4A4542]"></iconify-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <main class="flex-1 flex flex-col w-full px-6 pt-28 pb-32 max-w-md mx-auto space-y-4">
+
+    <!-- Step / Protocol Pill Bar -->
+    <div class="w-full bg-white/60 backdrop-blur-xl border border-white/60 rounded-[32px] p-4 flex items-center justify-between shadow-glass">
+      <div class="flex items-center gap-3.5">
+        <div class="size-10 rounded-full bg-[#C1A673]/15 flex items-center justify-center text-[#C1A673] shrink-0">
+          <iconify-icon icon="solar:scanner-linear" class="text-xl"></iconify-icon>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold text-[#8A827A] uppercase tracking-[0.2em] block">PROTOCOL STEP 01</span>
+          <p class="font-heading text-sm font-medium tracking-[0.01em] text-[#23201E]">Align High-Security Plate</p>
+        </div>
+      </div>
+      <div class="px-3 py-1 rounded-full bg-[#C1A673]/15 text-[#C1A673] text-[10px] uppercase tracking-[0.2em] font-bold">
+        STANDBY
+      </div>
+    </div>
+
+    <!-- Viewfinder Area (Frosted Glass Container with Warm Editorial Photo) -->
+    <div class="relative w-full aspect-[4/5] rounded-[36px] overflow-hidden border border-white/60 shadow-glass flex flex-col justify-between p-4 bg-[#FAF7F2]">
+      <!-- Warm Golden Forecourt Imagery -->
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80')"></div>
+      
+      <!-- Warm Lens Overlay for Golden Hour Mood -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#23201E]/40 via-transparent to-[#23201E]/20 pointer-events-none"></div>
+
+      <!-- Top Tools Bar in Viewfinder -->
+      <div class="relative z-10 flex items-center justify-between w-full">
+        <!-- Torch Toggle Glass Button -->
+        <button class="h-10 px-4 rounded-full bg-white/60 backdrop-blur-xl text-[#23201E] border border-white/60 flex items-center gap-2 shadow-glass-sm active:scale-95 transition-all text-[10px] uppercase tracking-[0.2em] font-bold" id="torch-btn">
+          <iconify-icon icon="solar:flash-linear" class="text-base text-[#C1A673]" id="torch-icon"></iconify-icon>
+          <span>TORCH</span>
+        </button>
+
+        <!-- AF Status Badge -->
+        <div class="bg-white/60 backdrop-blur-xl text-[#23201E] px-3.5 py-1.5 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold flex items-center gap-2 border border-white/60 shadow-glass-sm">
+          <span class="size-1.5 rounded-full bg-[#C1A673]"></span>
+          <span>OPTICAL AF</span>
+        </div>
+      </div>
+
+      <!-- Center Targeting Frame -->
+      <div class="relative z-10 w-full my-auto flex flex-col items-center justify-center">
+        <div class="relative w-full max-w-[300px] h-32 rounded-3xl bg-white/20 backdrop-blur-md border border-white/70 shadow-glass flex flex-col items-center justify-center p-3.5 transition-all duration-300" id="target-box">
+          <!-- Subtle Corner Brackets -->
+          <div class="absolute top-2 left-2 size-3 border-t-2 border-l-2 border-[#C1A673]"></div>
+          <div class="absolute top-2 right-2 size-3 border-t-2 border-r-2 border-[#C1A673]"></div>
+          <div class="absolute bottom-2 left-2 size-3 border-b-2 border-l-2 border-[#C1A673]"></div>
+          <div class="absolute bottom-2 right-2 size-3 border-b-2 border-r-2 border-[#C1A673]"></div>
+
+          <!-- Embossed Indian Plate Representation -->
+          <div class="w-full bg-white/90 backdrop-blur-md text-[#23201E] rounded-2xl py-2 px-3 border border-white flex items-center justify-between shadow-glass-sm">
+            <!-- Left Blue IND Emblem -->
+            <div class="w-7 h-10 bg-[#0038A8] rounded-xl flex flex-col items-center justify-center text-[8px] font-bold text-white shrink-0 shadow-xs">
+              <span class="text-[9px]">🇮🇳</span>
+              <span class="tracking-tighter font-extrabold mt-0.5">IND</span>
+            </div>
+            <div class="flex-1 text-center">
+              <div class="font-heading text-sm font-medium tracking-[0.16em] text-[#23201E]">DL 01 AB 1234</div>
+              <div class="text-[9px] font-bold text-[#8A827A] uppercase tracking-[0.2em] mt-0.5">TARGET APERTURE</div>
+            </div>
+            <div class="size-6 rounded-full bg-[#FAF7F2] flex items-center justify-center text-[#8A827A]">
+              <iconify-icon icon="solar:minimalistic-magnifer-linear" class="text-xs"></iconify-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distance Helper Glass Badge -->
+      <div class="relative z-10 flex justify-center w-full">
+        <div class="bg-white/70 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-2 shadow-glass-sm border border-white/60 text-[10px] uppercase tracking-[0.2em] font-bold text-[#23201E]">
+          <iconify-icon icon="solar:ruler-linear" class="text-sm text-[#C1A673]"></iconify-icon>
+          <span>OPTIMAL DISTANCE 1.0 M</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions Section -->
+    <div class="flex flex-col gap-3 w-full">
+      <!-- Primary Gold Action Pill Button -->
+      <button class="h-14 w-full bg-[#C1A673] text-white rounded-full font-medium tracking-wide flex items-center justify-center gap-2.5 shadow-cta hover:opacity-95 active:scale-[0.98] transition-all" id="scan-trigger">
+        <iconify-icon icon="solar:camera-linear" class="text-xl"></iconify-icon>
+        <span class="font-sans text-sm font-medium">Verify Vehicle Plate</span>
+      </button>
+
+      <!-- Secondary White Pills in 2-column Grid -->
+      <div class="grid grid-cols-2 gap-3 w-full">
+        <button class="h-14 px-4 bg-white border border-[#EBE3D5] rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-[#23201E] flex items-center justify-center gap-2 hover:bg-[#FAF7F2] active:scale-[0.98] transition-all">
+          <iconify-icon icon="solar:gallery-linear" class="text-base text-[#8A827A]"></iconify-icon>
+          <span>GALLERY</span>
+        </button>
+        <button class="h-14 px-4 bg-white border border-[#EBE3D5] rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-[#23201E] flex items-center justify-center gap-2 hover:bg-[#FAF7F2] active:scale-[0.98] transition-all">
+          <iconify-icon icon="solar:keyboard-linear" class="text-base text-[#8A827A]"></iconify-icon>
+          <span>MANUAL</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Statutory Assurance Card (Tonal Card) -->
+    <div class="bg-[#F0EAE1] rounded-3xl p-5 flex items-center gap-4">
+      <div class="size-10 rounded-full bg-white/70 flex items-center justify-center text-[#C1A673] shrink-0 shadow-sm">
+        <iconify-icon icon="solar:shield-check-linear" class="text-xl"></iconify-icon>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-[10px] uppercase tracking-[0.2em] text-[#8A827A] font-bold mb-0.5">PESO & CCOE DIRECTORY</p>
+        <p class="text-xs text-[#4A4542] leading-relaxed">No gas dispensing permitted without verified hydro-test certificate validation.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Floating Pill Tab Bar Navigation -->
+  <nav class="fixed bottom-6 inset-x-6 z-50 max-w-md mx-auto">
+    <div class="bg-white/70 backdrop-blur-2xl border border-white/50 rounded-full h-16 shadow-glass-nav flex items-center justify-between px-3">
+      <!-- Active Tab: Scanner -->
+      <button class="flex-1 flex flex-col items-center justify-center text-[#C1A673]">
+        <div class="relative">
+          <iconify-icon icon="solar:scanner-bold" class="text-2xl"></iconify-icon>
+          <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-1 bg-[#C1A673] rounded-full"></div>
+        </div>
+      </button>
+
+      <!-- Tab: Verdict -->
+      <a href="../2._approved_safe_to_fill_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:check-circle-linear" class="text-2xl"></iconify-icon>
+      </a>
+
+      <!-- Tab: Manual Review -->
+      <a href="../4._check_photo_manual_review_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:eye-linear" class="text-2xl"></iconify-icon>
+      </a>
+
+      <!-- Tab: Shift History -->
+      <a href="../5._simple_shift_history_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:clock-circle-linear" class="text-2xl"></iconify-icon>
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    // Torch Toggle
+    const torchBtn = document.getElementById('torch-btn');
+    const torchIcon = document.getElementById('torch-icon');
+    let torchState = false;
+
+    torchBtn.addEventListener('click', () => {
+      torchState = !torchState;
+      if (torchState) {
+        torchBtn.classList.remove('bg-white/60', 'text-[#23201E]');
+        torchBtn.classList.add('bg-[#C1A673]', 'text-white', 'border-transparent');
+        torchIcon.classList.remove('text-[#C1A673]');
+        torchIcon.classList.add('text-white');
+      } else {
+        torchBtn.classList.remove('bg-[#C1A673]', 'text-white', 'border-transparent');
+        torchBtn.classList.add('bg-white/60', 'text-[#23201E]');
+        torchIcon.classList.remove('text-white');
+        torchIcon.classList.add('text-[#C1A673]');
+      }
+    });
+
+    // Tactile Scan Tap Feedback
+    const scanTrigger = document.getElementById('scan-trigger');
+    const targetBox = document.getElementById('target-box');
+
+    scanTrigger.addEventListener('click', () => {
+      targetBox.classList.add('border-[#C1A673]', 'scale-[1.02]');
+      setTimeout(() => {
+        window.location.href = '../2._approved_safe_to_fill_minimalist_light/code.html';
+      }, 450);
+    });
+  </script>
+</body>
+</html>

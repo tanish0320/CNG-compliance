@@ -69,6 +69,8 @@ describe("VerificationApi Client", () => {
 
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
+      status: 200,
+      text: async () => JSON.stringify(mockOcrResponse),
       json: async () => mockOcrResponse,
     });
 

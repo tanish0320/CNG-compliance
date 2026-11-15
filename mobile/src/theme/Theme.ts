@@ -1,22 +1,46 @@
 import type { ComplianceStatus } from "../domain/ComplianceStatus";
 
+/**
+ * Warm Sand Glassmorphic Design System Tokens
+ * Hushed luxury, sun-warmed neutrals, frosted-glass surfaces.
+ */
 export const Colors = {
-  background: "#F8FAFC",
-  surface: "#FFFFFF",
-  surfaceBorder: "#E2E8F0",
-  textPrimary: "#0F172A",
-  textSecondary: "#475569",
-  textMuted: "#94A3B8",
-  primary: "#0284C7",
-  primaryDark: "#0369A1",
-  success: "#16A34A",
-  successBg: "#DCFCE7",
-  warning: "#D97706",
-  warningBg: "#FEF3C7",
-  danger: "#DC2626",
-  dangerBg: "#FEE2E2",
-  neutral: "#64748B",
-  neutralBg: "#F1F5F9",
+  // Canvas & Surfaces
+  background: "#FAF7F2",
+  surface: "#FAF7F2",
+  surfaceAlt: "#FFFFFF",
+  surfaceTonal: "#F0EAE1",
+  surfaceMuted: "#F2EFEA",
+  surfaceBorder: "#EBE3D5",
+  
+  // Text Roles
+  textPrimary: "#23201E",
+  textSecondary: "#4A4542",
+  textMuted: "#8A827A",
+  
+  // Antique Gold Brand & Accent
+  primary: "#C1A673",
+  primaryDark: "#9E8455",
+  
+  // Semantic Roles (Restrained Gold & Dusty Terracotta)
+  success: "#C1A673",
+  successBg: "#F0EAE1",
+  warning: "#B88A3B",
+  warningBg: "#F0EAE1",
+  danger: "#8C4A4A",
+  dangerBg: "#F7EEED",
+  neutral: "#8A827A",
+  neutralBg: "#F0EAE1",
+  
+  // Glassmorphic Overlays
+  scrimGlass: "rgba(255, 255, 255, 0.6)",
+  scrimGlassSoft: "rgba(255, 255, 255, 0.4)",
+};
+
+export const Typography = {
+  headingFamily: "Raleway",
+  bodyFamily: "DM Sans",
+  letterSpacingEyebrow: 2.0, // 0.2em
 };
 
 export interface StatusStyle {

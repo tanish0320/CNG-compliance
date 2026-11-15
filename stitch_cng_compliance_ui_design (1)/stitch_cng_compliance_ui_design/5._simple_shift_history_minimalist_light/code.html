@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <meta content="mobile_tab" name="shell-type"/>
+  <title>CNG Compliance — Forecourt Shift Journal</title>
+  
+  <!-- Fonts: Raleway (Headings) & DM Sans (Body, Microtype) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  
+  <!-- Iconify Solar Icons -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#C1A673",
+            "on-primary": "#FFFFFF",
+            surface: "#FAF7F2",
+            "surface-alt": "#FFFFFF",
+            "surface-muted": "#F2EFEA",
+            "surface-tonal": "#F0EAE1",
+            "on-surface": "#23201E",
+            "on-surface-variant": "#8A827A",
+            "on-surface-strong": "#4A4542",
+            border: "#EBE3D5",
+            destructive: "#8C4A4A",
+            "scrim-glass": "rgba(255,255,255,0.6)",
+            "scrim-glass-soft": "rgba(255,255,255,0.4)",
+          },
+          fontFamily: {
+            sans: ['"DM Sans"', 'sans-serif'],
+            heading: ['"Raleway"', 'sans-serif'],
+          },
+          boxShadow: {
+            glass: "0 12px 40px rgba(209,200,188,0.4)",
+            "glass-sm": "0 8px 16px rgba(209,200,188,0.3)",
+            "glass-nav": "0 16px 40px rgba(209,200,188,0.4)",
+            cta: "0 8px 20px rgba(193,166,115,0.3)",
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: #FAF7F2;
+        color: #23201E;
+      }
+      body {
+        overscroll-behavior: none;
+        font-family: 'DM Sans', sans-serif;
+        min-height: max(884px, 100dvh);
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 24px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-[#FAF7F2] text-[#23201E] flex flex-col min-h-screen antialiased selection:bg-[#C1A673]/20">
+
+  <!-- Top App Bar (Glassmorphic Floating Chrome) -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/40 backdrop-blur-xl border-b border-white/60 pt-safe transition-all">
+    <div class="flex justify-between items-center px-6 pt-2 pb-1 text-xs text-[#8A827A] font-medium">
+      <span class="font-semibold text-[#23201E] tracking-tight">09:41</span>
+      <div class="flex items-center gap-2 text-[#23201E]">
+        <iconify-icon icon="solar:transmission-linear" class="text-sm"></iconify-icon>
+        <iconify-icon icon="solar:wifi-router-minimalistic-linear" class="text-sm"></iconify-icon>
+        <iconify-icon icon="solar:battery-full-linear" class="text-sm"></iconify-icon>
+      </div>
+    </div>
+    
+    <div class="h-16 px-6 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3.5 min-w-0">
+        <button aria-label="Go Back" class="size-11 rounded-full bg-white/50 backdrop-blur-md border border-white/60 shadow-glass-sm flex items-center justify-center text-[#23201E] hover:bg-white active:scale-95 transition-all" onclick="history.back()">
+          <iconify-icon icon="solar:arrow-left-linear" class="text-xl"></iconify-icon>
+        </button>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="size-1.5 rounded-full bg-[#C1A673]"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8A827A]">FORECOURT DIARY • LANE 02</span>
+          </div>
+          <h1 class="font-heading text-xl font-normal tracking-[0.015em] text-[#23201E] truncate">Shift Verification Log</h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="size-11 rounded-full border-2 border-[#C1A673]/30 p-0.5 shadow-glass-sm bg-white/40">
+          <div class="w-full h-full rounded-full bg-[#F0EAE1] flex items-center justify-center text-[#23201E]">
+            <iconify-icon icon="solar:user-linear" class="text-lg text-[#C1A673]"></iconify-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Work Area -->
+  <main class="flex-1 flex flex-col w-full px-6 pt-28 pb-32 max-w-md mx-auto space-y-4">
+
+    <!-- Shift Ledger Overview Card (Frosted Glass Card) -->
+    <div class="bg-white/60 backdrop-blur-xl border border-white/60 rounded-[36px] p-5 shadow-glass space-y-3.5">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase tracking-[0.2em] text-[#8A827A] font-bold block">ACTIVE DUTY WINDOW</span>
+          <h2 class="font-heading text-xl font-normal text-[#23201E]">Shift Total: 48 Vehicles</h2>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-[#C1A673]/15 text-[#C1A673] text-[10px] uppercase tracking-[0.2em] font-bold">
+          MORNING CYCLE
+        </span>
+      </div>
+
+      <!-- Stat Divider Row -->
+      <div class="grid grid-cols-3 gap-2 py-1 border-t border-[#EBE3D5]/60 pt-3">
+        <!-- Safe Stat -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-[#F0EAE1]/60">
+          <span class="font-heading text-2xl font-normal text-[#23201E]">41</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[#C1A673] font-bold mt-0.5">CLEARED</span>
+        </div>
+        <!-- Rejected Stat -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-[#F0EAE1]/60">
+          <span class="font-heading text-2xl font-normal text-[#8C4A4A]">5</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[#8C4A4A] font-bold mt-0.5">LOCKED</span>
+        </div>
+        <!-- Manual Stat -->
+        <div class="flex flex-col items-center justify-center p-2 rounded-2xl bg-[#F0EAE1]/60">
+          <span class="font-heading text-2xl font-normal text-[#4A4542]">2</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[#8A827A] font-bold mt-0.5">REVIEWED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transparent Search Field inside Glass Chrome -->
+    <div class="bg-white/60 backdrop-blur-xl border border-white/60 rounded-full px-4 py-2.5 shadow-glass-sm flex items-center gap-3">
+      <div class="size-9 rounded-full bg-[#C1A673]/15 flex items-center justify-center text-[#C1A673] shrink-0">
+        <iconify-icon icon="solar:magnifer-linear" class="text-lg"></iconify-icon>
+      </div>
+      <div class="flex-1">
+        <input type="text" id="plate-search" placeholder="FILTER VEHICLE REGISTRATION..." class="w-full bg-transparent border-none p-0 text-xs uppercase tracking-[0.15em] font-medium text-[#23201E] placeholder:text-[#8A827A]/60 focus:ring-0 outline-none"/>
+      </div>
+    </div>
+
+    <!-- Filter Chips Row -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1" id="filter-pills-row">
+      <button class="filter-pill active h-8 px-4 rounded-full bg-[#C1A673] text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-cta transition-all shrink-0" data-filter="all">
+        ALL (48)
+      </button>
+      <button class="filter-pill h-8 px-4 rounded-full bg-[#F0EAE1] text-[#4A4542] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white transition-all shrink-0" data-filter="safe">
+        SAFE (41)
+      </button>
+      <button class="filter-pill h-8 px-4 rounded-full bg-[#F0EAE1] text-[#4A4542] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white transition-all shrink-0" data-filter="rejected">
+        LOCKED (5)
+      </button>
+      <button class="filter-pill h-8 px-4 rounded-full bg-[#F0EAE1] text-[#4A4542] text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white transition-all shrink-0" data-filter="manual">
+        REVIEW (2)
+      </button>
+    </div>
+
+    <!-- List Rows (Signature Frosted Glass List Cards) -->
+    <div class="space-y-3" id="scan-log-container">
+
+      <!-- Entry 1: Safe -->
+      <article class="scan-card bg-white/60 backdrop-blur-xl border border-white/60 rounded-[32px] p-4 shadow-glass flex flex-col gap-2.5 transition-all" data-plate="KA 05 MN 1234" data-status="safe">
+        <div class="flex items-center justify-between text-xs text-[#8A827A]">
+          <span class="flex items-center gap-1.5 font-medium">
+            <iconify-icon icon="solar:clock-circle-linear" class="text-sm text-[#C1A673]"></iconify-icon>
+            2 MINS AGO
+          </span>
+          <span class="text-[10px] uppercase tracking-[0.2em] font-bold">BAY 03</span>
+        </div>
+
+        <!-- Plate & Info -->
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-heading text-lg font-medium text-[#23201E] tracking-wider block">KA 05 MN 1234</span>
+            <span class="text-xs text-[#8A827A]">Hydro Test Valid • Exp: 18 Nov 2026</span>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#C1A673]/15 text-[#C1A673] text-[10px] uppercase tracking-[0.2em] font-bold">
+            CLEARED
+          </span>
+        </div>
+      </article>
+
+      <!-- Entry 2: Rejected -->
+      <article class="scan-card bg-white/60 backdrop-blur-xl border border-white/60 rounded-[32px] p-4 shadow-glass flex flex-col gap-2.5 transition-all" data-plate="DL 1C AB 9081" data-status="rejected">
+        <div class="flex items-center justify-between text-xs text-[#8A827A]">
+          <span class="flex items-center gap-1.5 font-medium">
+            <iconify-icon icon="solar:clock-circle-linear" class="text-sm text-[#8C4A4A]"></iconify-icon>
+            14 MINS AGO
+          </span>
+          <span class="text-[10px] uppercase tracking-[0.2em] font-bold">BAY 04</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-heading text-lg font-medium text-[#23201E] tracking-wider block">DL 1C AB 9081</span>
+            <span class="text-xs text-[#8C4A4A]">Expired 42 Days • Solenoid Locked</span>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#8C4A4A]/10 text-[#8C4A4A] text-[10px] uppercase tracking-[0.2em] font-bold">
+            BLOCKED
+          </span>
+        </div>
+      </article>
+
+      <!-- Entry 3: Safe -->
+      <article class="scan-card bg-white/60 backdrop-blur-xl border border-white/60 rounded-[32px] p-4 shadow-glass flex flex-col gap-2.5 transition-all" data-plate="MH 02 BG 4410" data-status="safe">
+        <div class="flex items-center justify-between text-xs text-[#8A827A]">
+          <span class="flex items-center gap-1.5 font-medium">
+            <iconify-icon icon="solar:clock-circle-linear" class="text-sm text-[#C1A673]"></iconify-icon>
+            28 MINS AGO
+          </span>
+          <span class="text-[10px] uppercase tracking-[0.2em] font-bold">BAY 02</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-heading text-lg font-medium text-[#23201E] tracking-wider block">MH 02 BG 4410</span>
+            <span class="text-xs text-[#8A827A]">Hydro Test Valid • Exp: 12 Jan 2027</span>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#C1A673]/15 text-[#C1A673] text-[10px] uppercase tracking-[0.2em] font-bold">
+            CLEARED
+          </span>
+        </div>
+      </article>
+
+      <!-- Entry 4: Manual Review -->
+      <article class="scan-card bg-white/60 backdrop-blur-xl border border-white/60 rounded-[32px] p-4 shadow-glass flex flex-col gap-2.5 transition-all" data-plate="MH 12 QP 5831" data-status="manual">
+        <div class="flex items-center justify-between text-xs text-[#8A827A]">
+          <span class="flex items-center gap-1.5 font-medium">
+            <iconify-icon icon="solar:clock-circle-linear" class="text-sm text-[#4A4542]"></iconify-icon>
+            42 MINS AGO
+          </span>
+          <span class="text-[10px] uppercase tracking-[0.2em] font-bold">BAY 01</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-heading text-lg font-medium text-[#23201E] tracking-wider block">MH 12 QP 5831</span>
+            <span class="text-xs text-[#8A827A]">Character Disambiguated (8→B)</span>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-[#F0EAE1] text-[#4A4542] text-[10px] uppercase tracking-[0.2em] font-bold">
+            CONFIRMED
+          </span>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Floating Pill Tab Bar Navigation -->
+  <nav class="fixed bottom-6 inset-x-6 z-50 max-w-md mx-auto">
+    <div class="bg-white/70 backdrop-blur-2xl border border-white/50 rounded-full h-16 shadow-glass-nav flex items-center justify-between px-3">
+      <!-- Tab: Scanner -->
+      <a href="../1._main_vehicle_scanner_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:scanner-linear" class="text-2xl"></iconify-icon>
+      </a>
+
+      <!-- Tab: Verdict -->
+      <a href="../2._approved_safe_to_fill_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:check-circle-linear" class="text-2xl"></iconify-icon>
+      </a>
+
+      <!-- Tab: Manual Review -->
+      <a href="../4._check_photo_manual_review_minimalist_light/code.html" class="flex-1 flex flex-col items-center justify-center text-[#8A827A] hover:text-[#23201E] transition-colors">
+        <iconify-icon icon="solar:eye-linear" class="text-2xl"></iconify-icon>
+      </a>
+
+      <!-- Active Tab: Shift History -->
+      <button class="flex-1 flex flex-col items-center justify-center text-[#C1A673]">
+        <div class="relative">
+          <iconify-icon icon="solar:clock-circle-bold" class="text-2xl"></iconify-icon>
+          <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-1 bg-[#C1A673] rounded-full"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // Filtering logic
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.scan-card');
+    const searchInput = document.getElementById('plate-search');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-[#C1A673]', 'text-white', 'shadow-cta');
+          b.classList.add('bg-[#F0EAE1]', 'text-[#4A4542]');
+        });
+        btn.classList.remove('bg-[#F0EAE1]', 'text-[#4A4542]');
+        btn.classList.add('bg-[#C1A673]', 'text-white', 'shadow-cta');
+
+        const filter = btn.getAttribute('data-filter');
+        cards.forEach(card => {
+          const status = card.getAttribute('data-status');
+          if (filter === 'all' || status === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      cards.forEach(card => {
+        const plate = card.getAttribute('data-plate').toLowerCase();
+        if (plate.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
